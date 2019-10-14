@@ -1,0 +1,20 @@
+syntax="proto3";
+
+package org.dst.rpc.protobuf;
+
+
+option java_package="org.drpc.test.generated";
+option java_outer_classname="EchoProto";
+option cc_generic_services = true;
+
+message Request {
+    string words = 1;
+};
+
+message Response {
+    string words = 1;
+};
+
+service EchoService {
+    rpc echo(Request) returns (Response);
+}
