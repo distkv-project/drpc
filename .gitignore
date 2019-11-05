@@ -25,3 +25,7 @@ hs_err_pid*
 # Idea
 .idea/
 drpc.iml
+*.iml
+
+# macOS
+*/.DS_Store
