@@ -67,9 +67,7 @@ public class NettyClient extends AbstractClient {
               }
 
               private void processResponse(ChannelHandlerContext ctx, Response response) {
-                // 这一步转换一定不会出错
                 AsyncResponse future = (AsyncResponse) getResponseFuture(response.getRequestId());
-                // 使用setValue通知异步response成功
                 if (response.getThrowable() != null) {
                   future.setThrowable(response.getThrowable());
                 } else {
