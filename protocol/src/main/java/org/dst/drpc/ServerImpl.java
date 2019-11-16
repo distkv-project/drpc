@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.dst.drpc.api.async.DefaultResponse;
 import org.dst.drpc.api.async.Request;
 import org.dst.drpc.api.async.Response;
-import org.dst.drpc.common.URL;
 import org.dst.drpc.common.Void;
 import org.dst.drpc.exception.DrpcException;
 import org.dst.drpc.utils.ReflectUtils;
@@ -21,16 +20,13 @@ public class ServerImpl<T> implements Invoker<T> {
 
   private Class<T> interfaceClazz;
 
-  private URL serverUrl;
-
   /**
    * cache all interface's methods
    */
-  public ServerImpl(URL serverUrl, T ref, Class<T> interfaceClazz) {
+  public ServerImpl(T ref, Class<T> interfaceClazz) {
     if (!interfaceClazz.isInterface()) {
       throw new DrpcException("ServerImpl: interfaceClazz is not a interface!");
     }
-    this.serverUrl = serverUrl;
     this.ref = ref;
     this.interfaceClazz = interfaceClazz;
     List<Method> methods = ReflectUtils.parseMethod(interfaceClazz);
@@ -43,11 +39,6 @@ public class ServerImpl<T> implements Invoker<T> {
   @Override
   public Class<T> getInterface() {
     return interfaceClazz;
-  }
-
-  @Override
-  public URL getURL() {
-    return serverUrl;
   }
 
   @Override
