@@ -4,19 +4,12 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import java.util.concurrent.CompletableFuture;
-import org.dst.drpc.api.AbstractChannel;
-import org.dst.drpc.api.Channel;
 import org.dst.drpc.api.Handler;
-import org.dst.drpc.api.async.DefaultResponse;
 import org.dst.drpc.api.async.Request;
 import org.dst.drpc.api.async.Response;
-import org.dst.drpc.api.support.RpcContext;
 import org.dst.drpc.common.Void;
-import org.dst.drpc.exception.DstException;
+import org.dst.drpc.exception.DrpcException;
 
-/**
- * @author zrj CreateDate: 2019/11/2
- */
 public class ServerChannelHandler extends ChannelDuplexHandler {
 
   private Handler handler;
@@ -31,7 +24,7 @@ public class ServerChannelHandler extends ChannelDuplexHandler {
   public void channelRead(ChannelHandlerContext ctx, Object msg) {
     Object object = nettyServer.getCodec().decode((byte[]) msg);
     if (!(object instanceof Request)) {
-      throw new DstException(
+      throw new DrpcException(
           "ServerChannelHandler: unsupported message type when decode: " + object.getClass());
     }
     if (nettyServer.getExecutor() != null) {
@@ -61,24 +54,6 @@ public class ServerChannelHandler extends ChannelDuplexHandler {
     } else {
       sendResponse(ctx, response);
     }
-  }
-
-  private RpcContext createRpcContext(ChannelHandlerContext ctx, Request request) {
-    Channel channel = new AbstractChannel() {
-
-      @Override
-      public void send(Object message) {
-        Response response = new DefaultResponse();
-        response.setRequestId(request.getRequestId());
-        if(message instanceof Exception) {
-          response.setThrowable((Throwable) message);
-        } else {
-          response.setValue(message);
-        }
-        sendResponse(ctx, response);
-      }
-    };
-    return RpcContext.createRpcContext(channel);
   }
 
   private ChannelFuture sendResponse(ChannelHandlerContext ctx, Response response) {

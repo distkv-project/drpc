@@ -3,9 +3,7 @@ package org.dst.drpc.api.async;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- *
- */
+
 public class Request {
 
   private long requestId;

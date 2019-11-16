@@ -6,7 +6,5 @@ public interface ParamConstants {
 
   String serialization = "Serialization";
 
-  String isAsync = "IsAsync";
-
 
 }

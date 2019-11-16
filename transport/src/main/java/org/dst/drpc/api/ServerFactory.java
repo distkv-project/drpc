@@ -4,20 +4,15 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.dst.drpc.common.URL;
 import org.dst.drpc.exception.TransportException;
-import org.dst.drpc.model.IpPortPair;
+import org.dst.drpc.model.DrpcAddress;
 
-/**
- * 必须是单例的
- */
 public abstract class ServerFactory {
 
-  private Map<IpPortPair, Server> activeServer = new ConcurrentHashMap<>();
+  private Map<DrpcAddress, Server> activeServer = new ConcurrentHashMap<>();
 
-  /**
-   * 创建一个新的Server，如果server对应的ip&port已经存在，直接从缓存中拿取可用的Server。
-   */
+
   public Server createServer(URL url, Handler handler) {
-    IpPortPair serverAddress = url.getIpPortPair();
+    DrpcAddress serverAddress = url.getIpPortPair();
     Server server;
     if (activeServer.containsKey(serverAddress)) {
       server = activeServer.get(serverAddress);

@@ -7,23 +7,19 @@ import org.dst.drpc.Invoker;
 import org.dst.drpc.api.async.AsyncResponse;
 import org.dst.drpc.api.async.Request;
 import org.dst.drpc.api.async.Response;
-import org.dst.drpc.common.URL;
 import org.dst.drpc.common.Void;
-import org.dst.drpc.exception.DstException;
+import org.dst.drpc.exception.DrpcException;
 import org.dst.drpc.utils.RequestIdGenerator;
 
 
 public class ProxyHandler<T> implements InvocationHandler {
 
-  private URL url;
-
   private Invoker invoker;
 
   private Class<T> interfaceClazz;
 
-  public ProxyHandler(Class<T> clazz, URL url, Invoker invoker) {
+  public ProxyHandler(Class<T> clazz, Invoker invoker) {
     interfaceClazz = clazz;
-    this.url = url;
     this.invoker = invoker;
   }
 
@@ -31,15 +27,8 @@ public class ProxyHandler<T> implements InvocationHandler {
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
     if (isLocalMethod(method)) {
-      if ("toString".equals(method.getName())) {
-        return "";
-      }
-      if ("equals".equals(method.getName())) {
-        return false;
-      }
-      throw new DstException("can not invoke local method:" + method.getName());
+      throw new DrpcException("Can not invoke local method: " + method.getName());
     }
-
 
     Request request = new Request();
     request.setRequestId(RequestIdGenerator.next());
@@ -57,6 +46,7 @@ public class ProxyHandler<T> implements InvocationHandler {
 
     Response response = invoker.invoke(request);
 
+    // async-method
     if(CompletableFuture.class.isAssignableFrom(returnType)) {
       CompletableFuture future = new CompletableFuture();
       AsyncResponse asyncResponse = (AsyncResponse) response;
@@ -74,7 +64,7 @@ public class ProxyHandler<T> implements InvocationHandler {
       return future;
     }
 
-    // 如果不是异步的，直接同步返回结果。
+    // sync-method
     if (response.getThrowable() != null) {
       throw response.getThrowable();
     }
@@ -97,16 +87,13 @@ public class ProxyHandler<T> implements InvocationHandler {
     return sb.toString();
   }
 
-  /**
-   * tostring,equals,hashCode,finalize等接口未声明的方法不进行远程调用
-   */
-  public boolean isLocalMethod(Method method) {
+  private boolean isLocalMethod(Method method) {
     if (method.getDeclaringClass().equals(Object.class)) {
       try {
-        Method interfaceMethod = interfaceClazz
+        interfaceClazz
             .getDeclaredMethod(method.getName(), method.getParameterTypes());
         return false;
-      } catch (Exception e) {
+      } catch (NoSuchMethodException e) {
         return true;
       }
     }

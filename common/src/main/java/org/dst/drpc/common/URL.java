@@ -8,38 +8,19 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import org.dst.drpc.constants.GlobalConstants;
-import org.dst.drpc.exception.DstException;
-import org.dst.drpc.model.IpPortPair;
+import org.dst.drpc.model.DrpcAddress;
 
 
-/**
- * 语言透明的服务描述，配置总线。
- */
 public class URL {
 
-  /**
-   * 协议
-   */
   private String protocol;
 
-  /**
-   * host地址
-   */
   private String host;
 
-  /**
-   * 服务端口
-   */
   private int port;
 
-  /**
-   * 任务路径，等同于interfaceName
-   */
   private String path;
 
-  /**
-   * 通用设置
-   */
   private Map<String, String> parameters;
 
 
@@ -97,9 +78,6 @@ public class URL {
       throw new IllegalArgumentException("URL: address error: " + address, e);
     }
   }
-  /* ------ */
-
-  /* static method */
 
   public static String encode(String url) {
     if (url == null || "".equals(url)) {
@@ -123,12 +101,9 @@ public class URL {
     }
   }
 
-  /**
-   * copy from motan, xixi
-   */
   public static URL parse(String url) {
     if (url == null || url.length() == 0) {
-      throw new DstException("URL: url is null");
+      throw new NullPointerException("URL: url is null");
     }
     String protocol = null;
     String host = null;
@@ -204,8 +179,8 @@ public class URL {
     return host;
   }
 
-  public IpPortPair getIpPortPair() {
-    return new IpPortPair(host, port);
+  public DrpcAddress getIpPortPair() {
+    return new DrpcAddress(host, port);
   }
 
   public String getIpPortString() {
@@ -272,8 +247,6 @@ public class URL {
   }
 
 
-
-  /* -- 获取配置方法 -- */
 
   public boolean getBoolean(String key, boolean def) {
     if (parameters.containsKey(key)) {

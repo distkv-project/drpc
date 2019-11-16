@@ -4,9 +4,7 @@ package org.dst.drpc;
 import org.dst.drpc.api.Handler;
 import org.dst.drpc.api.async.Request;
 
-/**
- * @author zrj CreateDate: 2019/10/28
- */
+
 public class HandlerDelegate implements Handler {
 
   private Invoker serverImpl;

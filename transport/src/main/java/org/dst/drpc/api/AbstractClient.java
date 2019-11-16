@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractClient implements Client {
 
-  private static Logger logger = LoggerFactory.getLogger(AbstractClient.class);
+  protected Logger logger = LoggerFactory.getLogger(getClass());
 
   private static final int NEW = 0;
   private static final int CONNECTED = 1;

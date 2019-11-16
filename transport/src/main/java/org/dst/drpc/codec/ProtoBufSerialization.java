@@ -9,12 +9,6 @@ import com.google.protobuf.Message;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-/**
- * 用 fastjson 作为备用方案，Request、Response等框架内部的序列化不走pb
- * 一般只有参数和返回的value使用pb序列化。
- *
- * 如果能用pb序列化则优先使用pb序列化
- */
 public class ProtoBufSerialization implements Serialization {
 
   @Override
@@ -26,8 +20,6 @@ public class ProtoBufSerialization implements Serialization {
     if (object instanceof Message) {
       result = ((Message) object).toByteArray();
     } else {
-      // throw new IllegalArgumentException(
-      // "Serialize error, object must instanceof Message or Builder");
       result = backupSerialize(object);
     }
     return result;
@@ -41,8 +33,6 @@ public class ProtoBufSerialization implements Serialization {
       Method method = clazz.getMethod("newBuilder");
       builder = (Builder) method.invoke(null, null);
     } catch (Exception e) {
-      // throw new IllegalArgumentException(
-      //     "Get google protobuf message builder from " + clazz.getName() + "failed", e);
       return backupDeserialize(bytes, clazz);
     }
     builder.mergeFrom(bytes);

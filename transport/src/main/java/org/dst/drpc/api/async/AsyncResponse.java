@@ -6,9 +6,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-/**
- * @author zrj CreateDate: 2019/10/29
- */
+
 public interface AsyncResponse extends Response, CompletionStage<Response>, Future<Response> {
 
   void await() throws InterruptedException, ExecutionException;

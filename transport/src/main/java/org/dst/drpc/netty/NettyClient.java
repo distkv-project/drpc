@@ -21,14 +21,11 @@ import org.dst.drpc.api.async.Response;
 import org.dst.drpc.codec.DstCodec;
 import org.dst.drpc.codec.ProtoBufSerialization;
 import org.dst.drpc.common.URL;
-import org.dst.drpc.exception.DstException;
+import org.dst.drpc.exception.DrpcException;
 import org.dst.drpc.exception.TransportException;
 import org.dst.drpc.netty.codec.NettyDecoder;
 import org.dst.drpc.netty.codec.NettyEncoder;
 
-/**
- *
- */
 public class NettyClient extends AbstractClient {
 
   private io.netty.channel.Channel clientChannel;
@@ -62,7 +59,7 @@ public class NettyClient extends AbstractClient {
               public void channelRead(ChannelHandlerContext ctx, Object msg) {
                 Object object = getCodec().decode((byte[]) msg);
                 if (!(object instanceof Response)) {
-                  throw new DstException(
+                  throw new DrpcException(
                       "NettyChannelHandler: unsupported message type when encode: " + object
                           .getClass());
                 }
@@ -87,18 +84,15 @@ public class NettyClient extends AbstractClient {
       future = bootstrap.connect(getUrl().getHost(), getUrl().getPort()).sync();
     } catch (InterruptedException i) {
       close();
-      // todo : log or retry
       throw new TransportException("NettyClient: connect().sync() interrupted", i);
     }
-    // 标志当前的Channel已经打开
-    // 保存当前的netty channel。
+
     clientChannel = future.channel();
-    // 新起一个线程去监听close事件
     executor.submit(() -> {
       try {
         clientChannel.closeFuture().sync();
       } catch (Exception e) {
-        // todo : log
+        logger.error("Client occurs error when close.", e);
       } finally {
         close();
       }
@@ -128,7 +122,7 @@ public class NettyClient extends AbstractClient {
       if (clientChannel.isActive()) {
         clientChannel.writeAndFlush(msg);
       } else {
-        throw new DstException("ClientChannel closed");
+        throw new DrpcException("ClientChannel closed");
       }
       return response;
     } catch (Exception e) {

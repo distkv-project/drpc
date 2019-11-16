@@ -4,9 +4,6 @@ import java.util.concurrent.Executor;
 import org.dst.drpc.codec.Codec;
 import org.dst.drpc.common.URL;
 
-/**
- *
- */
 public interface Server {
 
   URL getUrl();

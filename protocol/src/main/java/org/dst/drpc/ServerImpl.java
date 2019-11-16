@@ -9,13 +9,10 @@ import org.dst.drpc.api.async.Request;
 import org.dst.drpc.api.async.Response;
 import org.dst.drpc.common.URL;
 import org.dst.drpc.common.Void;
-import org.dst.drpc.exception.DstException;
+import org.dst.drpc.exception.DrpcException;
 import org.dst.drpc.utils.ReflectUtils;
 
 
-/**
- * @author zrj CreateDate: 2019/10/28
- */
 public class ServerImpl<T> implements Invoker<T> {
 
   protected Map<String, Method> methodMap = new ConcurrentHashMap<>();
@@ -27,11 +24,11 @@ public class ServerImpl<T> implements Invoker<T> {
   private URL serverUrl;
 
   /**
-   * 找到所有interfaceClazz可以调用的方法，并缓存下来，缓存名字要保留参数类型的完整名称，防止函数重载
+   * cache all interface's methods
    */
   public ServerImpl(URL serverUrl, T ref, Class<T> interfaceClazz) {
     if (!interfaceClazz.isInterface()) {
-      throw new DstException("ServerImpl: interfaceClazz is not a interface!");
+      throw new DrpcException("ServerImpl: interfaceClazz is not a interface!");
     }
     this.serverUrl = serverUrl;
     this.ref = ref;
@@ -59,7 +56,7 @@ public class ServerImpl<T> implements Invoker<T> {
     String methodName = ReflectUtils.getMethodDesc(request.getMethodName(), request.getArgsType());
     Method method = methodMap.get(methodName);
     if (method == null) {
-      response.setThrowable(new DstException("ServerImpl: can't find method: " + methodName));
+      response.setThrowable(new DrpcException("ServerImpl: can't find method: " + methodName));
       return response;
     }
     try {
@@ -71,10 +68,10 @@ public class ServerImpl<T> implements Invoker<T> {
       }
     } catch (Exception e) {
       response.setThrowable(
-          new DstException("ServerImpl: dst.exception when invoke method: " + methodName, e));
+          new DrpcException("ServerImpl: exception when invoke method: " + methodName, e));
     } catch (Error e) {
       response
-          .setThrowable(new DstException("ServerImpl: error when invoke method: " + methodName, e));
+          .setThrowable(new DrpcException("ServerImpl: error when invoke method: " + methodName, e));
     }
     return response;
   }

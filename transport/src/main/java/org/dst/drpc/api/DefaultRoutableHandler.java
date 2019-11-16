@@ -8,9 +8,6 @@ import org.dst.drpc.api.async.Request;
 import org.dst.drpc.common.URL;
 
 
-/**
- *
- */
 public class DefaultRoutableHandler implements RoutableHandler {
 
   private Map<String, Handler> handlerMap;

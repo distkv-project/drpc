@@ -3,11 +3,13 @@ package org.dst.drpc.async;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- * @author zrj CreateDate: 2019/10/28
- */
+
 public class IServerImpl implements IServer {
+
+  private Logger logger = LoggerFactory.getLogger(getClass());
 
   private ExecutorService executorService = Executors.newFixedThreadPool(32);
 
@@ -30,7 +32,7 @@ public class IServerImpl implements IServer {
     try {
       Thread.sleep(t);
     } catch (Exception e) {
-      // ignore
+      logger.error("exception", e);
     }
   }
 }

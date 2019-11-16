@@ -5,25 +5,16 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import org.dst.drpc.exception.DstException;
+import org.dst.drpc.exception.DrpcException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author zrj CreateDate: 2019/10/29
- */
+
 public class DefaultAsyncResponse extends CompletableFuture<Response> implements AsyncResponse {
 
   private static final Logger logger = LoggerFactory.getLogger(DefaultAsyncResponse.class);
 
-  /**
-   * 用来暂存CompletableFuture中的value，方便一些不触发complete的set操作，例如setRequestId。
-   */
   private Response response;
-
-  public DefaultAsyncResponse() {
-    this.response = new DefaultResponse();
-  }
 
   public DefaultAsyncResponse(long requestId) {
     this.response = new DefaultResponse(requestId);
@@ -39,21 +30,11 @@ public class DefaultAsyncResponse extends CompletableFuture<Response> implements
     response.setRequestId(requestId);
   }
 
-
-  /**
-   * 调用之前需要检查isDone否则会抛出异常
-   */
   @Override
   public Object getValue() {
     return getDefaultResponse().getValue();
   }
 
-
-  /**
-   * 只有setValue和setException会触发complete操作
-   *
-   * @see {@link DefaultAsyncResponse#setException(Exception)}
-   */
   @Override
   public void setValue(Object value) {
     try {
@@ -65,25 +46,15 @@ public class DefaultAsyncResponse extends CompletableFuture<Response> implements
       }
     } catch (Exception e) {
       // This should not happen
-      throw new DstException(e);
+      throw new DrpcException(e);
     }
   }
 
-
-  /**
-   * 调用之前需要检查isDone否则会抛出异常
-   */
   @Override
   public Throwable getThrowable() {
     return getDefaultResponse().getThrowable();
   }
 
-
-  /**
-   * 只有setValue和setException会触发complete操作
-   *
-   * @see {@link DefaultAsyncResponse#setValue(Object)}
-   */
   @Override
   public void setThrowable(Throwable throwable) {
     try {
@@ -95,7 +66,7 @@ public class DefaultAsyncResponse extends CompletableFuture<Response> implements
       }
     } catch (Exception e) {
       // This should not happen
-      throw new DstException(e);
+      throw new DrpcException(e);
     }
   }
 
@@ -132,30 +103,25 @@ public class DefaultAsyncResponse extends CompletableFuture<Response> implements
 
   @Override
   public boolean complete(Response value) {
-    // 封印这个方法
     throw new UnsupportedOperationException();
   }
 
   private void checkDone() {
     if (!isDone()) {
-      throw new DstException("Must check 'isDone()' first");
+      throw new DrpcException("Must check 'isDone()' first");
     }
   }
 
-  /**
-   * AsyncResponse 异步Response 操作必须先检查isDone
-   */
   public boolean isDone() {
     return super.isDone();
   }
 
   private Response getDefaultResponse() {
-//    checkDone();
     try {
       return get();
     } catch (Exception e) {
       // This should not happen
-      throw new DstException(e);
+      throw new DrpcException(e);
     }
   }
 

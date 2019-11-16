@@ -17,9 +17,7 @@ import org.dst.drpc.exception.CodecException;
 import org.dst.drpc.utils.ReflectUtils;
 
 /**
- * 编解码核心类：
- *
- * 协议头：
+ * protocol header：
  *
  * |      magic 16bit     | version 8bit | type flag 8bit |
  * |               content length 32 bit                  |

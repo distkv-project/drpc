@@ -3,12 +3,8 @@ package org.dst.drpc.api.async;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author zrj CreateDate: 2019/10/29
- */
-public class DefaultResponse implements Response {
 
-  public static final String IS_ASYNC = "IS_ASYNC";
+public class DefaultResponse implements Response {
 
   private long requestId;
 

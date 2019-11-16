@@ -9,8 +9,6 @@ public interface CodecConstants {
 
   int HEADER_LENGTH = 16/* bytes, not bits */;
 
-  int HEADER_SIZE = 16;
-
   enum Version {
     VERSION_1((byte) 0x01),
 

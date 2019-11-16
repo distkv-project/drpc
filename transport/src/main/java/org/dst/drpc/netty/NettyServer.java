@@ -56,7 +56,6 @@ public class NettyServer extends AbstractServer {
       ChannelFuture f = serverBootstrap.bind(getUrl().getPort()).sync();
       serverChannel = f.channel();
     } catch (Exception e) {
-      // todo: log
       logger.error("NettyServer bind error", e);
     }
   }

@@ -5,9 +5,6 @@ import org.dst.drpc.api.Server;
 import org.dst.drpc.api.ServerFactory;
 import org.dst.drpc.common.URL;
 
-/**
- * NettyFactory实现
- */
 public class NettyTransportFactory extends ServerFactory {
 
   private NettyTransportFactory() {

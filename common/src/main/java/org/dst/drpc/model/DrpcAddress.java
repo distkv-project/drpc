@@ -3,12 +3,12 @@ package org.dst.drpc.model;
 import java.util.Objects;
 
 
-public class IpPortPair {
+public class DrpcAddress {
 
   private String ip;
   private int port;
 
-  public IpPortPair(String ip, int port) {
+  public DrpcAddress(String ip, int port) {
     this.ip = ip;
     this.port = port;
   }
@@ -31,10 +31,10 @@ public class IpPortPair {
 
   @Override
   public boolean equals(Object obj) {
-    if (!(obj instanceof IpPortPair)) {
+    if (!(obj instanceof DrpcAddress)) {
       return false;
     }
-    IpPortPair other = (IpPortPair) obj;
+    DrpcAddress other = (DrpcAddress) obj;
     if (!Objects.equals(ip, other.ip)) {
       return false;
     }
