@@ -219,18 +219,18 @@ public class DstCodec implements Codec {
     return paramObjects;
   }
 
-  private static short bytesToShort(byte[] data, int pos) {
+  private short bytesToShort(byte[] data, int pos) {
     return (short) (((data[pos + 1] & 0xFF)) + ((data[pos] & 0xFF) << 8));
   }
 
-  private static int bytesToInt(byte[] data, int pos) {
+  private int bytesToInt(byte[] data, int pos) {
     return ((data[pos] & 0xFF) << 24)
         + ((data[pos + 1] & 0xFF) << 16)
         + ((data[pos + 2] & 0xFF) << 8)
         + (data[pos + 3] & 0xFF);
   }
 
-  private static long bytesToLong(byte[] data, int pos) {
+  private long bytesToLong(byte[] data, int pos) {
     return ((data[pos] & 0xFFL) << 56)
         + ((data[pos + 1] & 0xFFL) << 48)
         + ((data[pos + 2] & 0xFFL) << 40)
@@ -241,19 +241,19 @@ public class DstCodec implements Codec {
         + (data[pos + 7] & 0xFFL);
   }
 
-  private static void shortToBytes(byte[] dst, int pos, short val) {
+  private void shortToBytes(byte[] dst, int pos, short val) {
     dst[pos + 1] = (byte) (val & 0xff);
     dst[pos + 0] = (byte) ((val >> 8) & 0xff);
   }
 
-  private static void intToBytes(byte[] dst, int pos, int val) {
+  private void intToBytes(byte[] dst, int pos, int val) {
     dst[pos + 3] = (byte) (val & 0xff);
     dst[pos + 2] = (byte) ((val >> 8) & 0xff);
     dst[pos + 1] = (byte) ((val >> 16) & 0xff);
     dst[pos + 0] = (byte) ((val >> 24) & 0xff);
   }
 
-  private static void longToBytes(byte[] dst, int pos, long val) {
+  private void longToBytes(byte[] dst, int pos, long val) {
     dst[pos + 7] = (byte) (val & 0xff);
     dst[pos + 6] = (byte) ((val >> 8) & 0xff);
     dst[pos + 5] = (byte) ((val >> 16) & 0xff);
