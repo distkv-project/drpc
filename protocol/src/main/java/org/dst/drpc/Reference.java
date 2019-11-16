@@ -10,8 +10,6 @@ import org.dst.drpc.proxy.ProxyFactory;
 public class Reference<T> {
 
   private Class<T> interfaceClass;
-  private String address;
-  private boolean isAsync;
 
   private URL serverUrl;
 
@@ -25,7 +23,6 @@ public class Reference<T> {
   }
 
   public void setAddress(String address) {
-    this.address = address;
     if (!address.contains("://")) {
       throw new DrpcException("Empty protocol");
     }
