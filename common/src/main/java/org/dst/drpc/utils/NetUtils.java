@@ -97,7 +97,10 @@ public class NetUtils {
           try {
             socket.close();
           } catch (Throwable e) {
-            // ignore
+            logger.warn(String.format(
+                "Failed to close the socket connecting to dest host:port(%s:%s) false, e=%s",
+                host,
+                port, e));
           }
         }
       } catch (Exception e) {
