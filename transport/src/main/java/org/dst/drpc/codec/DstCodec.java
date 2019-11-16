@@ -75,7 +75,7 @@ public class DstCodec implements Codec {
 
     try {
       switch (DataType.getDataTypeByValue(dataType)) {
-        case VOID:
+        case NONE:
           return org.dst.drpc.common.Void.getInstance();
         case REQUEST:
           return decodeRequest(requestId, content);
@@ -221,12 +221,6 @@ public class DstCodec implements Codec {
     }
     return paramObjects;
   }
-
-
-  /**
-   * 大端
-   */
-
 
   private static short bytesToShort(byte[] data, int pos) {
     return (short) (((data[pos + 1] & 0xFF)) + ((data[pos] & 0xFF) << 8));
