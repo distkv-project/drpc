@@ -35,7 +35,7 @@ public interface CodecConstants {
   }
 
   enum DataType {
-    VOID((byte) 0x00),
+    NONE((byte) 0x00),
     REQUEST((byte) 0x01),
     RESPONSE((byte) 0x02),
     EXCEPTION((byte) 0x03),
