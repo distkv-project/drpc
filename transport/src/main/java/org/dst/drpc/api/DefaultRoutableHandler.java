@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.dst.drpc.api.async.Request;
-import org.dst.drpc.common.URL;
 
 
 public class DefaultRoutableHandler implements RoutableHandler {
@@ -19,12 +18,6 @@ public class DefaultRoutableHandler implements RoutableHandler {
 
   public DefaultRoutableHandler() {
     handlerMap = new ConcurrentHashMap<>();
-  }
-
-  @Override
-  public Handler getHandlerByServerName(URL url) {
-
-    return null;
   }
 
   @Override

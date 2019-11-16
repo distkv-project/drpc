@@ -6,13 +6,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import org.dst.drpc.exception.DrpcException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class DefaultAsyncResponse extends CompletableFuture<Response> implements AsyncResponse {
-
-  private static final Logger logger = LoggerFactory.getLogger(DefaultAsyncResponse.class);
 
   private Response response;
 
@@ -101,8 +97,20 @@ public class DefaultAsyncResponse extends CompletableFuture<Response> implements
     get(timeout, unit);
   }
 
+  /**
+   * this method should not be invoked in any other places except {@link DefaultAsyncResponse#setValue}
+   * and {@link DefaultAsyncResponse#setThrowable}
+   */
   @Override
   public boolean complete(Response value) {
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * this method should not be invoked in any places, use setThrowable instead.
+   */
+  @Override
+  public boolean completeExceptionally(Throwable ex) {
     throw new UnsupportedOperationException();
   }
 
