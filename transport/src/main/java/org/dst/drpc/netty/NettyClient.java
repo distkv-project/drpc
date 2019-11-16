@@ -67,7 +67,7 @@ public class NettyClient extends AbstractClient {
               }
 
               private void processResponse(ChannelHandlerContext ctx, Response response) {
-                AsyncResponse future = (AsyncResponse) getResponseFuture(response.getRequestId());
+                Response future = getResponseFuture(response.getRequestId());
                 if (response.getThrowable() != null) {
                   future.setThrowable(response.getThrowable());
                 } else {
