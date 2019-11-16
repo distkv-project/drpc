@@ -61,7 +61,7 @@ public class DstCodec implements Codec {
     }
     pos += 2;
 
-    byte version = data[pos++]; // 暂时不会用到，防止以后改协议。
+    byte version = data[pos++];
     byte dataType = data[pos++];
 
     int contentLength = bytesToInt(data, pos);
@@ -98,10 +98,7 @@ public class DstCodec implements Codec {
 
     output.writeUTF(request.getInterfaceName());
     output.writeUTF(request.getMethodName());
-
-    // if(request.getArgsType() != null && !"".equals(request.getArgsType())) {
     output.writeUTF(request.getArgsType());
-    // }
 
     if (request.getArgsValue() != null && request.getArgsValue().length > 0) {
       for (Object obj : request.getArgsValue()) {
