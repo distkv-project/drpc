@@ -56,10 +56,10 @@ public class DstCodec implements Codec {
     int pos = 0;
 
     short magic = bytesToShort(data, pos);
-    pos += 2;
     if (magic != CodecConstants.MAGIC_HEAD) {
       throw new CodecException("Magic error: " + magic);
     }
+    pos += 2;
 
     byte version = data[pos++]; // 暂时不会用到，防止以后改协议。
     byte dataType = data[pos++];
