@@ -63,10 +63,10 @@ public class NettyClient extends AbstractClient {
                       "NettyChannelHandler: unsupported message type when encode: " + object
                           .getClass());
                 }
-                processResponse(ctx, (Response) object);
+                processResponse((Response) object);
               }
 
-              private void processResponse(ChannelHandlerContext ctx, Response response) {
+              private void processResponse(Response response) {
                 Response future = getResponseFuture(response.getRequestId());
                 if (response.getThrowable() != null) {
                   future.setThrowable(response.getThrowable());
