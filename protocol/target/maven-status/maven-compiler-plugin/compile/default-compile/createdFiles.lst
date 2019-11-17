@@ -1,8 +1,0 @@
-org/dst/drpc/DefaultInvoker.class
-org/dst/drpc/proxy/ProxyHandler.class
-org/dst/drpc/Reference.class
-org/dst/drpc/Exporter.class
-org/dst/drpc/Invoker.class
-org/dst/drpc/proxy/ProxyFactory.class
-org/dst/drpc/HandlerDelegate.class
-org/dst/drpc/ServerImpl.class
