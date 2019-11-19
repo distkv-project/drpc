@@ -29,3 +29,10 @@ drpc.iml
 
 # macOS
 */.DS_Store
+
+# generated files
+example/src/main/java/org/dst/drpc/pb/generated/*
+
+# target files
+/*/target
+target/

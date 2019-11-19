@@ -26,6 +26,7 @@
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java</artifactId>
       <version>3.8.0</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.alibaba</groupId>

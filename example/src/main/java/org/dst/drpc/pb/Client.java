@@ -4,6 +4,7 @@ package org.dst.drpc.pb;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.LongAdder;
 import org.dst.drpc.Reference;
+import org.dst.drpc.pb.generated.StringProtocol;
 
 
 public class Client {
@@ -15,7 +16,7 @@ public class Client {
 
     IServer server = reference.getReference();
 
-    GetRequest request = StringProtocol.GetRequest.newBuilder()
+    org.dst.drpc.pb.generated.StringProtocol.GetRequest request = StringProtocol.GetRequest.newBuilder()
         .setKey("dst").build();
     System.out.println(server.say(request).getValue());
 
