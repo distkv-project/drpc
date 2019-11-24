@@ -36,3 +36,7 @@ example/src/main/java/org/dst/drpc/pb/generated/*
 # target files
 /*/target
 target/
+
+# for cpp client
+cmake-build-debug/
+
