@@ -5,11 +5,11 @@
 
 set +x
 
-mkdir build && pushd build
+mkdir -p build && pushd build
 cmake ..
 make -j 8
 
 # run all tests
-
+./demo_test
 
 popd

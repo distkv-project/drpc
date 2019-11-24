@@ -28,7 +28,7 @@ matrix:
     - os: linux
       dist: trusty
       script:
-        - travis_wait 10 mvn checkstyle:check
+        - # travis_wait 10 mvn checkstyle:check
 
     # This job is used for build and test cpp client on linux.
     - os: linux
