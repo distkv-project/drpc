@@ -21,4 +21,4 @@ target_link_libraries(drpc_client ${HANDY_STATIC_LIB})
 # demo_test
 add_executable(demo_test src/tests/demo_test.cc)
 add_dependencies(demo_test googletest_ep handy_ep)
-target_link_libraries(demo_test handy_rpc ${GTEST_STATIC_LIB} ${GTEST_MAIN_STATIC_LIB} ${GMOCK_MAIN_STATIC_LIB} pthread)
+target_link_libraries(demo_test drpc_client ${GTEST_STATIC_LIB} ${GTEST_MAIN_STATIC_LIB} ${GMOCK_MAIN_STATIC_LIB} pthread)
