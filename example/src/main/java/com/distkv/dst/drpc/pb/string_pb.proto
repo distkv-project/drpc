@@ -1,10 +1,10 @@
 syntax="proto2";
 
-package org.dst.drpc.pb;
+package com.distkv.dst.drpc.pb;
 
 import "common_pb.proto";
 
-option java_package="org.dst.drpc.pb.generated";
+option java_package="com.distkv.dst.drpc.pb.generated";
 option java_outer_classname="StringProtocol";
 option cc_generic_services = true;
 

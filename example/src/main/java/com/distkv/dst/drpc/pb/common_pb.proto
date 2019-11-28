@@ -1,8 +1,8 @@
 syntax="proto2";
 
-package org.dst.drpc.pb;
+package com.distkv.dst.drpc.pb;
 
-option java_package="org.dst.drpc.pb.generated";
+option java_package="com.distkv.dst.drpc.pb.generated";
 option java_outer_classname="CommonProtocol";
 
 enum Status {
