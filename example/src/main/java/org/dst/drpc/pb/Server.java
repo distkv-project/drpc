@@ -1,6 +1,8 @@
 package org.dst.drpc.pb;
 
 import org.dst.drpc.Exporter;
+import org.dst.drpc.async.IServer;
+import org.dst.drpc.async.IServerImpl;
 
 
 public class Server {
