@@ -1,15 +1,15 @@
 package org.dst.drpc.async;
 
 
-import java.sql.Ref;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.LongAdder;
 import org.dst.drpc.Reference;
 
 
 public class Client {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InterruptedException, ExecutionException {
     Reference<IServer> reference = new Reference<>();
     reference.setAddress("dst://127.0.0.1:8080");
     reference.setInterfaceClass(IServer.class);
@@ -24,7 +24,7 @@ public class Client {
     System.out.println(server2.say2());
 
     LongAdder totalCost = new LongAdder();
-    for(int i = 0;i<1000;i++) {
+    for(int i = 0;i < 1;i++) {
       long b = System.currentTimeMillis();
       CompletableFuture<String> future = server.say("async rpc");
       future.whenComplete((r, t) -> {
@@ -39,6 +39,13 @@ public class Client {
     }
     System.out.println(totalCost.longValue() / 1000);
 
+
+    // Start to test IServer2 with async.
+    CompletableFuture<String> future = server2.say2("async say2");
+    future.whenComplete((r, t) -> {
+      System.out.println("Wow, IServer2: " + r);
+    });
+    future.get();
   }
 
 }
