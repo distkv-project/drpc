@@ -29,6 +29,8 @@ public class Exporter {
    */
   private ConcurrentHashMap<String, Class<?>> serviceInterfaceClasses = new ConcurrentHashMap<>();
 
+  private ConcurrentHashMap<String, Handler> serviceHandlers = new ConcurrentHashMap<>();
+
   URL serverUrl;
 
   public Exporter() {
@@ -53,7 +55,8 @@ public class Exporter {
    * @param interfaceClass The interface that we want to export.
    * @param serviceObject The object that this service implementation.
    */
-  public <T> void registerService(Class<?> interfaceClass, T serviceObject) {
+  public <T> void registerService(Class<T> interfaceClass, T serviceObject) {
+    serviceHandlers.put(interfaceClass.getName(), new HandlerDelegate(new ServerImpl<T>(serviceObject, interfaceClass)));
     serviceInterfaceClasses.put(interfaceClass.getName(), interfaceClass);
     serviceObjects.put(interfaceClass.getName(), serviceObject);
   }
@@ -63,8 +66,8 @@ public class Exporter {
   }
 
   public void export() {
-//    Handler handler = new HandlerDelegate(new ServerImpl<>(ref, interfaceClass));
     List<Handler> handlers = new ArrayList<>(serviceInterfaceClasses.size());
+    serviceHandlers.forEach((key, value) -> handlers.add(value));
     Server server = NettyTransportFactory.getInstance().createServer(serverUrl, handlers);
     server.open();
   }
