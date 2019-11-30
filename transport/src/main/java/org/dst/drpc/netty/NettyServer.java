@@ -18,6 +18,8 @@ import org.dst.drpc.netty.codec.NettyEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 
 public class NettyServer extends AbstractServer {
 
@@ -28,9 +30,9 @@ public class NettyServer extends AbstractServer {
   private NioEventLoopGroup workerGroup;
 
 
-  public NettyServer(URL url, Handler handler) {
+  public NettyServer(URL url, List<Handler> handlers) {
     super(url, new DstCodec(new ProtoBufSerialization()));
-    getRoutableHandler().registerHandler(handler);
+    handlers.forEach((handler) -> getRoutableHandler().registerHandler(handler));
     bossGroup = new NioEventLoopGroup(1);
     workerGroup = new NioEventLoopGroup();
   }

@@ -1,5 +1,6 @@
 package org.dst.drpc.api;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.dst.drpc.common.URL;
@@ -11,7 +12,7 @@ public abstract class ServerFactory {
   private Map<DrpcAddress, Server> activeServer = new ConcurrentHashMap<>();
 
 
-  public Server createServer(URL url, Handler handler) {
+  public Server createServer(URL url, List<Handler> handlers) {
     DrpcAddress serverAddress = url.getIpPortPair();
     Server server;
     if (activeServer.containsKey(serverAddress)) {
@@ -21,25 +22,29 @@ public abstract class ServerFactory {
         if (routableHandler == null) {
           throw new TransportException("Server's routableHandler can't be null");
         }
-        if (handler instanceof RoutableHandler) {
-          routableHandler.merge((RoutableHandler) handler);
-        } else {
-          routableHandler.registerHandler(handler);
-        }
+
+        handlers.forEach((handler) -> {
+          if (handler instanceof RoutableHandler) {
+            routableHandler.merge((RoutableHandler) handler);
+          } else {
+            routableHandler.registerHandler(handler);
+          }
+        });
+
         return server;
       } else {
-        // 服务已经关闭了，从map中移除，然后新建一个Server存进map
+        // This is the code path of disconnected server.
         activeServer.remove(serverAddress);
       }
     }
 
     // 在URL请求的ip&port的地址上面没有服务，则创建一个服务
-    server = doCreateServer(url, handler);
+    server = doCreateServer(url, handlers);
     // 这里不要open server，工厂除了创建一个新的Server以外不应该干涉Server的生命周期
     activeServer.put(serverAddress, server);
     return server;
   }
 
-  protected abstract Server doCreateServer(URL url, Handler handler);
+  protected abstract Server doCreateServer(URL url, List<Handler> handler);
 
 }

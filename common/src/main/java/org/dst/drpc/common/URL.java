@@ -19,8 +19,6 @@ public class URL {
 
   private int port;
 
-  private String path;
-
   private Map<String, String> parameters;
 
 
@@ -35,27 +33,17 @@ public class URL {
     parameters = new ConcurrentHashMap<>();
   }
 
-  public URL(String protocol, String address, String path) {
-    this.protocol = protocol;
-    getHostPostFromAddress(address);
-    this.path = path;
-    parameters = new ConcurrentHashMap<>();
-  }
-
-  public URL(String protocol, String host, int port, String path) {
+  public URL(String protocol, String host, int port) {
     this.protocol = protocol;
     this.host = host;
     this.port = port;
-    this.path = path;
     parameters = new ConcurrentHashMap<>();
   }
 
-  public URL(String protocol, String host, int port, String path,
-      Map<String, String> parameters) {
+  public URL(String protocol, String host, int port, Map<String, String> parameters) {
     this.protocol = protocol;
     this.host = host;
     this.port = port;
-    this.path = path;
     this.parameters = parameters;
   }
 
@@ -159,7 +147,7 @@ public class URL {
     if (url.length() > 0) {
       host = url;
     }
-    return new URL(protocol, host, port, path, parameters);
+    return new URL(protocol, host, port, parameters);
   }
 
   public static String buildHostPortStr(String host, int defaultPort) {
@@ -187,25 +175,6 @@ public class URL {
     return buildHostPortStr(host, port);
   }
 
-  public String getUri() {
-    return protocol + GlobalConstants.PROTOCOL_SEP + host + ":" + port +
-        GlobalConstants.PATH_SEP + path;
-  }
-
-  public String getUrlString() {
-    StringBuilder builder = new StringBuilder();
-    builder.append(getUri()).append("?");
-
-    for (Map.Entry<String, String> entry : parameters.entrySet()) {
-      String name = entry.getKey();
-      String value = entry.getValue();
-      builder.append(name).append("=").append(value).append("&");
-    }
-
-    return builder.toString();
-  }
-
-
   public String getProtocol() {
     return protocol;
   }
@@ -220,14 +189,6 @@ public class URL {
 
   public void setHost(String host) {
     this.host = host;
-  }
-
-  public String getPath() {
-    return path;
-  }
-
-  public void setPath(String path) {
-    this.path = path;
   }
 
   public int getPort() {
@@ -311,9 +272,6 @@ public class URL {
       if (!Objects.equals(o.port, port)) {
         return false;
       }
-      if (!Objects.equals(o.path, path)) {
-        return false;
-      }
       if (!Objects.equals(o.parameters, parameters)) {
         return false;
       }
@@ -330,7 +288,6 @@ public class URL {
     rs = factor * rs + Objects.hashCode(protocol);
     rs = factor * rs + Objects.hashCode(host);
     rs = factor * rs + Objects.hashCode(port);
-    rs = factor * rs + Objects.hashCode(path);
     rs = factor * rs + Objects.hashCode(parameters);
     return rs;
   }
