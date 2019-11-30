@@ -6,13 +6,12 @@ import org.dst.drpc.Exporter;
 public class Server {
 
   public static void main(String[] args) {
-    IServer impl = new IServerImpl();
-    Exporter<IServer> exporter = new Exporter<>();
+    Exporter exporter = new Exporter();
     exporter.setProtocol("dst");
-    exporter.setInterfaceClass(IServer.class);
+    exporter.registerService(IServer.class, new IServerImpl());
+    exporter.registerService(IServer2.class, new IServer2Impl());
     exporter.isLocal(true);
     exporter.setPort(8080);
-    exporter.setRef(impl);
     exporter.export();
   }
 
