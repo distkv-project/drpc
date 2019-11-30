@@ -19,7 +19,6 @@ public class Reference<T> {
 
   public void setInterfaceClass(Class<T> interfaceClass) {
     this.interfaceClass = interfaceClass;
-    serverUrl.setPath(interfaceClass.getName());
   }
 
   public void setAddress(String address) {

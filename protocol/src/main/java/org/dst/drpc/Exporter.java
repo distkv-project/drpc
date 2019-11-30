@@ -1,27 +1,28 @@
 package org.dst.drpc;
 
-
 import org.dst.drpc.api.Handler;
 import org.dst.drpc.api.Server;
 import org.dst.drpc.common.URL;
 import org.dst.drpc.netty.NettyTransportFactory;
 import org.dst.drpc.utils.NetUtils;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
-public class Exporter<T> {
+public class Exporter {
 
-  private T ref;
-  private Class<T> interfaceClass;
-  private URL serverUrl;
+  /**
+   * The service handlers.
+   * Note that CopyOnWriteArrayList might not be efficient too much when writing,
+   * but this is not a writing-bundle collection.
+   */
+  private CopyOnWriteArrayList<Handler> serviceHandlers = new CopyOnWriteArrayList<>();
+
+  URL serverUrl;
 
   public Exporter() {
     serverUrl = new URL();
     String localAddress = NetUtils.getLocalAddress().getHostAddress();
     serverUrl.setHost(localAddress);
-  }
-
-  public void setRef(T ref) {
-    this.ref = ref;
   }
 
   public void isLocal(boolean isLocal) {
@@ -34,19 +35,22 @@ public class Exporter<T> {
     serverUrl.setProtocol(protocol);
   }
 
-  public void setInterfaceClass(Class<T> interfaceClass) {
-    this.interfaceClass = interfaceClass;
-    serverUrl.setPath(interfaceClass.getName());
+  /**
+   * Register the service into this exporter.
+   *
+   * @param interfaceClass The interface that we want to export.
+   * @param serviceObject The object that this service implementation.
+   */
+  public <T> void registerService(Class<T> interfaceClass, T serviceObject) {
+    serviceHandlers.add(new HandlerDelegate(new ServerImpl<T>(serviceObject, interfaceClass)));
   }
 
   public void setPort(int port) {
     serverUrl.setPort(port);
   }
 
-
   public void export() {
-    Handler handler = new HandlerDelegate(new ServerImpl<>(ref, interfaceClass));
-    Server server = NettyTransportFactory.getInstance().createServer(serverUrl, handler);
+    Server server = NettyTransportFactory.getInstance().createServer(serverUrl, serviceHandlers);
     server.open();
   }
 }
