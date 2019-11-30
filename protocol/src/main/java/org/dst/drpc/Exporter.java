@@ -1,35 +1,21 @@
 package org.dst.drpc;
 
-
 import org.dst.drpc.api.Handler;
 import org.dst.drpc.api.Server;
 import org.dst.drpc.common.URL;
 import org.dst.drpc.netty.NettyTransportFactory;
 import org.dst.drpc.utils.NetUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Exporter {
 
   /**
-   * The reference objects of services. The key is the string of the
-   * service name and the value is the service object.
+   * The service handlers.
+   * Note that CopyOnWriteArrayList might not be efficient too much when writing,
+   * but this is not a writing-bundle collection.
    */
-  private ConcurrentHashMap<String, Object> serviceObjects = new ConcurrentHashMap<>();
-
-  /**
-   * The classes of service interfaces. The key is the string of the
-   * service name and the value is the class of the service interface.
-   *
-   * TODO(qwang): I think this should be removed because we can get
-   * the interface classes by `class.forName`.
-   */
-  private ConcurrentHashMap<String, Class<?>> serviceInterfaceClasses = new ConcurrentHashMap<>();
-
-  private ConcurrentHashMap<String, Handler> serviceHandlers = new ConcurrentHashMap<>();
+  private CopyOnWriteArrayList<Handler> serviceHandlers = new CopyOnWriteArrayList<>();
 
   URL serverUrl;
 
@@ -56,9 +42,7 @@ public class Exporter {
    * @param serviceObject The object that this service implementation.
    */
   public <T> void registerService(Class<T> interfaceClass, T serviceObject) {
-    serviceHandlers.put(interfaceClass.getName(), new HandlerDelegate(new ServerImpl<T>(serviceObject, interfaceClass)));
-    serviceInterfaceClasses.put(interfaceClass.getName(), interfaceClass);
-    serviceObjects.put(interfaceClass.getName(), serviceObject);
+    serviceHandlers.add(new HandlerDelegate(new ServerImpl<T>(serviceObject, interfaceClass)));
   }
 
   public void setPort(int port) {
@@ -66,9 +50,7 @@ public class Exporter {
   }
 
   public void export() {
-    List<Handler> handlers = new ArrayList<>(serviceInterfaceClasses.size());
-    serviceHandlers.forEach((key, value) -> handlers.add(value));
-    Server server = NettyTransportFactory.getInstance().createServer(serverUrl, handlers);
+    Server server = NettyTransportFactory.getInstance().createServer(serverUrl, serviceHandlers);
     server.open();
   }
 }
