@@ -38,9 +38,7 @@ public abstract class ServerFactory {
       }
     }
 
-    // 在URL请求的ip&port的地址上面没有服务，则创建一个服务
     server = doCreateServer(url, handlers);
-    // 这里不要open server，工厂除了创建一个新的Server以外不应该干涉Server的生命周期
     activeServer.put(serverAddress, server);
     return server;
   }
