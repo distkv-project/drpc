@@ -20,7 +20,8 @@ import org.dst.drpc.api.async.Request;
 import org.dst.drpc.api.async.Response;
 import org.dst.drpc.codec.DstCodec;
 import org.dst.drpc.codec.ProtoBufSerialization;
-import org.dst.drpc.common.URL;
+import org.dst.drpc.config.ClientConfig;
+import org.dst.drpc.constants.GlobalConstants;
 import org.dst.drpc.exception.DrpcException;
 import org.dst.drpc.exception.TransportException;
 import org.dst.drpc.netty.codec.NettyDecoder;
@@ -32,8 +33,8 @@ public class NettyClient extends AbstractClient {
   private NioEventLoopGroup nioEventLoopGroup;
   private ExecutorService executor;
 
-  public NettyClient(URL serverUrl) {
-    super(serverUrl, new DstCodec(new ProtoBufSerialization()));
+  public NettyClient(ClientConfig clientConfig) {
+    super(clientConfig, new DstCodec(new ProtoBufSerialization()));
     executor = Executors.newSingleThreadExecutor();
     nioEventLoopGroup = new NioEventLoopGroup();
   }
@@ -41,7 +42,8 @@ public class NettyClient extends AbstractClient {
   @Override
   protected void doOpen() {
     Bootstrap bootstrap = new Bootstrap();
-    int connectTimeoutMillis = getUrl().getInt("CONNECT_TIMEOUT_MILLIS", 3000);
+    int connectTimeoutMillis = getConfig().getTimeout() > 0 ? getConfig().getTimeout()
+        : GlobalConstants.DEFAULT_CLIENT_TIMEOUT;
     bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectTimeoutMillis);
     bootstrap.option(ChannelOption.TCP_NODELAY, true);
     bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
@@ -79,7 +81,7 @@ public class NettyClient extends AbstractClient {
         });
     ChannelFuture future;
     try {
-      future = bootstrap.connect(getUrl().getHost(), getUrl().getPort()).sync();
+      future = bootstrap.connect(getConfig().getServerIp(), getConfig().getServerPort()).sync();
     } catch (InterruptedException i) {
       close();
       throw new TransportException("NettyClient: connect().sync() interrupted", i);

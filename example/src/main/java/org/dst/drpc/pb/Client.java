@@ -4,14 +4,16 @@ package org.dst.drpc.pb;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.LongAdder;
 import org.dst.drpc.Reference;
+import org.dst.drpc.config.ClientConfig;
 import org.dst.drpc.pb.generated.StringProtocol;
 
 
 public class Client {
 
   public static void main(String[] args) throws Throwable {
-    Reference<IServer> reference = new Reference<>();
-    reference.setAddress("dst://127.0.0.1:8080");
+    ClientConfig clientConfig = new ClientConfig();
+
+    Reference<IServer> reference = new Reference<>(clientConfig);
     reference.setInterfaceClass(IServer.class);
 
     IServer server = reference.getReference();

@@ -4,7 +4,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.dst.drpc.codec.Codec;
-import org.dst.drpc.common.URL;
+import org.dst.drpc.config.ServerConfig;
 import org.dst.drpc.constants.GlobalConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,17 +17,17 @@ public abstract class AbstractServer implements Server {
   private static final int CONNECTED = 1;
   private static final int DISCONNECTED = 2;
 
-  private URL serverUrl;
+  private ServerConfig serverConfig;
   private volatile int status = NEW;
   private Codec codec;
   private RoutableHandler routableHandler;
   private ExecutorService executor;
 
-  public AbstractServer(URL url,Codec codec) {
-    serverUrl = url;
+  public AbstractServer(ServerConfig serverConfig, Codec codec) {
+    this.serverConfig = serverConfig;
     this.codec = codec;
     routableHandler = new DefaultRoutableHandler();
-    executor = Executors.newFixedThreadPool(GlobalConstants.threadNumber * 2);
+    createExecutor();
   }
 
   @Override
@@ -46,8 +46,8 @@ public abstract class AbstractServer implements Server {
   }
 
   @Override
-  public URL getUrl() {
-    return serverUrl;
+  public ServerConfig getConfig() {
+    return serverConfig;
   }
 
   @Override
@@ -58,13 +58,24 @@ public abstract class AbstractServer implements Server {
   @Override
   public void open() {
     doOpen();
+    logger.info("Server opened, ip: " + serverConfig.getServerIp() + " port: " + serverConfig
+        .getServerPort());
   }
 
   @Override
   public void close() {
     doClose();
+    logger.info("Server closed, ip: " + serverConfig.getServerIp() + " port: " + serverConfig
+        .getServerPort());
   }
 
   protected abstract void doOpen();
+
   protected abstract void doClose();
+
+  private void createExecutor() {
+    int workerNum = serverConfig.getWorkerThreadNum() > 0 ? serverConfig.getWorkerThreadNum()
+        : GlobalConstants.threadNumber * 2;
+    executor = Executors.newFixedThreadPool(workerNum);
+  }
 }

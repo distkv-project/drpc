@@ -3,12 +3,12 @@ package org.dst.drpc.api;
 import org.dst.drpc.api.async.Request;
 import org.dst.drpc.api.async.Response;
 import org.dst.drpc.codec.Codec;
-import org.dst.drpc.common.URL;
+import org.dst.drpc.config.ClientConfig;
 
 
 public interface Client {
 
-  URL getUrl();
+  ClientConfig getConfig();
 
   void open();
 

@@ -7,7 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import org.dst.drpc.api.Handler;
 import org.dst.drpc.api.async.Request;
 import org.dst.drpc.api.async.Response;
-import org.dst.drpc.common.Void;
+import org.dst.drpc.model.Void;
 import org.dst.drpc.exception.DrpcException;
 
 public class ServerChannelHandler extends ChannelDuplexHandler {

@@ -3,9 +3,9 @@ package org.dst.drpc.netty;
 import org.dst.drpc.api.Handler;
 import org.dst.drpc.api.Server;
 import org.dst.drpc.api.ServerFactory;
-import org.dst.drpc.common.URL;
 
 import java.util.List;
+import org.dst.drpc.config.ServerConfig;
 
 public class NettyTransportFactory extends ServerFactory {
 
@@ -22,7 +22,7 @@ public class NettyTransportFactory extends ServerFactory {
   }
 
   @Override
-  protected Server doCreateServer(URL url, List<Handler> handlers) {
-    return new NettyServer(url, handlers);
+  protected Server doCreateServer(ServerConfig serverConfig, List<Handler> handlers) {
+    return new NettyServer(serverConfig, handlers);
   }
 }

@@ -7,7 +7,7 @@ import org.dst.drpc.Invoker;
 import org.dst.drpc.api.async.AsyncResponse;
 import org.dst.drpc.api.async.Request;
 import org.dst.drpc.api.async.Response;
-import org.dst.drpc.common.Void;
+import org.dst.drpc.model.Void;
 import org.dst.drpc.exception.DrpcException;
 import org.dst.drpc.utils.RequestIdGenerator;
 

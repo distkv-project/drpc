@@ -14,6 +14,7 @@ import org.dst.drpc.constants.CodecConstants;
 import org.dst.drpc.constants.CodecConstants.DataType;
 import org.dst.drpc.constants.CodecConstants.Version;
 import org.dst.drpc.exception.CodecException;
+import org.dst.drpc.model.Void;
 import org.dst.drpc.utils.ReflectUtils;
 
 /**
@@ -76,7 +77,7 @@ public class DstCodec implements Codec {
     try {
       switch (DataType.getDataTypeByValue(dataType)) {
         case NONE:
-          return org.dst.drpc.common.Void.getInstance();
+          return Void.getInstance();
         case REQUEST:
           return decodeRequest(requestId, content);
         case RESPONSE:

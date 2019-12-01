@@ -3,16 +3,16 @@ package org.dst.drpc.pb;
 import org.dst.drpc.Exporter;
 import org.dst.drpc.async.IServer;
 import org.dst.drpc.async.IServerImpl;
+import org.dst.drpc.config.ServerConfig;
 
 
 public class Server {
 
   public static void main(String[] args) {
-    Exporter exporter = new Exporter();
-    exporter.setProtocol("dst");
+    ServerConfig serverConfig = new ServerConfig();
+
+    Exporter exporter = new Exporter(serverConfig);
     exporter.registerService(IServer.class, new IServerImpl());
-    exporter.isLocal(true);
-    exporter.setPort(8080);
     exporter.export();
   }
 

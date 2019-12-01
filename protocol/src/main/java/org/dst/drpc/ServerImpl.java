@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.dst.drpc.api.async.DefaultResponse;
 import org.dst.drpc.api.async.Request;
 import org.dst.drpc.api.async.Response;
-import org.dst.drpc.common.Void;
+import org.dst.drpc.model.Void;
 import org.dst.drpc.exception.DrpcException;
 import org.dst.drpc.utils.ReflectUtils;
 

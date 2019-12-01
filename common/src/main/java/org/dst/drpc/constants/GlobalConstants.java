@@ -5,8 +5,6 @@ public interface GlobalConstants {
 
   int threadNumber = Runtime.getRuntime().availableProcessors();
 
-  String PROTOCOL_SEP = "://";
-
-  String PATH_SEP = "/";
+  int DEFAULT_CLIENT_TIMEOUT = 3000; // 3 second
 
 }

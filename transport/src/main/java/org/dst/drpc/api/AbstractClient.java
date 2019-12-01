@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.dst.drpc.api.async.Response;
 import org.dst.drpc.codec.Codec;
-import org.dst.drpc.common.URL;
+import org.dst.drpc.config.ClientConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,14 +19,14 @@ public abstract class AbstractClient implements Client {
   private static final int CONNECTED = 1;
   private static final int DISCONNECTED = 2;
 
-  private URL serverUrl;
+  private ClientConfig clientConfig;
   private volatile int status = NEW;
   private Codec codec;
 
   private Map<Long, Response> currentTask = new ConcurrentHashMap<>();
 
-  public AbstractClient(URL serverUrl, Codec codec) {
-    this.serverUrl = serverUrl;
+  public AbstractClient(ClientConfig clientConfig, Codec codec) {
+    this.clientConfig = clientConfig;
     this.codec = codec;
   }
 
@@ -44,8 +44,8 @@ public abstract class AbstractClient implements Client {
   }
 
   @Override
-  public URL getUrl() {
-    return serverUrl;
+  public ClientConfig getConfig() {
+    return clientConfig;
   }
 
   @Override
@@ -56,14 +56,19 @@ public abstract class AbstractClient implements Client {
   @Override
   public void open() {
     doOpen();
+    logger.info("Client closed, ip: " + clientConfig.getServerIp() + " port: " + clientConfig
+        .getServerPort());
   }
 
   @Override
   public void close() {
     doClose();
+    logger.info("Client closed, ip: " + clientConfig.getServerIp() + " port: " + clientConfig
+        .getServerPort());
   }
 
   protected abstract void doOpen();
+
   protected abstract void doClose();
 
 }

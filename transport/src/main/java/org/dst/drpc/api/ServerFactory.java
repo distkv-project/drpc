@@ -3,7 +3,7 @@ package org.dst.drpc.api;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.dst.drpc.common.URL;
+import org.dst.drpc.config.ServerConfig;
 import org.dst.drpc.exception.TransportException;
 import org.dst.drpc.model.DrpcAddress;
 
@@ -12,8 +12,8 @@ public abstract class ServerFactory {
   private Map<DrpcAddress, Server> activeServer = new ConcurrentHashMap<>();
 
 
-  public Server createServer(URL url, List<Handler> handlers) {
-    DrpcAddress serverAddress = url.getIpPortPair();
+  public Server createServer(ServerConfig serverConfig, List<Handler> handlers) {
+    DrpcAddress serverAddress = serverConfig.getDrpcAddress();
     Server server;
     if (activeServer.containsKey(serverAddress)) {
       server = activeServer.get(serverAddress);
@@ -38,11 +38,11 @@ public abstract class ServerFactory {
       }
     }
 
-    server = doCreateServer(url, handlers);
+    server = doCreateServer(serverConfig, handlers);
     activeServer.put(serverAddress, server);
     return server;
   }
 
-  protected abstract Server doCreateServer(URL url, List<Handler> handler);
+  protected abstract Server doCreateServer(ServerConfig serverConfig, List<Handler> handler);
 
 }

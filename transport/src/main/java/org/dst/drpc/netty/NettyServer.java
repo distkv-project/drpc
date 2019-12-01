@@ -12,7 +12,7 @@ import org.dst.drpc.api.AbstractServer;
 import org.dst.drpc.api.Handler;
 import org.dst.drpc.codec.DstCodec;
 import org.dst.drpc.codec.ProtoBufSerialization;
-import org.dst.drpc.common.URL;
+import org.dst.drpc.config.ServerConfig;
 import org.dst.drpc.netty.codec.NettyDecoder;
 import org.dst.drpc.netty.codec.NettyEncoder;
 import org.slf4j.Logger;
@@ -30,8 +30,8 @@ public class NettyServer extends AbstractServer {
   private NioEventLoopGroup workerGroup;
 
 
-  public NettyServer(URL url, List<Handler> handlers) {
-    super(url, new DstCodec(new ProtoBufSerialization()));
+  public NettyServer(ServerConfig serverConfig, List<Handler> handlers) {
+    super(serverConfig, new DstCodec(new ProtoBufSerialization()));
     handlers.forEach((handler) -> getRoutableHandler().registerHandler(handler));
     bossGroup = new NioEventLoopGroup(1);
     workerGroup = new NioEventLoopGroup();
@@ -55,7 +55,7 @@ public class NettyServer extends AbstractServer {
     serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
     serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
     try {
-      ChannelFuture f = serverBootstrap.bind(getUrl().getPort()).sync();
+      ChannelFuture f = serverBootstrap.bind(getConfig().getServerPort()).sync();
       serverChannel = f.channel();
     } catch (Exception e) {
       logger.error("NettyServer bind error", e);

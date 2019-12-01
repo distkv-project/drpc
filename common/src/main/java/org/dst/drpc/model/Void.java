@@ -1,4 +1,4 @@
-package org.dst.drpc.common;
+package org.dst.drpc.model;
 
 
 public class Void {

@@ -5,20 +5,21 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.LongAdder;
 import org.dst.drpc.Reference;
+import org.dst.drpc.config.ClientConfig;
 
 
 public class Client {
 
   public static void main(String[] args) throws InterruptedException, ExecutionException {
-    Reference<IServer> reference = new Reference<>();
-    reference.setAddress("dst://127.0.0.1:8080");
-    reference.setInterfaceClass(IServer.class);
+    ClientConfig clientConfig = new ClientConfig();
+    clientConfig.setServerAddress("dst://127.0.0.1:8080");
 
+    Reference<IServer> reference = new Reference<>(clientConfig);
+    reference.setInterfaceClass(IServer.class);
     IServer server = reference.getReference();
     System.out.println(server.say());
 
-    Reference<IServer2> reference2 = new Reference<>();
-    reference2.setAddress("dst://127.0.0.1:8080");
+    Reference<IServer2> reference2 = new Reference<>(clientConfig);
     reference2.setInterfaceClass(IServer2.class);
     IServer2 server2 = reference2.getReference();
     System.out.println(server2.say2());
