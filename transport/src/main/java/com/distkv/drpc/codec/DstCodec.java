@@ -11,7 +11,6 @@ import com.distkv.drpc.api.async.DefaultResponse;
 import com.distkv.drpc.api.async.Request;
 import com.distkv.drpc.api.async.Response;
 import com.distkv.drpc.constants.CodecConstants;
-import com.distkv.drpc.constants.CodecConstants.DataType;
 import com.distkv.drpc.exception.CodecException;
 import com.distkv.drpc.utils.ReflectUtils;
 
@@ -73,7 +72,7 @@ public class DstCodec implements Codec {
     System.arraycopy(data, pos, content, 0, contentLength);
 
     try {
-      switch (DataType.getDataTypeByValue(dataType)) {
+      switch (CodecConstants.DataType.getDataTypeByValue(dataType)) {
         case NONE:
           return com.distkv.drpc.common.Void.getInstance();
         case REQUEST:
@@ -109,22 +108,22 @@ public class DstCodec implements Codec {
     byte[] body = outputStream.toByteArray();
     output.close();
 
-    return encode0(body, DataType.REQUEST, request.getRequestId());
+    return encode0(body, CodecConstants.DataType.REQUEST, request.getRequestId());
   }
 
   private byte[] encodeResponse(Response response) throws Exception {
-    DataType dataType;
+    CodecConstants.DataType dataType;
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     ObjectOutput output = new ObjectOutputStream(outputStream);
 
     if (response.getThrowable() != null) {
       output.writeUTF(response.getThrowable().getClass().getName());
       output.writeObject(serialization.serialize(response.getThrowable()));
-      dataType = DataType.EXCEPTION;
+      dataType = CodecConstants.DataType.EXCEPTION;
     } else {
       output.writeUTF(response.getValue().getClass().getName());
       output.writeObject(serialization.serialize(response.getValue()));
-      dataType = DataType.RESPONSE;
+      dataType = CodecConstants.DataType.RESPONSE;
     }
 
     output.flush();
@@ -134,7 +133,7 @@ public class DstCodec implements Codec {
     return encode0(body, dataType, response.getRequestId());
   }
 
-  private byte[] encode0(byte[] body, DataType dataType, long requestId) throws IOException {
+  private byte[] encode0(byte[] body, CodecConstants.DataType dataType, long requestId) throws IOException {
     byte[] header = new byte[CodecConstants.HEADER_LENGTH];
     int pos = 0;
 
