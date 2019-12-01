@@ -40,4 +40,3 @@ target/
 # for cpp client
 cmake-build-debug/
 cpp/build
-
