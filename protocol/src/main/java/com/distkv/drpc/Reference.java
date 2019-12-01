@@ -5,7 +5,6 @@ import com.distkv.drpc.api.Client;
 import com.distkv.drpc.common.URL;
 import com.distkv.drpc.exception.DrpcException;
 import com.distkv.drpc.netty.NettyClient;
-import com.distkv.drpc.proxy.ProxyFactory;
 
 
 public class Reference<T> {

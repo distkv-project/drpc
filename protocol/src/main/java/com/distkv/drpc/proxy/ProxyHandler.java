@@ -3,8 +3,6 @@ package com.distkv.drpc.proxy;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.concurrent.CompletableFuture;
-
-import com.distkv.drpc.Invoker;
 import com.distkv.drpc.Invoker;
 import com.distkv.drpc.api.async.AsyncResponse;
 import com.distkv.drpc.api.async.Request;

@@ -6,7 +6,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import com.distkv.drpc.exception.DrpcException;
-import com.distkv.drpc.exception.DrpcException;
 
 
 public class DefaultAsyncResponse extends CompletableFuture<Response> implements AsyncResponse {

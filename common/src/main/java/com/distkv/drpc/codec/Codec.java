@@ -1,7 +1,6 @@
 package com.distkv.drpc.codec;
 
 import com.distkv.drpc.exception.CodecException;
-import com.distkv.drpc.exception.CodecException;
 
 
 public interface Codec {

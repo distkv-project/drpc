@@ -1,8 +1,6 @@
 package com.distkv.drpc.proxy;
 
 import java.lang.reflect.Proxy;
-
-import com.distkv.drpc.Invoker;
 import com.distkv.drpc.Invoker;
 
 

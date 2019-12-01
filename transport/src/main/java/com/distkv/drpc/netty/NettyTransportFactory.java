@@ -4,7 +4,6 @@ import com.distkv.drpc.common.URL;
 import com.distkv.drpc.api.Handler;
 import com.distkv.drpc.api.Server;
 import com.distkv.drpc.api.ServerFactory;
-import com.distkv.drpc.common.URL;
 
 import java.util.List;
 

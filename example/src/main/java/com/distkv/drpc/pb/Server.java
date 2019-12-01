@@ -3,9 +3,6 @@ package com.distkv.drpc.pb;
 import com.distkv.drpc.Exporter;
 import com.distkv.drpc.async.IServer;
 import com.distkv.drpc.async.IServerImpl;
-import com.distkv.drpc.Exporter;
-import com.distkv.drpc.async.IServer;
-import com.distkv.drpc.async.IServerImpl;
 
 
 public class Server {

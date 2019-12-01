@@ -9,8 +9,6 @@ import java.util.concurrent.CompletableFuture;
 import com.distkv.drpc.api.Handler;
 import com.distkv.drpc.api.async.Request;
 import com.distkv.drpc.api.async.Response;
-import com.distkv.drpc.common.Void;
-import com.distkv.drpc.exception.DrpcException;
 
 public class ServerChannelHandler extends ChannelDuplexHandler {
 
