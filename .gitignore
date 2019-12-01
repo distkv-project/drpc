@@ -31,7 +31,7 @@ drpc.iml
 */.DS_Store
 
 # generated files
-example/src/main/java/org/dst/drpc/pb/generated/*
+example/src/main/java/com/distkv/drpc/pb/generated/*
 
 # target files
 /*/target
