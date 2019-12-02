@@ -3,10 +3,8 @@ package com.distkv.drpc.constants;
 
 public interface GlobalConstants {
 
-  int threadNumber = Runtime.getRuntime().availableProcessors();
+  int THREAD_NUMBER = Runtime.getRuntime().availableProcessors();
 
-  String PROTOCOL_SEP = "://";
-
-  String PATH_SEP = "/";
+  int DEFAULT_CLIENT_TIMEOUT = 3000; // 3 seconds.
 
 }

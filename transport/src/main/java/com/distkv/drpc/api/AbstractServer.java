@@ -1,11 +1,11 @@
 package com.distkv.drpc.api;
 
+import com.distkv.drpc.codec.Codec;
+import com.distkv.drpc.config.ServerConfig;
+import com.distkv.drpc.constants.GlobalConstants;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import com.distkv.drpc.codec.Codec;
-import com.distkv.drpc.common.URL;
-import com.distkv.drpc.constants.GlobalConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,17 +17,17 @@ public abstract class AbstractServer implements Server {
   private static final int CONNECTED = 1;
   private static final int DISCONNECTED = 2;
 
-  private URL serverUrl;
+  private ServerConfig serverConfig;
   private volatile int status = NEW;
   private Codec codec;
   private RoutableHandler routableHandler;
   private ExecutorService executor;
 
-  public AbstractServer(URL url,Codec codec) {
-    serverUrl = url;
+  public AbstractServer(ServerConfig serverConfig, Codec codec) {
+    this.serverConfig = serverConfig;
     this.codec = codec;
     routableHandler = new DefaultRoutableHandler();
-    executor = Executors.newFixedThreadPool(GlobalConstants.threadNumber * 2);
+    createExecutor();
   }
 
   @Override
@@ -46,8 +46,8 @@ public abstract class AbstractServer implements Server {
   }
 
   @Override
-  public URL getUrl() {
-    return serverUrl;
+  public ServerConfig getConfig() {
+    return serverConfig;
   }
 
   @Override
@@ -66,5 +66,13 @@ public abstract class AbstractServer implements Server {
   }
 
   protected abstract void doOpen();
+
   protected abstract void doClose();
+
+  private void createExecutor() {
+    int workerNum = serverConfig.getWorkerThreadNum() > 0 ? serverConfig.getWorkerThreadNum()
+        : GlobalConstants.THREAD_NUMBER * 2;
+    executor = Executors.newFixedThreadPool(workerNum);
+  }
+
 }

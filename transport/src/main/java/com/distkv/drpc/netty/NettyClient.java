@@ -1,8 +1,19 @@
 package com.distkv.drpc.netty;
 
-import com.distkv.drpc.common.URL;
+import com.distkv.drpc.api.AbstractClient;
+import com.distkv.drpc.api.async.AsyncResponse;
+import com.distkv.drpc.api.async.DefaultAsyncResponse;
+import com.distkv.drpc.api.async.DefaultResponse;
+import com.distkv.drpc.api.async.Request;
+import com.distkv.drpc.api.async.Response;
+import com.distkv.drpc.codec.DstCodec;
+import com.distkv.drpc.codec.ProtoBufSerialization;
+import com.distkv.drpc.config.ClientConfig;
+import com.distkv.drpc.constants.GlobalConstants;
 import com.distkv.drpc.exception.DrpcException;
 import com.distkv.drpc.exception.TransportException;
+import com.distkv.drpc.netty.codec.NettyDecoder;
+import com.distkv.drpc.netty.codec.NettyEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFuture;
@@ -15,16 +26,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import com.distkv.drpc.api.AbstractClient;
-import com.distkv.drpc.api.async.AsyncResponse;
-import com.distkv.drpc.api.async.DefaultAsyncResponse;
-import com.distkv.drpc.api.async.DefaultResponse;
-import com.distkv.drpc.api.async.Request;
-import com.distkv.drpc.api.async.Response;
-import com.distkv.drpc.codec.DstCodec;
-import com.distkv.drpc.codec.ProtoBufSerialization;
-import com.distkv.drpc.netty.codec.NettyDecoder;
-import com.distkv.drpc.netty.codec.NettyEncoder;
 
 public class NettyClient extends AbstractClient {
 
@@ -32,8 +33,8 @@ public class NettyClient extends AbstractClient {
   private NioEventLoopGroup nioEventLoopGroup;
   private ExecutorService executor;
 
-  public NettyClient(URL serverUrl) {
-    super(serverUrl, new DstCodec(new ProtoBufSerialization()));
+  public NettyClient(ClientConfig clientConfig) {
+    super(clientConfig, new DstCodec(new ProtoBufSerialization()));
     executor = Executors.newSingleThreadExecutor();
     nioEventLoopGroup = new NioEventLoopGroup();
   }
@@ -41,7 +42,8 @@ public class NettyClient extends AbstractClient {
   @Override
   protected void doOpen() {
     Bootstrap bootstrap = new Bootstrap();
-    int connectTimeoutMillis = getUrl().getInt("CONNECT_TIMEOUT_MILLIS", 3000);
+    int connectTimeoutMillis = getConfig().getTimeout() > 0 ? getConfig().getTimeout()
+        : GlobalConstants.DEFAULT_CLIENT_TIMEOUT;
     bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectTimeoutMillis);
     bootstrap.option(ChannelOption.TCP_NODELAY, true);
     bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
@@ -79,7 +81,7 @@ public class NettyClient extends AbstractClient {
         });
     ChannelFuture future;
     try {
-      future = bootstrap.connect(getUrl().getHost(), getUrl().getPort()).sync();
+      future = bootstrap.connect(getConfig().getServerIp(), getConfig().getServerPort()).sync();
     } catch (InterruptedException i) {
       close();
       throw new TransportException("NettyClient: connect().sync() interrupted", i);

@@ -1,9 +1,9 @@
 package com.distkv.drpc.api;
 
+import com.distkv.drpc.config.ServerConfig;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import com.distkv.drpc.common.URL;
 import com.distkv.drpc.exception.TransportException;
 import com.distkv.drpc.model.DrpcAddress;
 
@@ -12,8 +12,8 @@ public abstract class ServerFactory {
   private Map<DrpcAddress, Server> activeServer = new ConcurrentHashMap<>();
 
 
-  public Server createServer(URL url, List<Handler> handlers) {
-    DrpcAddress serverAddress = url.getIpPortPair();
+  public Server createServer(ServerConfig serverConfig, List<Handler> handlers) {
+    DrpcAddress serverAddress = serverConfig.getDrpcAddress();
     Server server;
     if (activeServer.containsKey(serverAddress)) {
       server = activeServer.get(serverAddress);
@@ -38,13 +38,11 @@ public abstract class ServerFactory {
       }
     }
 
-    // 在URL请求的ip&port的地址上面没有服务，则创建一个服务
-    server = doCreateServer(url, handlers);
-    // 这里不要open server，工厂除了创建一个新的Server以外不应该干涉Server的生命周期
+    server = doCreateServer(serverConfig, handlers);
     activeServer.put(serverAddress, server);
     return server;
   }
 
-  protected abstract Server doCreateServer(URL url, List<Handler> handler);
+  protected abstract Server doCreateServer(ServerConfig serverConfig, List<Handler> handler);
 
 }

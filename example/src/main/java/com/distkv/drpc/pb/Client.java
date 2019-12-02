@@ -1,6 +1,7 @@
 package com.distkv.drpc.pb;
 
 
+import com.distkv.drpc.config.ClientConfig;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.LongAdder;
 import com.distkv.drpc.Reference;
@@ -10,8 +11,10 @@ import com.distkv.drpc.pb.generated.StringProtocol;
 public class Client {
 
   public static void main(String[] args) throws Throwable {
-    Reference<IServer> reference = new Reference<>();
-    reference.setAddress("dst://127.0.0.1:8080");
+    ClientConfig clientConfig = new ClientConfig();
+    clientConfig.setServerAddress("127.0.0.1:8080");
+
+    Reference<IServer> reference = new Reference<>(clientConfig);
     reference.setInterfaceClass(IServer.class);
 
     IServer server = reference.getReference();

@@ -1,10 +1,10 @@
 package com.distkv.drpc.netty;
 
-import com.distkv.drpc.common.URL;
 import com.distkv.drpc.api.Handler;
 import com.distkv.drpc.api.Server;
 import com.distkv.drpc.api.ServerFactory;
 
+import com.distkv.drpc.config.ServerConfig;
 import java.util.List;
 
 public class NettyTransportFactory extends ServerFactory {
@@ -22,7 +22,7 @@ public class NettyTransportFactory extends ServerFactory {
   }
 
   @Override
-  protected Server doCreateServer(URL url, List<Handler> handlers) {
-    return new NettyServer(url, handlers);
+  protected Server doCreateServer(ServerConfig serverConfig, List<Handler> handlers) {
+    return new NettyServer(serverConfig, handlers);
   }
 }
