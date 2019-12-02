@@ -91,7 +91,7 @@ public class ProxyHandler<T> implements InvocationHandler {
     if (method.getDeclaringClass().equals(Object.class)) {
       try {
         interfaceClazz
-              .getDeclaredMethod(method.getName(), method.getParameterTypes());
+            .getDeclaredMethod(method.getName(), method.getParameterTypes());
         return false;
       } catch (NoSuchMethodException e) {
         return true;

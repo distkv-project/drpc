@@ -17,9 +17,9 @@ public class IServerImpl implements IServer {
   @Override
   public StringProtocol.GetResponse say(StringProtocol.GetRequest request) {
     StringProtocol.GetResponse response = StringProtocol.GetResponse.newBuilder()
-          .setValue("key: " + request.getKey())
-          .setStatus(Status.OK)
-          .build();
+        .setValue("key: " + request.getKey())
+        .setStatus(Status.OK)
+        .build();
 
     return response;
   }
@@ -28,9 +28,9 @@ public class IServerImpl implements IServer {
   public CompletableFuture<StringProtocol.GetResponse> asyncSay(StringProtocol.GetRequest request) {
     CompletableFuture<StringProtocol.GetResponse> future = new CompletableFuture<>();
     StringProtocol.GetResponse response = StringProtocol.GetResponse.newBuilder()
-          .setValue(request.getKey() + "aysnc finished")
-          .setStatus(Status.OK)
-          .build();
+        .setValue(request.getKey() + "aysnc finished")
+        .setStatus(Status.OK)
+        .build();
 
     executorService.submit(() -> {
       sleep(3000);
