@@ -18,15 +18,15 @@ public class PBServiceImpl2 implements IPBService2 {
   public CompletableFuture<StringProtocol.GetResponse> get2(StringProtocol.GetRequest request) {
     CompletableFuture<StringProtocol.GetResponse> future = new CompletableFuture<>();
     StringProtocol.GetResponse response = StringProtocol.GetResponse.newBuilder()
-            .setValue(request.getKey() + " get() request2 success")
-            .setStatus(CommonProtocol.Status.OK)
-            .build();
+          .setValue(request.getKey() + " get() request2 success")
+          .setStatus(CommonProtocol.Status.OK)
+          .build();
     //exec sth delayed async
     executorService.submit(() -> {
       sleep(3000);
       future.complete(response);
     });
-    System.out.println("server2 receive: "+request.getKey());
+    System.out.println("server2 receive: " + request.getKey());
     return future;
   }
 
@@ -34,15 +34,15 @@ public class PBServiceImpl2 implements IPBService2 {
   public CompletableFuture<StringProtocol.PutResponse> put2(StringProtocol.PutRequest request) {
     CompletableFuture<StringProtocol.PutResponse> future = new CompletableFuture<>();
     StringProtocol.PutResponse response = StringProtocol.PutResponse.newBuilder()
-            .setStatus(CommonProtocol.Status.OK)
-            .build();
+          .setStatus(CommonProtocol.Status.OK)
+          .build();
     //exec sth delayed async
     executorService.submit(() -> {
       sleep(3000);
       future.complete(response);
     });
-    System.out.println("server2 receive key: "+request.getKey());
-    System.out.println("server2 receive value: "+request.getValue());
+    System.out.println("server2 receive key: " + request.getKey());
+    System.out.println("server2 receive value: " + request.getValue());
     return future;
   }
 
