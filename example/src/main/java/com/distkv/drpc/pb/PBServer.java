@@ -1,19 +1,16 @@
 package com.distkv.drpc.pb;
 
 import com.distkv.drpc.Exporter;
-import com.distkv.drpc.async.IServer;
-import com.distkv.drpc.async.IServerImpl;
 
-
-public class Server {
+public class PBServer {
 
   public static void main(String[] args) {
     Exporter exporter = new Exporter();
     exporter.setProtocol("dst");
-    exporter.registerService(IServer.class, new IServerImpl());
+    exporter.registerService(IPBServer.class, new PBServerImpl());
+    exporter.registerService(IPBServer2.class, new PBServerImpl2());
     exporter.isLocal(true);
     exporter.setPort(8080);
     exporter.export();
   }
-
 }
