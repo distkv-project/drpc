@@ -3,7 +3,6 @@ package com.distkv.drpc.proxy;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.concurrent.CompletableFuture;
-
 import com.distkv.drpc.Invoker;
 import com.distkv.drpc.api.async.AsyncResponse;
 import com.distkv.drpc.api.async.Request;
@@ -92,7 +91,7 @@ public class ProxyHandler<T> implements InvocationHandler {
     if (method.getDeclaringClass().equals(Object.class)) {
       try {
         interfaceClazz
-                .getDeclaredMethod(method.getName(), method.getParameterTypes());
+              .getDeclaredMethod(method.getName(), method.getParameterTypes());
         return false;
       } catch (NoSuchMethodException e) {
         return true;

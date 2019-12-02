@@ -1,16 +1,14 @@
 package com.distkv.drpc.netty;
 
+import com.distkv.drpc.api.Handler;
+import com.distkv.drpc.api.async.Request;
+import com.distkv.drpc.api.async.Response;
 import com.distkv.drpc.common.Void;
 import com.distkv.drpc.exception.DrpcException;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
-
 import java.util.concurrent.CompletableFuture;
-
-import com.distkv.drpc.api.Handler;
-import com.distkv.drpc.api.async.Request;
-import com.distkv.drpc.api.async.Response;
 
 public class ServerChannelHandler extends ChannelDuplexHandler {
 
@@ -27,7 +25,7 @@ public class ServerChannelHandler extends ChannelDuplexHandler {
     Object object = nettyServer.getCodec().decode((byte[]) msg);
     if (!(object instanceof Request)) {
       throw new DrpcException(
-              "ServerChannelHandler: unsupported message type when decode: " + object.getClass());
+            "ServerChannelHandler: unsupported message type when decode: " + object.getClass());
     }
     if (nettyServer.getExecutor() != null) {
       nettyServer.getExecutor().execute(() -> processRequest(ctx, (Request) object));
