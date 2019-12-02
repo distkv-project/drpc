@@ -98,7 +98,8 @@ public class DefaultAsyncResponse extends CompletableFuture<Response> implements
   }
 
   /**
-   * this method should not be invoked in any other places except {@link DefaultAsyncResponse#setValue}
+   * this method should not be invoked in any other places
+   * except {@link DefaultAsyncResponse#setValue}
    * and {@link DefaultAsyncResponse#setThrowable}
    */
   @Override

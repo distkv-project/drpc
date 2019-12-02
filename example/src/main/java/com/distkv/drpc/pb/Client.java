@@ -3,6 +3,7 @@ package com.distkv.drpc.pb;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.LongAdder;
+
 import com.distkv.drpc.Reference;
 import com.distkv.drpc.pb.generated.StringProtocol;
 
@@ -17,15 +18,15 @@ public class Client {
     IServer server = reference.getReference();
 
     com.distkv.drpc.pb.generated.StringProtocol.GetRequest request = StringProtocol.GetRequest.newBuilder()
-        .setKey("dst").build();
+            .setKey("dst").build();
     System.out.println(server.say(request).getValue());
 
     LongAdder totalCost = new LongAdder();
-    for(int i = 0;i<1000;i++) {
+    for (int i = 0; i < 1000; i++) {
       long b = System.currentTimeMillis();
       CompletableFuture<StringProtocol.GetResponse> future = server.asyncSay(request);
       future.whenComplete((r, t) -> {
-        if(t != null) {
+        if (t != null) {
           throw new IllegalStateException(t);
         } else {
           System.out.println(r.getValue());

@@ -3,6 +3,7 @@ package com.distkv.drpc.api;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import com.distkv.drpc.codec.Codec;
 import com.distkv.drpc.common.URL;
 import com.distkv.drpc.constants.GlobalConstants;
@@ -23,7 +24,7 @@ public abstract class AbstractServer implements Server {
   private RoutableHandler routableHandler;
   private ExecutorService executor;
 
-  public AbstractServer(URL url,Codec codec) {
+  public AbstractServer(URL url, Codec codec) {
     serverUrl = url;
     this.codec = codec;
     routableHandler = new DefaultRoutableHandler();
@@ -66,5 +67,6 @@ public abstract class AbstractServer implements Server {
   }
 
   protected abstract void doOpen();
+
   protected abstract void doClose();
 }

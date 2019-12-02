@@ -3,6 +3,7 @@ package com.distkv.drpc.pb;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.distkv.drpc.pb.generated.StringProtocol;
@@ -17,9 +18,9 @@ public class IServerImpl implements IServer {
   @Override
   public StringProtocol.GetResponse say(StringProtocol.GetRequest request) {
     StringProtocol.GetResponse response = StringProtocol.GetResponse.newBuilder()
-        .setValue("key: "+ request.getKey())
-        .setStatus(Status.OK)
-        .build();
+            .setValue("key: " + request.getKey())
+            .setStatus(Status.OK)
+            .build();
 
     return response;
   }
@@ -28,9 +29,9 @@ public class IServerImpl implements IServer {
   public CompletableFuture<StringProtocol.GetResponse> asyncSay(StringProtocol.GetRequest request) {
     CompletableFuture<StringProtocol.GetResponse> future = new CompletableFuture<>();
     StringProtocol.GetResponse response = StringProtocol.GetResponse.newBuilder()
-        .setValue(request.getKey() + "aysnc finished")
-        .setStatus(Status.OK)
-        .build();
+            .setValue(request.getKey() + "aysnc finished")
+            .setStatus(Status.OK)
+            .build();
 
     executorService.submit(() -> {
       sleep(3000);

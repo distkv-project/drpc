@@ -5,7 +5,9 @@ import com.distkv.drpc.exception.DrpcException;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
+
 import java.util.concurrent.CompletableFuture;
+
 import com.distkv.drpc.api.Handler;
 import com.distkv.drpc.api.async.Request;
 import com.distkv.drpc.api.async.Response;
@@ -25,7 +27,7 @@ public class ServerChannelHandler extends ChannelDuplexHandler {
     Object object = nettyServer.getCodec().decode((byte[]) msg);
     if (!(object instanceof Request)) {
       throw new DrpcException(
-          "ServerChannelHandler: unsupported message type when decode: " + object.getClass());
+              "ServerChannelHandler: unsupported message type when decode: " + object.getClass());
     }
     if (nettyServer.getExecutor() != null) {
       nettyServer.getExecutor().execute(() -> processRequest(ctx, (Request) object));
@@ -38,13 +40,13 @@ public class ServerChannelHandler extends ChannelDuplexHandler {
     Response response = (Response) handler.handle(request);
     response.setRequestId(request.getRequestId());
     Object value = response.getValue();
-    if(value == null || value instanceof Void) {
+    if (value == null || value instanceof Void) {
       return;
     }
-    if(value instanceof CompletableFuture) {
+    if (value instanceof CompletableFuture) {
       CompletableFuture future = (CompletableFuture) value;
       future.whenComplete((r, t) -> {
-        if(t != null) {
+        if (t != null) {
           response.setThrowable((Throwable) t);
         } else {
           response.setValue(r);

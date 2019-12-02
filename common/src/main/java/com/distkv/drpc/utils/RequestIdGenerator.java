@@ -5,8 +5,8 @@ import java.util.concurrent.atomic.LongAdder;
 
 public class RequestIdGenerator {
 
-  private final static LongAdder curId = new LongAdder();
-  private final static long MAX_PER_ROUND = 1 << 24;
+  private static final LongAdder curId = new LongAdder();
+  private static final long MAX_PER_ROUND = 1 << 24;
 
   public static long next() {
     if (curId.longValue() >= MAX_PER_ROUND) {
