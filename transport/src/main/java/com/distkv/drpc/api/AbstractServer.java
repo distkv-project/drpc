@@ -23,7 +23,7 @@ public abstract class AbstractServer implements Server {
   private RoutableHandler routableHandler;
   private ExecutorService executor;
 
-  public AbstractServer(URL url,Codec codec) {
+  public AbstractServer(URL url, Codec codec) {
     serverUrl = url;
     this.codec = codec;
     routableHandler = new DefaultRoutableHandler();
@@ -66,5 +66,6 @@ public abstract class AbstractServer implements Server {
   }
 
   protected abstract void doOpen();
+
   protected abstract void doClose();
 }
