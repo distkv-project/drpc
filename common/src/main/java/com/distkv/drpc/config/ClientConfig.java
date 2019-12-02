@@ -11,29 +11,31 @@ public class ClientConfig {
   private int timeout;
 
   public int getServerPort() {
-    if(address.contains("://")) {
+    if (address.contains("://")) {
       address = address.substring(address.indexOf("://") + "://".length());
     }
-    String[] ip$port = address.split(":");
-    if(ip$port.length != 2) {
-      throw new DrpcIllegalAddressException("Multi ':' found in address, except one. Address: " + address);
+    String[] ipPort = address.split(":");
+    if (ipPort.length != 2) {
+      throw new DrpcIllegalAddressException(
+          "Multi ':' found in address, except one. Address: " + address);
     }
     try {
-      return Integer.valueOf(ip$port[1]);
+      return Integer.valueOf(ipPort[1]);
     } catch (NumberFormatException e) {
       throw new DrpcIllegalAddressException("Port is not Integer Type, Address: " + address, e);
     }
   }
 
   public String getServerIp() {
-    if(address.contains("://")) {
+    if (address.contains("://")) {
       address = address.substring(address.indexOf("://") + "://".length());
     }
-    String[] ip$port = address.split(":");
-    if(ip$port.length != 2) {
-      throw new DrpcIllegalAddressException("Multi ':' found in address, except one. Address: " + address);
+    String[] ipPort = address.split(":");
+    if (ipPort.length != 2) {
+      throw new DrpcIllegalAddressException(
+          "Multi ':' found in address, except one. Address: " + address);
     }
-    return ip$port[0];
+    return ipPort[0];
   }
 
   public int getTimeout() {
