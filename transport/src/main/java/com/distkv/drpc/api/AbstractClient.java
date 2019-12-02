@@ -64,6 +64,7 @@ public abstract class AbstractClient implements Client {
   }
 
   protected abstract void doOpen();
+
   protected abstract void doClose();
 
 }

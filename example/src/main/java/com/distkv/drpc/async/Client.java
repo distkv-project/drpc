@@ -27,11 +27,11 @@ public class Client {
     System.out.println(server2.say2());
 
     LongAdder totalCost = new LongAdder();
-    for(int i = 0;i < 1000;i++) {
+    for (int i = 0; i < 1000; i++) {
       long b = System.currentTimeMillis();
       CompletableFuture<String> future = server.say("async rpc");
       future.whenComplete((r, t) -> {
-        if(t != null) {
+        if (t != null) {
           throw new IllegalStateException(t);
         } else {
           System.out.println(r);

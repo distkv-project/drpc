@@ -38,13 +38,13 @@ public class ServerChannelHandler extends ChannelDuplexHandler {
     Response response = (Response) handler.handle(request);
     response.setRequestId(request.getRequestId());
     Object value = response.getValue();
-    if(value == null || value instanceof Void) {
+    if (value == null || value instanceof Void) {
       return;
     }
-    if(value instanceof CompletableFuture) {
+    if (value instanceof CompletableFuture) {
       CompletableFuture future = (CompletableFuture) value;
       future.whenComplete((r, t) -> {
-        if(t != null) {
+        if (t != null) {
           response.setThrowable((Throwable) t);
         } else {
           response.setValue(r);

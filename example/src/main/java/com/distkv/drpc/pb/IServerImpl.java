@@ -17,7 +17,7 @@ public class IServerImpl implements IServer {
   @Override
   public StringProtocol.GetResponse say(StringProtocol.GetRequest request) {
     StringProtocol.GetResponse response = StringProtocol.GetResponse.newBuilder()
-        .setValue("key: "+ request.getKey())
+        .setValue("key: " + request.getKey())
         .setStatus(Status.OK)
         .build();
 
