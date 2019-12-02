@@ -1,4 +1,4 @@
-package com.distkv.drpc.common;
+package com.distkv.drpc.model;
 
 
 public class Void {

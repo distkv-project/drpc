@@ -1,6 +1,6 @@
 package com.distkv.drpc.netty;
 
-import com.distkv.drpc.common.Void;
+import com.distkv.drpc.model.Void;
 import com.distkv.drpc.exception.DrpcException;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFuture;
