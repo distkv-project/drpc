@@ -20,7 +20,6 @@ public class Exporter {
 
   public Exporter(ServerConfig serverConfig) {
     this.serverConfig = serverConfig;
-    this.serverConfig.setReadOnly();
   }
 
   /**

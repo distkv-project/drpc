@@ -7,7 +7,7 @@ import com.distkv.drpc.Invoker;
 import com.distkv.drpc.api.async.AsyncResponse;
 import com.distkv.drpc.api.async.Request;
 import com.distkv.drpc.api.async.Response;
-import com.distkv.drpc.model.Void;
+import com.distkv.drpc.common.Void;
 import com.distkv.drpc.exception.DrpcException;
 import com.distkv.drpc.utils.RequestIdGenerator;
 

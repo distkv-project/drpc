@@ -1,6 +1,6 @@
 package com.distkv.drpc.codec;
 
-import com.distkv.drpc.model.Void;
+import com.distkv.drpc.common.Void;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

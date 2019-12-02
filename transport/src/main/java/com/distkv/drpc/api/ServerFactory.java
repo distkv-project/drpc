@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import com.distkv.drpc.exception.TransportException;
-import com.distkv.drpc.model.DrpcAddress;
+import com.distkv.drpc.common.DrpcAddress;
 
 public abstract class ServerFactory {
 

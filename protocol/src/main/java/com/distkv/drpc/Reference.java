@@ -14,7 +14,6 @@ public class Reference<T> {
 
   public Reference(ClientConfig clientConfig) {
     this.clientConfig = clientConfig;
-    this.clientConfig.setReadOnly();
   }
 
   public void setInterfaceClass(Class<T> interfaceClass) {

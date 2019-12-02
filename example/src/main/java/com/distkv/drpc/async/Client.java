@@ -11,8 +11,9 @@ import com.distkv.drpc.Reference;
 public class Client {
 
   public static void main(String[] args) throws InterruptedException, ExecutionException {
-    ClientConfig clientConfig = new ClientConfig();
-    clientConfig.setServerAddress("127.0.0.1:8080");
+    ClientConfig clientConfig = ClientConfig.builder()
+        .address("127.0.0.1:8080")
+        .build();
 
     Reference<IServer> reference = new Reference<>(clientConfig);
     reference.setInterfaceClass(IServer.class);
