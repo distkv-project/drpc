@@ -38,7 +38,7 @@ public class ProxyHandler<T> implements InvocationHandler {
     request.setArgsValue(args);
 
     Class<?> returnType = method.getReturnType();
-    if(returnType == java.lang.Void.TYPE) {
+    if (returnType == java.lang.Void.TYPE) {
       request.setReturnType(Void.class);
     } else {
       request.setReturnType(returnType);
@@ -47,14 +47,14 @@ public class ProxyHandler<T> implements InvocationHandler {
     Response response = invoker.invoke(request);
 
     // async-method
-    if(CompletableFuture.class.isAssignableFrom(returnType)) {
+    if (CompletableFuture.class.isAssignableFrom(returnType)) {
       CompletableFuture future = new CompletableFuture();
       AsyncResponse asyncResponse = (AsyncResponse) response;
-      asyncResponse.whenComplete((v,t) -> {
-        if(t != null) {
+      asyncResponse.whenComplete((v, t) -> {
+        if (t != null) {
           future.completeExceptionally(t);
         } else {
-          if(v.getThrowable() != null) {
+          if (v.getThrowable() != null) {
             future.completeExceptionally(v.getThrowable());
           } else {
             future.complete(v.getValue());
