@@ -7,10 +7,10 @@ import com.distkv.drpc.pb.generated.StringProtocol;
 public class PBClient {
 
   public static void main(String[] args) throws Throwable {
-    Reference<IPBServer> reference = new Reference<>();
+    Reference<IPBService> reference = new Reference<>();
     reference.setAddress("dst://127.0.0.1:8080");
-    reference.setInterfaceClass(IPBServer.class);
-    IPBServer server = reference.getReference();
+    reference.setInterfaceClass(IPBService.class);
+    IPBService server = reference.getReference();
 
     //get
     StringProtocol.GetRequest getRequest = StringProtocol.GetRequest.newBuilder()
@@ -29,10 +29,10 @@ public class PBClient {
 
     System.out.println("-------------------------------------------------------");
 
-    Reference<IPBServer2> reference2 = new Reference<>();
+    Reference<IPBService2> reference2 = new Reference<>();
     reference2.setAddress("dst://127.0.0.1:8080");
-    reference2.setInterfaceClass(IPBServer2.class);
-    IPBServer2 server2 = reference2.getReference();
+    reference2.setInterfaceClass(IPBService2.class);
+    IPBService2 server2 = reference2.getReference();
     //get2
     StringProtocol.GetRequest getRequest2 = StringProtocol.GetRequest.newBuilder()
             .setKey("dstGet2").build();

@@ -9,7 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class PBServerImpl2 implements IPBServer2 {
+public class PBServiceImpl2 implements IPBService2 {
 
   private Logger logger = LoggerFactory.getLogger(getClass());
   private ExecutorService executorService = Executors.newFixedThreadPool(32);

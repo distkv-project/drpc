@@ -4,7 +4,7 @@ import com.distkv.drpc.pb.generated.StringProtocol;
 
 import java.util.concurrent.CompletableFuture;
 
-public interface IPBServer2 {
+public interface IPBService2 {
 
   CompletableFuture<StringProtocol.GetResponse> get2(StringProtocol.GetRequest request);
 
