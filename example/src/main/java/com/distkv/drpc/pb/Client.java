@@ -16,7 +16,7 @@ public class Client {
     IServer server = reference.getReference();
 
     com.distkv.drpc.pb.generated.StringProtocol.GetRequest request = StringProtocol.GetRequest.newBuilder()
-         .setKey("dst").build();
+        .setKey("dst").build();
     System.out.println(server.say(request).getValue());
 
     LongAdder totalCost = new LongAdder();
