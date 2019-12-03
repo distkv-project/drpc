@@ -4,7 +4,8 @@ import com.distkv.drpc.config.ClientConfig;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.LongAdder;
-import com.distkv.drpc.Reference;
+import com.distkv.drpc.Proxy;
+import com.distkv.drpc.netty.NettyClient;
 
 
 public class Client {
@@ -14,15 +15,18 @@ public class Client {
         .address("127.0.0.1:8080")
         .build();
 
-    Reference<IServer> reference = new Reference<>(clientConfig);
-    reference.setInterfaceClass(IServer.class);
-
-    IServer server = reference.getReference();
+    com.distkv.drpc.api.Client client = new NettyClient(clientConfig);
+    client.open();
+    Proxy<IServer> proxy = new Proxy<>();
+    proxy.setInterfaceClass(IServer.class);
+    IServer server = proxy.proxyClient(client);
     System.out.println(server.say());
 
-    Reference<IServer2> reference2 = new Reference<>(clientConfig);
-    reference2.setInterfaceClass(IServer2.class);
-    IServer2 server2 = reference2.getReference();
+    com.distkv.drpc.api.Client client2 = new NettyClient(clientConfig);
+    client2.open();
+    Proxy<IServer2> proxy2 = new Proxy<>();
+    proxy2.setInterfaceClass(IServer2.class);
+    IServer2 server2 = proxy2.proxyClient(client2);
     System.out.println(server2.say2());
 
     LongAdder totalCost = new LongAdder();

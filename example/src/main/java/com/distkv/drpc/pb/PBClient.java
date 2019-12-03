@@ -1,7 +1,9 @@
 package com.distkv.drpc.pb;
 
-import com.distkv.drpc.Reference;
+import com.distkv.drpc.Proxy;
+import com.distkv.drpc.api.Client;
 import com.distkv.drpc.config.ClientConfig;
+import com.distkv.drpc.netty.NettyClient;
 import com.distkv.drpc.pb.generated.StringProtocol;
 
 public class PBClient {
@@ -11,9 +13,11 @@ public class PBClient {
         .address("127.0.0.1:8080")
         .build();
 
-    Reference<IPBService> reference = new Reference<>(clientConfig);
-    reference.setInterfaceClass(IPBService.class);
-    IPBService server = reference.getReference();
+    Client client = new NettyClient(clientConfig);
+    client.open();
+    Proxy<IPBService> proxy = new Proxy<>();
+    proxy.setInterfaceClass(IPBService.class);
+    IPBService server = proxy.proxyClient(client);
 
     //get
     StringProtocol.GetRequest getRequest = StringProtocol.GetRequest.newBuilder()
@@ -32,9 +36,11 @@ public class PBClient {
 
     System.out.println("-------------------------------------------------------");
 
-    Reference<IPBService2> reference2 = new Reference<>(clientConfig);
-    reference2.setInterfaceClass(IPBService2.class);
-    IPBService2 server2 = reference2.getReference();
+    Client client2 = new NettyClient(clientConfig);
+    client2.open();
+    Proxy<IPBService2> proxy2 = new Proxy<>();
+    proxy2.setInterfaceClass(IPBService2.class);
+    IPBService2 server2 = proxy2.proxyClient(client2);
     //get2
     StringProtocol.GetRequest getRequest2 = StringProtocol.GetRequest.newBuilder()
             .setKey("dstGet2").build();
