@@ -1,14 +1,17 @@
 package com.distkv.drpc.pb;
 
-
 import com.distkv.drpc.Reference;
+import com.distkv.drpc.config.ClientConfig;
 import com.distkv.drpc.pb.generated.StringProtocol;
 
 public class PBClient {
 
   public static void main(String[] args) throws Throwable {
-    Reference<IPBService> reference = new Reference<>();
-    reference.setAddress("dst://127.0.0.1:8080");
+    ClientConfig clientConfig = ClientConfig.builder()
+        .address("127.0.0.1:8080")
+        .build();
+
+    Reference<IPBService> reference = new Reference<>(clientConfig);
     reference.setInterfaceClass(IPBService.class);
     IPBService server = reference.getReference();
 
@@ -29,8 +32,7 @@ public class PBClient {
 
     System.out.println("-------------------------------------------------------");
 
-    Reference<IPBService2> reference2 = new Reference<>();
-    reference2.setAddress("dst://127.0.0.1:8080");
+    Reference<IPBService2> reference2 = new Reference<>(clientConfig);
     reference2.setInterfaceClass(IPBService2.class);
     IPBService2 server2 = reference2.getReference();
     //get2
