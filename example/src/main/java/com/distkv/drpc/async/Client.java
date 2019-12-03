@@ -7,7 +7,6 @@ import java.util.concurrent.atomic.LongAdder;
 import com.distkv.drpc.Proxy;
 import com.distkv.drpc.netty.NettyClient;
 
-
 public class Client {
 
   public static void main(String[] args) throws InterruptedException, ExecutionException {
