@@ -1,8 +1,6 @@
 package com.distkv.drpc.pb;
 
-
 import com.distkv.drpc.Reference;
-import com.distkv.drpc.api.Client;
 import com.distkv.drpc.config.ClientConfig;
 import com.distkv.drpc.pb.generated.StringProtocol;
 
