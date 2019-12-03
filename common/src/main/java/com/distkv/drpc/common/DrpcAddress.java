@@ -1,4 +1,4 @@
-package com.distkv.drpc.model;
+package com.distkv.drpc.common;
 
 import java.util.Objects;
 

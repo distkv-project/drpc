@@ -1,6 +1,6 @@
 package com.distkv.drpc.netty;
 
-import com.distkv.drpc.common.URL;
+import com.distkv.drpc.config.ServerConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -29,8 +29,8 @@ public class NettyServer extends AbstractServer {
   private NioEventLoopGroup workerGroup;
 
 
-  public NettyServer(URL url, List<Handler> handlers) {
-    super(url, new DstCodec(new ProtoBufSerialization()));
+  public NettyServer(ServerConfig serverConfig, List<Handler> handlers) {
+    super(serverConfig, new DstCodec(new ProtoBufSerialization()));
     handlers.forEach((handler) -> getRoutableHandler().registerHandler(handler));
     bossGroup = new NioEventLoopGroup(1);
     workerGroup = new NioEventLoopGroup();
@@ -54,7 +54,7 @@ public class NettyServer extends AbstractServer {
     serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
     serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
     try {
-      ChannelFuture f = serverBootstrap.bind(getUrl().getPort()).sync();
+      ChannelFuture f = serverBootstrap.bind(getConfig().getPort()).sync();
       serverChannel = f.channel();
     } catch (Exception e) {
       logger.error("NettyServer bind error", e);

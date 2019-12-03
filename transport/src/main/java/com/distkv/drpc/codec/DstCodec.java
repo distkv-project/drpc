@@ -1,5 +1,6 @@
 package com.distkv.drpc.codec;
 
+import com.distkv.drpc.common.Void;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -74,7 +75,7 @@ public class DstCodec implements Codec {
     try {
       switch (CodecConstants.DataType.getDataTypeByValue(dataType)) {
         case NONE:
-          return com.distkv.drpc.common.Void.getInstance();
+          return Void.getInstance();
         case REQUEST:
           return decodeRequest(requestId, content);
         case RESPONSE:

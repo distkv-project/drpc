@@ -1,12 +1,12 @@
 package com.distkv.drpc.api;
 
+import com.distkv.drpc.config.ServerConfig;
 import java.util.concurrent.Executor;
 import com.distkv.drpc.codec.Codec;
-import com.distkv.drpc.common.URL;
 
 public interface Server {
 
-  URL getUrl();
+  ServerConfig getConfig();
 
   void open();
 

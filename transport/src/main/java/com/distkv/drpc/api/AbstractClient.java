@@ -1,10 +1,10 @@
 package com.distkv.drpc.api;
 
+import com.distkv.drpc.config.ClientConfig;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import com.distkv.drpc.api.async.Response;
 import com.distkv.drpc.codec.Codec;
-import com.distkv.drpc.common.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,14 +19,14 @@ public abstract class AbstractClient implements Client {
   private static final int CONNECTED = 1;
   private static final int DISCONNECTED = 2;
 
-  private URL serverUrl;
+  private ClientConfig clientConfig;
   private volatile int status = NEW;
   private Codec codec;
 
   private Map<Long, Response> currentTask = new ConcurrentHashMap<>();
 
-  public AbstractClient(URL serverUrl, Codec codec) {
-    this.serverUrl = serverUrl;
+  public AbstractClient(ClientConfig clientConfig, Codec codec) {
+    this.clientConfig = clientConfig;
     this.codec = codec;
   }
 
@@ -44,8 +44,8 @@ public abstract class AbstractClient implements Client {
   }
 
   @Override
-  public URL getUrl() {
-    return serverUrl;
+  public ClientConfig getConfig() {
+    return clientConfig;
   }
 
   @Override
