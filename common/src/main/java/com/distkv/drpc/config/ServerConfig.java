@@ -7,12 +7,12 @@ import lombok.Builder;
 @Builder
 public class ServerConfig {
 
-  private int serverPort;
+  private int port;
 
   private int workerThreadNum;
 
-  public int getServerPort() {
-    return serverPort;
+  public int getPort() {
+    return port;
   }
 
   public int getWorkerThreadNum() {
@@ -21,7 +21,7 @@ public class ServerConfig {
 
   public DrpcAddress getDrpcAddress() {
     String serverIp = NetUtils.getLocalAddress().getHostAddress();
-    return new DrpcAddress(serverIp, serverPort);
+    return new DrpcAddress(serverIp, port);
   }
 
 }

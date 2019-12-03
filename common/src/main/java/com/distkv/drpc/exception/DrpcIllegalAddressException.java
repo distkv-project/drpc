@@ -1,6 +1,5 @@
 package com.distkv.drpc.exception;
 
-
 public class DrpcIllegalAddressException extends RuntimeException {
 
   public DrpcIllegalAddressException() {

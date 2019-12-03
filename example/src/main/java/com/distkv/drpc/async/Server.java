@@ -3,12 +3,11 @@ package com.distkv.drpc.async;
 import com.distkv.drpc.Exporter;
 import com.distkv.drpc.config.ServerConfig;
 
-
 public class Server {
 
   public static void main(String[] args) {
     ServerConfig serverConfig = ServerConfig.builder()
-        .serverPort(8080)
+        .port(8080)
         .build();
 
     Exporter exporter = new Exporter(serverConfig);
