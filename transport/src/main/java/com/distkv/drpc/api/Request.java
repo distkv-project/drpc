@@ -1,4 +1,4 @@
-package com.distkv.drpc.api.async;
+package com.distkv.drpc.api;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,13 +12,7 @@ public class Request {
 
   private String methodName;
 
-  private String argsType;
-
   private Object[] argsValue;
-
-  private transient Class<?>[] argsClass;
-
-  private transient Class<?> returnType;
 
   private Map<String, Object> attributes = new HashMap<>();
 
@@ -44,14 +38,6 @@ public class Request {
 
   public void setMethodName(String methodName) {
     this.methodName = methodName;
-  }
-
-  public String getArgsType() {
-    return argsType;
-  }
-
-  public void setArgsType(String argsType) {
-    this.argsType = argsType;
   }
 
   public Object[] getArgsValue() {
@@ -80,22 +66,6 @@ public class Request {
 
   public void removeAttribute(String key) {
     attributes.remove(key);
-  }
-
-  public Class<?>[] getArgsClass() {
-    return argsClass;
-  }
-
-  public void setArgsClass(Class<?>[] argsClass) {
-    this.argsClass = argsClass;
-  }
-
-  public Class<?> getReturnType() {
-    return returnType;
-  }
-
-  public void setReturnType(Class<?> returnType) {
-    this.returnType = returnType;
   }
 
   public Map<String, Object> getAttributes() {

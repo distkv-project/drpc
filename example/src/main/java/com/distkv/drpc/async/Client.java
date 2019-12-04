@@ -28,7 +28,7 @@ public class Client {
     LongAdder totalCost = new LongAdder();
     for (int i = 0; i < 1000; i++) {
       long b = System.currentTimeMillis();
-      CompletableFuture<String> future = server.say("async rpc");
+      CompletableFuture<String> future = server.sayAsync("async rpc");
       future.whenComplete((r, t) -> {
         if (t != null) {
           throw new IllegalStateException(t);
@@ -43,7 +43,7 @@ public class Client {
 
 
     // Start to test IServer2 with async.
-    CompletableFuture<String> future = server2.say2("async say2");
+    CompletableFuture<String> future = server2.say2Async("async say2");
     future.whenComplete((r, t) -> {
       System.out.println("Wow, IServer2: " + r);
     });
