@@ -15,7 +15,7 @@ public class Proxy<T> {
     this.interfaceClass = interfaceClass;
   }
 
-  public T proxyClient(Client client) {
+  public T getService(Client client) {
     Invoker invoker = new DefaultInvoker(client, interfaceClass);
     return new ProxyFactory<T>().getProxy(interfaceClass, invoker);
   }
