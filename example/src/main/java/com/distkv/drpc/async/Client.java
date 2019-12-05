@@ -4,8 +4,8 @@ import com.distkv.drpc.config.ClientConfig;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.LongAdder;
-import com.distkv.drpc.Reference;
-
+import com.distkv.drpc.Proxy;
+import com.distkv.drpc.netty.NettyClient;
 
 public class Client {
 
@@ -14,21 +14,24 @@ public class Client {
         .address("127.0.0.1:8080")
         .build();
 
-    Reference<IServer> reference = new Reference<>(clientConfig);
-    reference.setInterfaceClass(IServer.class);
+    com.distkv.drpc.api.Client client = new NettyClient(clientConfig);
+    client.open();
+    Proxy<IServer> proxy = new Proxy<>();
+    proxy.setInterfaceClass(IServer.class);
+    IServer service = proxy.getService(client);
+    System.out.println(service.say());
 
-    IServer server = reference.getReference();
-    System.out.println(server.say());
-
-    Reference<IServer2> reference2 = new Reference<>(clientConfig);
-    reference2.setInterfaceClass(IServer2.class);
-    IServer2 server2 = reference2.getReference();
-    System.out.println(server2.say2());
+    com.distkv.drpc.api.Client client2 = new NettyClient(clientConfig);
+    client2.open();
+    Proxy<IServer2> proxy2 = new Proxy<>();
+    proxy2.setInterfaceClass(IServer2.class);
+    IServer2 service1 = proxy2.getService(client2);
+    System.out.println(service1.say2());
 
     LongAdder totalCost = new LongAdder();
     for (int i = 0; i < 1000; i++) {
       long b = System.currentTimeMillis();
-      CompletableFuture<String> future = server.sayAsync("async rpc");
+      CompletableFuture<String> future = service.sayAsync("async rpc");
       future.whenComplete((r, t) -> {
         if (t != null) {
           throw new IllegalStateException(t);
@@ -43,7 +46,7 @@ public class Client {
 
 
     // Start to test IServer2 with async.
-    CompletableFuture<String> future = server2.say2Async("async say2");
+    CompletableFuture<String> future = service1.say2Async("async say2");
     future.whenComplete((r, t) -> {
       System.out.println("Wow, IServer2: " + r);
     });
