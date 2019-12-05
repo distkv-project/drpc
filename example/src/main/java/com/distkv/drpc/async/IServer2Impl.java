@@ -15,7 +15,7 @@ public class IServer2Impl implements IServer2 {
   }
 
   @Override
-  public CompletableFuture<String> say2(String name) {
+  public CompletableFuture<String> say2Async(String name) {
     CompletableFuture<String> future = new CompletableFuture<>();
     threadPool.submit(() -> {
       try {

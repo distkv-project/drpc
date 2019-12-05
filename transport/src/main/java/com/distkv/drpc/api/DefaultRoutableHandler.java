@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import com.distkv.drpc.api.async.Request;
 
 
 public class DefaultRoutableHandler implements RoutableHandler {

@@ -4,10 +4,9 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.concurrent.CompletableFuture;
 import com.distkv.drpc.Invoker;
-import com.distkv.drpc.api.async.AsyncResponse;
-import com.distkv.drpc.api.async.Request;
-import com.distkv.drpc.api.async.Response;
-import com.distkv.drpc.common.Void;
+import com.distkv.drpc.api.AsyncResponse;
+import com.distkv.drpc.api.Request;
+import com.distkv.drpc.api.Response;
 import com.distkv.drpc.exception.DrpcException;
 import com.distkv.drpc.utils.RequestIdGenerator;
 
@@ -34,16 +33,9 @@ public class ProxyHandler<T> implements InvocationHandler {
     request.setRequestId(RequestIdGenerator.next());
     request.setInterfaceName(method.getDeclaringClass().getName());
     request.setMethodName(method.getName());
-    request.setArgsType(getArgsTypeString(method));
     request.setArgsValue(args);
 
     Class<?> returnType = method.getReturnType();
-    if (returnType == java.lang.Void.TYPE) {
-      request.setReturnType(Void.class);
-    } else {
-      request.setReturnType(returnType);
-    }
-
     Response response = invoker.invoke(request);
 
     // async-method

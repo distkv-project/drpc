@@ -6,5 +6,5 @@ public interface IServer2 {
 
   String say2();
 
-  CompletableFuture<String> say2(String name);
+  CompletableFuture<String> say2Async(String name);
 }

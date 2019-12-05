@@ -1,7 +1,7 @@
 package com.distkv.drpc;
 
-import com.distkv.drpc.api.async.Request;
-import com.distkv.drpc.api.async.Response;
+import com.distkv.drpc.api.Request;
+import com.distkv.drpc.api.Response;
 
 
 public interface Invoker<T> {

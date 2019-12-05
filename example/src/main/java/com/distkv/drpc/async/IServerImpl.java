@@ -19,7 +19,7 @@ public class IServerImpl implements IServer {
   }
 
   @Override
-  public CompletableFuture<String> say(String name) {
+  public CompletableFuture<String> sayAsync(String name) {
     CompletableFuture<String> future = new CompletableFuture<>();
     executorService.submit(() -> {
       sleep(3000);

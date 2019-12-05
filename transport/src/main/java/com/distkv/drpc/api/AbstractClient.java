@@ -3,7 +3,6 @@ package com.distkv.drpc.api;
 import com.distkv.drpc.config.ClientConfig;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import com.distkv.drpc.api.async.Response;
 import com.distkv.drpc.codec.Codec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

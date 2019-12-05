@@ -1,6 +1,12 @@
 package com.distkv.drpc.codec;
 
+import com.distkv.drpc.api.DefaultResponse;
+import com.distkv.drpc.api.Request;
+import com.distkv.drpc.api.Response;
 import com.distkv.drpc.common.Void;
+import com.distkv.drpc.constants.CodecConstants;
+import com.distkv.drpc.exception.CodecException;
+import com.distkv.drpc.utils.ReflectUtils;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -8,22 +14,13 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import com.distkv.drpc.api.async.DefaultResponse;
-import com.distkv.drpc.api.async.Request;
-import com.distkv.drpc.api.async.Response;
-import com.distkv.drpc.constants.CodecConstants;
-import com.distkv.drpc.exception.CodecException;
-import com.distkv.drpc.utils.ReflectUtils;
 
 /**
  * protocol header：
  *
- * |      magic 16bit     | version 8bit | type flag 8bit |
- * |               content length 32 bit                  |
- * |               request id     64 bit                  |
- * |               request id     64 bit                  |
- * |               payload ...                            |
- *
+ * |      magic 16bit     | version 8bit | type flag 8bit | |               content length 32 bit
+ *               | |               request id     64 bit                  | |               request
+ * id     64 bit                  | |               payload ...                            |
  */
 public class DstCodec implements Codec {
 
@@ -97,12 +94,16 @@ public class DstCodec implements Codec {
 
     output.writeUTF(request.getInterfaceName());
     output.writeUTF(request.getMethodName());
-    output.writeUTF(request.getArgsType());
 
     if (request.getArgsValue() != null && request.getArgsValue().length > 0) {
+      output.writeShort(request.getArgsValue().length);
       for (Object obj : request.getArgsValue()) {
-        output.writeObject(serialization.serialize(obj));
+        byte[] argObjectBytes = serialization.serialize(obj);
+        output.writeInt(argObjectBytes.length);
+        output.write(argObjectBytes);
       }
+    } else {
+      output.writeShort(0);
     }
 
     output.flush();
@@ -134,7 +135,8 @@ public class DstCodec implements Codec {
     return encode0(body, dataType, response.getRequestId());
   }
 
-  private byte[] encode0(byte[] body, CodecConstants.DataType dataType, long requestId) throws IOException {
+  private byte[] encode0(byte[] body, CodecConstants.DataType dataType, long requestId)
+      throws IOException {
     byte[] header = new byte[CodecConstants.HEADER_LENGTH];
     int pos = 0;
 
@@ -162,15 +164,25 @@ public class DstCodec implements Codec {
     ObjectInput input = new ObjectInputStream(new ByteArrayInputStream(content));
     String interfaceName = input.readUTF();
     String methodName = input.readUTF();
-    String argsType = input.readUTF();
 
     Request request = new Request();
     request.setRequestId(requestId);
-
     request.setInterfaceName(interfaceName);
     request.setMethodName(methodName);
-    request.setArgsType(argsType);
-    request.setArgsValue(decodeRequestParameter(input, argsType));
+
+    int argNumber = input.readShort();
+    if (argNumber > 0) {
+      Object[] arg = new Object[argNumber];
+      for (int i = 0; i < argNumber; i++) {
+        int dataLength = input.readInt();
+        byte[] argData = new byte[dataLength];
+        input.read(argData);
+        DelayDeserialization delayDeserialization = new DelayDeserialization(serialization,
+            argData);
+        arg[i] = delayDeserialization;
+      }
+      request.setArgsValue(arg);
+    }
 
     input.close();
     return request;
