@@ -24,18 +24,14 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class NettyClient extends AbstractClient {
 
   private io.netty.channel.Channel clientChannel;
   private NioEventLoopGroup nioEventLoopGroup;
-  private ExecutorService executor;
 
   public NettyClient(ClientConfig clientConfig) {
     super(clientConfig, new DstCodec(new ProtoBufSerialization()));
-    executor = Executors.newSingleThreadExecutor();
     nioEventLoopGroup = new NioEventLoopGroup();
   }
 
@@ -88,15 +84,6 @@ public class NettyClient extends AbstractClient {
     }
 
     clientChannel = future.channel();
-    executor.submit(() -> {
-      try {
-        clientChannel.closeFuture().sync();
-      } catch (Exception e) {
-        logger.error("Client occurs error when close.", e);
-      } finally {
-        close();
-      }
-    });
   }
 
   @Override
@@ -110,7 +97,6 @@ public class NettyClient extends AbstractClient {
     if (nioEventLoopGroup != null) {
       nioEventLoopGroup.shutdownGracefully();
     }
-    executor.shutdown();
   }
 
   @Override

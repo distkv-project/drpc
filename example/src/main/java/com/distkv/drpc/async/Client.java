@@ -50,7 +50,9 @@ public class Client {
     future.whenComplete((r, t) -> {
       System.out.println("Wow, IServer2: " + r);
     });
-    future.get();
+
+    client.close();
+    client2.close();
   }
 
 }
