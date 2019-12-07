@@ -54,12 +54,14 @@ public abstract class AbstractClient implements Client {
 
   @Override
   public void open() {
+    status = CONNECTED;
     doOpen();
   }
 
   @Override
   public void close() {
     doClose();
+    status = DISCONNECTED;
   }
 
   protected abstract void doOpen();
