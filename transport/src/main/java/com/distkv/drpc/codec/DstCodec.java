@@ -119,17 +119,17 @@ public class DstCodec implements Codec {
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     ObjectOutput output = new ObjectOutputStream(outputStream);
 
-    /*
-     TODO: replace throwable field in response with error code and error message to support different language client.
-      */
     if (response.getThrowable() != null) {
       output.writeUTF(response.getThrowable().getClass().getName());
-      output.writeObject(serialization.serialize(response.getThrowable()));
+      byte[] data = serialization.serialize(response.getThrowable());
+      output.writeInt(data.length);
+      output.write(data);
       dataType = CodecConstants.DataType.EXCEPTION;
     } else {
-      byte[] valueBytes = serialization.serialize(response.getValue());
-      output.writeInt(valueBytes.length);
-      output.write(valueBytes);
+      output.writeUTF(response.getValue().getClass().getName());
+      byte[] data = serialization.serialize(response.getValue());
+      output.writeInt(data.length);
+      output.write(data);
       dataType = CodecConstants.DataType.RESPONSE;
     }
 
@@ -197,19 +197,19 @@ public class DstCodec implements Codec {
       throws Exception {
     ObjectInput input = new ObjectInputStream(new ByteArrayInputStream(content));
     Response response = new DefaultResponse();
+
+    String className = input.readUTF();
+    int dataLength = input.readInt();
+    byte[] data = new byte[dataLength];
+    input.read(data);
+    Class<?> clz = ReflectUtils.forName(className);
+    Object result = serialization.deserialize(data, clz);
+
     response.setRequestId(requestId);
     if (isException) {
-      String className = input.readUTF();
-      Class<?> clz = ReflectUtils.forName(className);
-      response
-          .setThrowable((Exception) serialization.deserialize((byte[]) input.readObject(), clz));
+      response.setThrowable((Exception) result);
     } else {
-      int dataLength = input.readInt();
-      byte[] valueData = new byte[dataLength];
-      input.read(valueData);
-      DelayDeserialization delayDeserialization = new DelayDeserialization(serialization,
-          valueData);
-      response.setValue(delayDeserialization);
+      response.setValue(result);
     }
 
     input.close();

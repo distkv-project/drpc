@@ -1,8 +1,5 @@
 package com.distkv.drpc.proxy;
 
-import com.distkv.drpc.codec.DelayDeserialization;
-import com.distkv.drpc.codec.Serialization;
-import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.concurrent.CompletableFuture;
@@ -52,12 +49,7 @@ public class ProxyHandler<T> implements InvocationHandler {
           if (v.getThrowable() != null) {
             future.completeExceptionally(v.getThrowable());
           } else {
-            try {
-              Object completedValue = resolveCompletedValue(v.getValue(), returnType);
-              future.complete(completedValue);
-            } catch (Exception e) {
-              future.completeExceptionally(e);
-            }
+            future.complete(v.getValue());
           }
         }
       });
@@ -69,16 +61,7 @@ public class ProxyHandler<T> implements InvocationHandler {
       throw response.getThrowable();
     }
 
-    return resolveCompletedValue(response.getValue(), returnType);
-  }
-
-  private Object resolveCompletedValue(Object value, Class<?> returnType) throws IOException {
-    if (value instanceof DelayDeserialization) {
-      Serialization serialization = ((DelayDeserialization) value).getSerialization();
-      byte[] data = ((DelayDeserialization) value).getData();
-      return serialization.deserialize(data, returnType);
-    }
-    return value;
+    return response.getValue();
   }
 
   private boolean isLocalMethod(Method method) {
