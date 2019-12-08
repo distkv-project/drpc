@@ -14,14 +14,14 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 /**
  * protocol header：
  *
- * |      magic 16bit     | version 8bit | type flag 8bit |
- * |               content length 32 bit                  |
- * |               request id     64 bit                  |
- * |               payload ...                            |
+ * |      magic 16bit     | version 8bit | type flag 8bit | |               content length 32 bit |
+ * |               request id     64 bit                  | |               payload ... |
  */
 public class DstCodec implements Codec {
 
@@ -90,54 +90,99 @@ public class DstCodec implements Codec {
 
 
   private byte[] encodeRequest(Request request) throws Exception {
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    ObjectOutput output = new ObjectOutputStream(outputStream);
-
-    output.writeUTF(request.getInterfaceName());
-    output.writeUTF(request.getMethodName());
-
-    if (request.getArgsValue() != null && request.getArgsValue().length > 0) {
-      output.writeShort(request.getArgsValue().length);
-      for (Object obj : request.getArgsValue()) {
-        byte[] argObjectBytes = serialization.serialize(obj);
-        output.writeInt(argObjectBytes.length);
-        output.write(argObjectBytes);
+    byte[] interfaceName = request.getInterfaceName().getBytes(StandardCharsets.UTF_8);
+    byte[] methodName = request.getMethodName().getBytes(StandardCharsets.UTF_8);
+    byte[][] argsArray = null;
+    int argsNumber = request.getArgsValue() == null ? 0 : request.getArgsValue().length;
+    int argsLength = 0;
+    if (argsNumber > 0) {
+      argsArray = new byte[argsNumber][];
+      for (int i = 0; i < argsNumber; i++) {
+        argsArray[i] = serialization.serialize(request.getArgsValue()[i]);
+        argsLength += argsArray[i].length;
       }
-    } else {
-      output.writeShort(0);
     }
 
-    output.flush();
-    byte[] body = outputStream.toByteArray();
-    output.close();
+    int bodyLength = interfaceName.length + 2 // interfaceName
+        + methodName.length + 2 // methodName
+        + 2 // number of args
+        + argsNumber * 4 // args length
+        + argsLength;
+
+    int pos = 0;
+    byte[] body = new byte[bodyLength];
+
+    shortToBytes(body, pos, (short) interfaceName.length);
+    pos += 2;
+    System.arraycopy(interfaceName, 0, body, pos, interfaceName.length);
+    pos += interfaceName.length;
+
+    shortToBytes(body, pos, (short) methodName.length);
+    pos += 2;
+    System.arraycopy(methodName, 0, body, pos, methodName.length);
+    pos += methodName.length;
+
+    shortToBytes(body, pos, (short) argsNumber);
+    pos += 2;
+
+    for (int i = 0; i < argsNumber; i++) {
+      byte[] arg = argsArray[i];
+      intToBytes(body, pos, arg.length);
+      pos += 4;
+      System.arraycopy(arg, 0, body, pos, arg.length);
+      pos += arg.length;
+    }
 
     return encode0(body, CodecConstants.DataType.REQUEST, request.getRequestId());
   }
 
   private byte[] encodeResponse(Response response) throws Exception {
     CodecConstants.DataType dataType;
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    ObjectOutput output = new ObjectOutputStream(outputStream);
 
     if (response.getThrowable() != null) {
-      output.writeUTF(response.getThrowable().getClass().getName());
-      byte[] data = serialization.serialize(response.getThrowable());
-      output.writeInt(data.length);
-      output.write(data);
       dataType = CodecConstants.DataType.EXCEPTION;
+
+      byte[] throwableName = response.getThrowable().getClass().getName()
+          .getBytes(StandardCharsets.UTF_8);
+      byte[] data = serialization.serialize(response.getThrowable());
+
+      int bodyLength = throwableName.length + 2 // name length
+          + data.length + 4;
+
+      int pos = 0;
+      byte[] body = new byte[bodyLength];
+      shortToBytes(body, pos, (short) throwableName.length);
+      pos += 2;
+      System.arraycopy(throwableName, 0, body, pos, throwableName.length);
+      pos += throwableName.length;
+
+      intToBytes(body, pos, data.length);
+      pos += 4;
+      System.arraycopy(data, 0, body, pos, data.length);
+
+      return encode0(body, dataType, response.getRequestId());
     } else {
-      output.writeUTF(response.getValue().getClass().getName());
-      byte[] data = serialization.serialize(response.getValue());
-      output.writeInt(data.length);
-      output.write(data);
       dataType = CodecConstants.DataType.RESPONSE;
+      byte[] valueName = response.getValue().getClass().getName()
+          .getBytes(StandardCharsets.UTF_8);
+      byte[] data = serialization.serialize(response.getValue());
+
+      int bodyLength = valueName.length + 2 // name length
+          + data.length + 4;
+
+      int pos = 0;
+      byte[] body = new byte[bodyLength];
+      shortToBytes(body, pos, (short) valueName.length);
+      pos += 2;
+      System.arraycopy(valueName, 0, body, pos, valueName.length);
+      pos += valueName.length;
+
+      intToBytes(body, pos, data.length);
+      pos += 4;
+      System.arraycopy(data, 0, body, pos, data.length);
+
+      return encode0(body, dataType, response.getRequestId());
     }
-
-    output.flush();
-    byte[] body = outputStream.toByteArray();
-    output.close();
-
-    return encode0(body, dataType, response.getRequestId());
   }
 
   private byte[] encode0(byte[] body, CodecConstants.DataType dataType, long requestId)
@@ -160,28 +205,39 @@ public class DstCodec implements Codec {
     byte[] data = new byte[header.length + body.length];
     System.arraycopy(header, 0, data, 0, header.length);
     System.arraycopy(body, 0, data, pos, body.length);
-
+    System.out.println(Arrays.toString(data));
     return data;
   }
 
 
   private Object decodeRequest(long requestId, byte[] content) throws Exception {
-    ObjectInput input = new ObjectInputStream(new ByteArrayInputStream(content));
-    String interfaceName = input.readUTF();
-    String methodName = input.readUTF();
+    int pos = 0;
+    byte[] interfaceName = new byte[bytesToShort(content, pos)];
+    pos += 2;
+    System.arraycopy(content, pos, interfaceName, 0, interfaceName.length);
+    pos += interfaceName.length;
+
+    byte[] methodName = new byte[bytesToShort(content, pos)];
+    pos += 2;
+    System.arraycopy(content, pos, methodName, 0, methodName.length);
+    pos += methodName.length;
 
     Request request = new Request();
     request.setRequestId(requestId);
-    request.setInterfaceName(interfaceName);
-    request.setMethodName(methodName);
+    request.setInterfaceName(new String(interfaceName));
+    request.setMethodName(new String(methodName));
 
-    int argNumber = input.readShort();
-    if (argNumber > 0) {
-      Object[] arg = new Object[argNumber];
-      for (int i = 0; i < argNumber; i++) {
-        int dataLength = input.readInt();
+    int argsNumber = bytesToShort(content, pos);
+    pos += 2;
+
+    if (argsNumber > 0) {
+      Object[] arg = new Object[argsNumber];
+      for (int i = 0; i < argsNumber; i++) {
+        int dataLength = bytesToInt(content, pos);
+        pos += 4;
         byte[] argData = new byte[dataLength];
-        input.read(argData);
+        System.arraycopy(content, pos, argData, 0, dataLength);
+        pos += dataLength;
         DelayDeserialization delayDeserialization = new DelayDeserialization(serialization,
             argData);
         arg[i] = delayDeserialization;
@@ -189,20 +245,24 @@ public class DstCodec implements Codec {
       request.setArgsValue(arg);
     }
 
-    input.close();
     return request;
   }
 
   private Object decodeResponse0(long requestId, byte[] content, boolean isException)
       throws Exception {
-    ObjectInput input = new ObjectInputStream(new ByteArrayInputStream(content));
     Response response = new DefaultResponse();
 
-    String className = input.readUTF();
-    int dataLength = input.readInt();
+    int pos = 0;
+    byte[] className = new byte[bytesToShort(content, pos)];
+    pos += 2;
+    System.arraycopy(content, pos, className, 0, className.length);
+    pos += className.length;
+
+    int dataLength = bytesToInt(content, pos);
+    pos += 4;
     byte[] data = new byte[dataLength];
-    input.read(data);
-    Class<?> clz = ReflectUtils.forName(className);
+    System.arraycopy(content, pos, data, 0, dataLength);
+    Class<?> clz = ReflectUtils.forName(new String(className));
     Object result = serialization.deserialize(data, clz);
 
     response.setRequestId(requestId);
@@ -212,7 +272,6 @@ public class DstCodec implements Codec {
       response.setValue(result);
     }
 
-    input.close();
     return response;
   }
 
