@@ -1,5 +1,8 @@
 package com.distkv.drpc.proxy;
 
+import com.distkv.drpc.codec.DelayDeserialization;
+import com.distkv.drpc.codec.Serialization;
+import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.concurrent.CompletableFuture;
@@ -49,7 +52,12 @@ public class ProxyHandler<T> implements InvocationHandler {
           if (v.getThrowable() != null) {
             future.completeExceptionally(v.getThrowable());
           } else {
-            future.complete(v.getValue());
+            try {
+              Object completedValue = resolveCompletedValue(v.getValue(), returnType);
+              future.complete(completedValue);
+            } catch (Exception e) {
+              future.completeExceptionally(e);
+            }
           }
         }
       });
@@ -61,22 +69,16 @@ public class ProxyHandler<T> implements InvocationHandler {
       throw response.getThrowable();
     }
 
-    return response.getValue();
+    return resolveCompletedValue(response.getValue(), returnType);
   }
 
-  private String getArgsTypeString(Method method) {
-    Class<?>[] pts = method.getParameterTypes();
-    if (pts.length <= 0) {
-      return "";
+  private Object resolveCompletedValue(Object value, Class<?> returnType) throws IOException {
+    if (value instanceof DelayDeserialization) {
+      Serialization serialization = ((DelayDeserialization) value).getSerialization();
+      byte[] data = ((DelayDeserialization) value).getData();
+      return serialization.deserialize(data, returnType);
     }
-    StringBuilder sb = new StringBuilder();
-    for (Class clazz : pts) {
-      sb.append(clazz.getName()).append(",");
-    }
-    if (sb.length() > 0) {
-      sb.setLength(sb.length() - ",".length());
-    }
-    return sb.toString();
+    return value;
   }
 
   private boolean isLocalMethod(Method method) {

@@ -18,9 +18,10 @@ import java.io.ObjectOutputStream;
 /**
  * protocol header：
  *
- * |      magic 16bit     | version 8bit | type flag 8bit | |               content length 32 bit
- *               | |               request id     64 bit                  | |               request
- * id     64 bit                  | |               payload ...                            |
+ * |      magic 16bit     | version 8bit | type flag 8bit |
+ * |               content length 32 bit                  |
+ * |               request id     64 bit                  |
+ * |               payload ...                            |
  */
 public class DstCodec implements Codec {
 
@@ -118,13 +119,17 @@ public class DstCodec implements Codec {
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     ObjectOutput output = new ObjectOutputStream(outputStream);
 
+    /*
+     TODO: replace throwable field in response with error code and error message to support different language client.
+      */
     if (response.getThrowable() != null) {
       output.writeUTF(response.getThrowable().getClass().getName());
       output.writeObject(serialization.serialize(response.getThrowable()));
       dataType = CodecConstants.DataType.EXCEPTION;
     } else {
-      output.writeUTF(response.getValue().getClass().getName());
-      output.writeObject(serialization.serialize(response.getValue()));
+      byte[] valueBytes = serialization.serialize(response.getValue());
+      output.writeInt(valueBytes.length);
+      output.write(valueBytes);
       dataType = CodecConstants.DataType.RESPONSE;
     }
 
@@ -192,16 +197,19 @@ public class DstCodec implements Codec {
       throws Exception {
     ObjectInput input = new ObjectInputStream(new ByteArrayInputStream(content));
     Response response = new DefaultResponse();
-
-    String className = input.readUTF();
-    Class<?> clz = ReflectUtils.forName(className);
-    Object result = serialization.deserialize((byte[]) input.readObject(), clz);
-
     response.setRequestId(requestId);
     if (isException) {
-      response.setThrowable((Exception) result);
+      String className = input.readUTF();
+      Class<?> clz = ReflectUtils.forName(className);
+      response
+          .setThrowable((Exception) serialization.deserialize((byte[]) input.readObject(), clz));
     } else {
-      response.setValue(result);
+      int dataLength = input.readInt();
+      byte[] valueData = new byte[dataLength];
+      input.read(valueData);
+      DelayDeserialization delayDeserialization = new DelayDeserialization(serialization,
+          valueData);
+      response.setValue(delayDeserialization);
     }
 
     input.close();
