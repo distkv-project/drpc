@@ -1,6 +1,6 @@
 package com.distkv.drpc.async;
 
-import com.distkv.drpc.Exporter;
+import com.distkv.drpc.DrpcServer;
 import com.distkv.drpc.config.ServerConfig;
 
 public class Server {
@@ -10,10 +10,10 @@ public class Server {
         .port(8080)
         .build();
 
-    Exporter exporter = new Exporter(serverConfig);
-    exporter.registerService(IServer.class, new IServerImpl());
-    exporter.registerService(IServer2.class, new IServer2Impl());
-    exporter.export();
+    DrpcServer server = new DrpcServer(serverConfig);
+    server.registerService(IServer.class, new IServerImpl());
+    server.registerService(IServer2.class, new IServer2Impl());
+    server.run();
   }
 
 }
