@@ -200,7 +200,7 @@ public class DstCodec implements Codec {
     byte[] data = new byte[header.length + body.length];
     System.arraycopy(header, 0, data, 0, header.length);
     System.arraycopy(body, 0, data, pos, body.length);
-    System.out.println(Arrays.toString(data));
+
     return data;
   }
 
