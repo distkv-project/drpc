@@ -15,6 +15,7 @@
     <module>common</module>
     <module>example</module>
     <module>all</module>
+    <module>test</module>
   </modules>
 
   <properties>
