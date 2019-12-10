@@ -10,7 +10,6 @@ import com.distkv.drpc.utils.ReflectUtils;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 /**
  * protocol header：
