@@ -15,7 +15,7 @@ message Request {
 
 message Response {
     int64 requestId = 1;
-    Oneof returnValue {
+    oneof returnValue {
         Any result = 2;
         ErrorPayload errorPayload = 3;
     };
