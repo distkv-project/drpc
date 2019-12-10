@@ -1,0 +1,32 @@
+syntax="proto2";
+
+package com.distkv.drpc.pb;
+
+option java_outer_classname="DrpcProtocol";
+
+message Request {
+    required int64 requestId = 1;
+    required string interfaceName = 2;
+    required string methodName = 3;
+    repeated Value args = 4;
+};
+
+message Response {
+    required int64 requestId = 1;
+    required bool isError = 2;
+    optional Value result = 3;
+    optional ErrorPayload errorPayload = 4;
+};
+
+message Value {
+    repeated bytes data = 1;
+};
+
+message ErrorPayload {
+    required ErrorCode errorCode = 1;
+    required string errorMessage = 2;
+};
+
+enum ErrorCode {
+    // todo :
+};
