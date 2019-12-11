@@ -50,9 +50,9 @@
           <outputFile>${project.build.directory}/checkstyle-errors.xml</outputFile>
           <linkXRef>false</linkXRef>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <excludes>**/generated/**</excludes>
         </configuration>
       </plugin>
     </plugins>
   </build>
-
 </project>

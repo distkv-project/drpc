@@ -24,5 +24,40 @@
       <version>1.18.10</version>
       <scope>provided</scope>
     </dependency>
+
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>3.8.0</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.github.os72</groupId>
+        <artifactId>protoc-jar-maven-plugin</artifactId>
+        <version>3.6.0.1</version>
+        <executions>
+          <execution>
+            <id>generate-sources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <protocVersion>3.5.1</protocVersion>
+              <addSources>none</addSources>
+              <includeStdTypes>true</includeStdTypes>
+              <outputDirectory>src/main/java</outputDirectory>
+              <inputDirectories>
+                <include>src/main/java/com/distkv/drpc/codec</include>
+              </inputDirectories>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

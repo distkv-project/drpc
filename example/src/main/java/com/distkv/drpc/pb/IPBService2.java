@@ -1,7 +1,6 @@
 package com.distkv.drpc.pb;
 
 import com.distkv.drpc.pb.generated.StringProtocol;
-
 import java.util.concurrent.CompletableFuture;
 
 public interface IPBService2 {
