@@ -23,11 +23,6 @@ message Response {
     };
 };
 
-// We use HTTP-style status code.
-// 1xx
-// 2xx Ok.
-// 4xx Outer error. eg, Invoke en not exist method will get 404;
-// 5xx Inner error. eg, Exception thrown when method invoked will get 500;
 enum DrpcStatus {
     OK = 0; // OK;
     OUTER_ERROR = 1; // Outer error;
