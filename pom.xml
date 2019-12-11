@@ -15,6 +15,7 @@
     <module>common</module>
     <module>example</module>
     <module>all</module>
+    <module>test</module>
   </modules>
 
   <properties>
@@ -49,9 +50,9 @@
           <outputFile>${project.build.directory}/checkstyle-errors.xml</outputFile>
           <linkXRef>false</linkXRef>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <excludes>**/generated/**</excludes>
         </configuration>
       </plugin>
     </plugins>
   </build>
-
 </project>

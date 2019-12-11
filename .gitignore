@@ -32,6 +32,8 @@ drpc.iml
 
 # generated files
 example/src/main/java/com/distkv/drpc/pb/generated/*
+common/src/main/java/com/distkv/drpc/codec/generated/*
+test/src/test/java/com/distkv/drpc/test/codec/generated/*
 
 # target files
 /*/target
