@@ -32,5 +32,5 @@ enum StatusCode {
     _0 = 0;
     _200 = 1; // OK;
     _400 = 2; // Outer error;
-    _500 = 5; // Inner error;
+    _500 = 3; // Inner error;
 };
