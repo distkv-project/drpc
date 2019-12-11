@@ -16,7 +16,7 @@ message Request {
 
 message Response {
     int64 requestId = 1;
-    StatusCode statusCode = 2;
+    DrpcStatus status = 2;
     oneof returnValue {
         google.protobuf.Any result = 3;
         string errorMessage = 4;
@@ -28,9 +28,8 @@ message Response {
 // 2xx Ok.
 // 4xx Outer error. eg, Invoke en not exist method will get 404;
 // 5xx Inner error. eg, Exception thrown when method invoked will get 500;
-enum StatusCode {
-    _0 = 0;
-    _200 = 1; // OK;
-    _400 = 2; // Outer error;
-    _500 = 3; // Inner error;
+enum DrpcStatus {
+    OK = 0; // OK;
+    OUTER_ERROR = 1; // Outer error;
+    INNER_ERROR = 2; // Inner error;
 };
