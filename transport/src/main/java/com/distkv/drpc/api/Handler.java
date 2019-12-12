@@ -3,7 +3,7 @@ package com.distkv.drpc.api;
 
 public interface Handler {
 
-  String getServerName();
+  String getServiceName();
 
   Object handle(Object message);
 

@@ -13,7 +13,7 @@ public class HandlerDelegate implements Handler {
   }
 
   @Override
-  public String getServerName() {
+  public String getServiceName() {
     return serverImpl.getInterface().getName();
   }
 
