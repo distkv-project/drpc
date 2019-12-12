@@ -1,5 +1,8 @@
 package com.distkv.drpc.netty;
 
+import com.distkv.drpc.api.Handler;
+import com.distkv.drpc.api.Request;
+import com.distkv.drpc.api.Response;
 import com.distkv.drpc.common.Void;
 import com.distkv.drpc.exception.DrpcException;
 import io.netty.buffer.ByteBuf;
@@ -7,9 +10,6 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import java.util.concurrent.CompletableFuture;
-import com.distkv.drpc.api.Handler;
-import com.distkv.drpc.api.Request;
-import com.distkv.drpc.api.Response;
 
 public class ServerChannelHandler extends ChannelDuplexHandler {
 

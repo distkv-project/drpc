@@ -2,14 +2,10 @@ package com.distkv.drpc.api;
 
 import com.distkv.drpc.codec.generated.DrpcProtocol;
 import com.distkv.drpc.codec.generated.DrpcProtocol.DrpcStatus;
-import com.distkv.drpc.codec.generated.DrpcProtocol.Response.ReturnValueCase;
 import com.distkv.drpc.exception.DrpcException;
 import com.google.protobuf.Any;
 import com.google.protobuf.Any.Builder;
 import com.google.protobuf.Message;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
 public class PbResponseDelegate implements Response {
 
@@ -27,7 +23,7 @@ public class PbResponseDelegate implements Response {
 
   @Override
   public long getRequestId() {
-    if(delegatedResponse == null) {
+    if (delegatedResponse == null) {
       return 0;
     }
     return delegatedResponse.getRequestId();
@@ -35,7 +31,7 @@ public class PbResponseDelegate implements Response {
 
   @Override
   public Enum getStatus() {
-    if(delegatedResponse == null) {
+    if (delegatedResponse == null) {
       return null;
     }
     return delegatedResponse.getStatus();
@@ -43,7 +39,7 @@ public class PbResponseDelegate implements Response {
 
   @Override
   public Object getValue() {
-    if(delegatedResponse == null) {
+    if (delegatedResponse == null) {
       return value;
     }
     return delegatedResponse.getResult();
@@ -61,11 +57,11 @@ public class PbResponseDelegate implements Response {
 
   @Override
   public void setValue(Object value) {
-    if(value instanceof Any) {
+    if (value instanceof Any) {
       builder.setResult((Any) value);
-    } else if(value instanceof Builder) {
+    } else if (value instanceof Builder) {
       builder.setResult((Builder) value);
-    } else if(value instanceof Message) {
+    } else if (value instanceof Message) {
       builder.setResult(Any.pack((Message) value));
     } else {
       this.value = value;
@@ -79,23 +75,21 @@ public class PbResponseDelegate implements Response {
 
   @Override
   public void setStatus(Enum status) {
-    if(status instanceof DrpcStatus) {
+    if (status instanceof DrpcStatus) {
       builder.setStatus((DrpcStatus) status);
-    } else {
-
     }
   }
 
   @Override
   public void build() {
-    if(delegatedResponse == null) {
+    if (delegatedResponse == null) {
       delegatedResponse = builder.build();
     }
   }
 
   @Override
   public boolean isError() {
-    if(delegatedResponse == null) {
+    if (delegatedResponse == null) {
       return false;
     }
     return delegatedResponse.getStatus() != DrpcStatus.OK;

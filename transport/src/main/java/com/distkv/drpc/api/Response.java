@@ -1,8 +1,5 @@
 package com.distkv.drpc.api;
 
-
-import java.util.Enumeration;
-
 public interface Response {
 
   long getRequestId();

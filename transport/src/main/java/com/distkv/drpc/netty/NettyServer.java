@@ -1,6 +1,9 @@
 package com.distkv.drpc.netty;
 
+import com.distkv.drpc.api.AbstractServer;
+import com.distkv.drpc.api.Handler;
 import com.distkv.drpc.codec.DrpcCodec;
+import com.distkv.drpc.codec.ProtoBufSerialization;
 import com.distkv.drpc.config.ServerConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -10,14 +13,11 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import com.distkv.drpc.api.AbstractServer;
-import com.distkv.drpc.api.Handler;
-import com.distkv.drpc.codec.ProtoBufSerialization;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.List;
 
 
 public class NettyServer extends AbstractServer {

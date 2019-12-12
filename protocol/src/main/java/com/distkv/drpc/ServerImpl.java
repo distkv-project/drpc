@@ -1,7 +1,6 @@
 package com.distkv.drpc;
 
 import com.distkv.drpc.api.DefaultResponse;
-import com.distkv.drpc.api.PbResponseDelegate;
 import com.distkv.drpc.api.Request;
 import com.distkv.drpc.api.Response;
 import com.distkv.drpc.codec.generated.DrpcProtocol.DrpcStatus;

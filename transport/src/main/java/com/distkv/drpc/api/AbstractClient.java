@@ -7,9 +7,6 @@ import com.distkv.drpc.codec.Codec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * 客户端，保存了当前已经发送的所有请求，并保存了返回的Future
- */
 public abstract class AbstractClient implements Client {
 
   protected Logger logger = LoggerFactory.getLogger(getClass());

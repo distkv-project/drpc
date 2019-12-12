@@ -29,9 +29,9 @@ public class DrpcCodec implements Codec {
       DefaultResponse defaultResponse = (DefaultResponse) message;
       response.setRequestId(defaultResponse.getRequestId());
       response.setStatus(defaultResponse.getStatus());
-      if(defaultResponse.getValue() != null) {
+      if (defaultResponse.getValue() != null) {
         response.setValue(defaultResponse.getValue());
-      } else if(defaultResponse.getThrowable() != null) {
+      } else if (defaultResponse.getThrowable() != null) {
         response.setThrowable(defaultResponse.getThrowable());
       }
       response.build();

@@ -20,7 +20,7 @@ public class PbRequestDelegate implements Request {
 
   @Override
   public long getRequestId() {
-    if(delegatedRequest == null) {
+    if (delegatedRequest == null) {
       return 0;
     }
     return delegatedRequest.getRequestId();
@@ -28,7 +28,7 @@ public class PbRequestDelegate implements Request {
 
   @Override
   public String getInterfaceName() {
-    if(delegatedRequest == null) {
+    if (delegatedRequest == null) {
       return null;
     }
     return delegatedRequest.getInterfaceName();
@@ -36,7 +36,7 @@ public class PbRequestDelegate implements Request {
 
   @Override
   public String getMethodName() {
-    if(delegatedRequest == null) {
+    if (delegatedRequest == null) {
       return null;
     }
     return delegatedRequest.getMethodName();
@@ -44,7 +44,7 @@ public class PbRequestDelegate implements Request {
 
   @Override
   public Object[] getArgsValue() {
-    if(delegatedRequest == null) {
+    if (delegatedRequest == null) {
       return null;
     }
     return delegatedRequest.getArgsList().toArray();
@@ -67,12 +67,12 @@ public class PbRequestDelegate implements Request {
 
   @Override
   public void setArgsValue(Object[] argsValue) {
-    for(Object arg : argsValue) {
-      if(arg instanceof Any) {
+    for (Object arg : argsValue) {
+      if (arg instanceof Any) {
         builder.addArgs((Any) arg);
-      } else if(arg instanceof Builder) {
+      } else if (arg instanceof Builder) {
         builder.addArgs((Builder) arg);
-      } else if(arg instanceof Message) {
+      } else if (arg instanceof Message) {
         builder.addArgs(Any.pack((Message) arg));
       } else {
         throw new IllegalArgumentException();
@@ -82,7 +82,7 @@ public class PbRequestDelegate implements Request {
 
   @Override
   public void build() {
-    if(delegatedRequest == null) {
+    if (delegatedRequest == null) {
       delegatedRequest = builder.build();
     }
   }
