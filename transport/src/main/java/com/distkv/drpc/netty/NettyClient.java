@@ -3,18 +3,17 @@ package com.distkv.drpc.netty;
 import com.distkv.drpc.api.AbstractClient;
 import com.distkv.drpc.api.AsyncResponse;
 import com.distkv.drpc.api.DefaultAsyncResponse;
-import com.distkv.drpc.api.DefaultResponse;
+import com.distkv.drpc.api.PbResponseDelegate;
 import com.distkv.drpc.api.Request;
 import com.distkv.drpc.api.Response;
-import com.distkv.drpc.codec.DstCodec;
+import com.distkv.drpc.codec.DrpcCodec;
 import com.distkv.drpc.codec.ProtoBufSerialization;
 import com.distkv.drpc.config.ClientConfig;
 import com.distkv.drpc.constants.GlobalConstants;
 import com.distkv.drpc.exception.DrpcException;
 import com.distkv.drpc.exception.TransportException;
-import com.distkv.drpc.netty.codec.NettyDecoder;
-import com.distkv.drpc.netty.codec.NettyEncoder;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
@@ -24,6 +23,9 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
+import org.omg.CORBA.Any;
 
 public class NettyClient extends AbstractClient {
 
@@ -31,7 +33,7 @@ public class NettyClient extends AbstractClient {
   private NioEventLoopGroup nioEventLoopGroup;
 
   public NettyClient(ClientConfig clientConfig) {
-    super(clientConfig, new DstCodec(new ProtoBufSerialization()));
+    super(clientConfig, new DrpcCodec(new ProtoBufSerialization()));
     nioEventLoopGroup = new NioEventLoopGroup();
   }
 
@@ -47,15 +49,18 @@ public class NettyClient extends AbstractClient {
         .channel(NioSocketChannel.class)
         .handler(new ChannelInitializer<SocketChannel>() {
           @Override
-          protected void initChannel(SocketChannel ch) throws Exception {
+          protected void initChannel(SocketChannel ch) {
             ChannelPipeline pipeline = ch.pipeline();
-            pipeline.addLast("decoder", new NettyDecoder());
-            pipeline.addLast("encoder", new NettyEncoder());
+            pipeline.addLast("decoder", new ProtobufVarint32FrameDecoder());
+            pipeline.addLast("encoder", new ProtobufVarint32LengthFieldPrepender());
             pipeline.addLast("handler", new ChannelDuplexHandler() {
 
               @Override
               public void channelRead(ChannelHandlerContext ctx, Object msg) {
-                Object object = getCodec().decode((byte[]) msg);
+                ByteBuf byteBuf = (ByteBuf) msg;
+                byte[] data = new byte[byteBuf.readableBytes()];
+                byteBuf.readBytes(data);
+                Object object = getCodec().decode(data, false);
                 if (!(object instanceof Response)) {
                   throw new DrpcException(
                       "NettyChannelHandler: unsupported message type when encode: " + object
@@ -66,7 +71,8 @@ public class NettyClient extends AbstractClient {
 
               private void processResponse(Response response) {
                 Response future = getResponseFuture(response.getRequestId());
-                if (response.getThrowable() != null) {
+                future.setStatus(response.getStatus());
+                if (response.isError()) {
                   future.setThrowable(response.getThrowable());
                 } else {
                   future.setValue(response.getValue());
@@ -105,14 +111,16 @@ public class NettyClient extends AbstractClient {
     addCurrentTask(request.getRequestId(), response);
     try {
       byte[] msg = getCodec().encode(request);
+      ByteBuf byteBuf = clientChannel.alloc().heapBuffer();
+      byteBuf.writeBytes(msg);
       if (clientChannel.isActive()) {
-        clientChannel.writeAndFlush(msg);
+        clientChannel.writeAndFlush(byteBuf).sync();
       } else {
         throw new DrpcException("ClientChannel closed");
       }
       return response;
     } catch (Exception e) {
-      Response errorResponse = new DefaultResponse();
+      Response errorResponse = new PbResponseDelegate();
       errorResponse.setRequestId(request.getRequestId());
       errorResponse
           .setThrowable(new TransportException("NettyClient: response.getValue interrupted!"));

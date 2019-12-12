@@ -7,6 +7,6 @@ public interface Codec {
 
   byte[] encode(Object message) throws CodecException;
 
-  Object decode(byte[] data) throws CodecException;
+  Object decode(byte[] data, boolean isRequest) throws CodecException;
 
 }

@@ -1,6 +1,8 @@
 package com.distkv.drpc.api;
 
 
+import java.util.Enumeration;
+
 public interface Response {
 
   long getRequestId();
@@ -15,12 +17,12 @@ public interface Response {
 
   void setThrowable(Throwable throwable);
 
-  boolean hasAttribute(String key);
+  Enum<?> getStatus();
 
-  Object getAttribute(String key);
+  void setStatus(Enum<?> status);
 
-  void setAttribute(String key, Object value);
-  
-  void removeAttribute(String key);
+  boolean isError();
+
+  void build();
 
 }

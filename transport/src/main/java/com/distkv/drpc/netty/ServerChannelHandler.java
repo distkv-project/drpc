@@ -2,6 +2,7 @@ package com.distkv.drpc.netty;
 
 import com.distkv.drpc.common.Void;
 import com.distkv.drpc.exception.DrpcException;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
@@ -22,7 +23,10 @@ public class ServerChannelHandler extends ChannelDuplexHandler {
 
   @Override
   public void channelRead(ChannelHandlerContext ctx, Object msg) {
-    Object object = nettyServer.getCodec().decode((byte[]) msg);
+    ByteBuf byteBuf = (ByteBuf) msg;
+    byte[] data = new byte[byteBuf.readableBytes()];
+    byteBuf.readBytes(data);
+    Object object = nettyServer.getCodec().decode(data, true);
     if (!(object instanceof Request)) {
       throw new DrpcException(
           "ServerChannelHandler: unsupported message type when decode: " + object.getClass());
@@ -57,10 +61,17 @@ public class ServerChannelHandler extends ChannelDuplexHandler {
   }
 
   private ChannelFuture sendResponse(ChannelHandlerContext ctx, Response response) {
-    byte[] msg = nettyServer.getCodec().encode(response);
-    if (ctx.channel().isActive()) {
-      return ctx.channel().writeAndFlush(msg);
+    try {
+      byte[] msg = nettyServer.getCodec().encode(response);
+      ByteBuf byteBuf = ctx.channel().alloc().heapBuffer();
+      byteBuf.writeBytes(msg);
+      if (ctx.channel().isActive()) {
+        return ctx.channel().writeAndFlush(byteBuf).sync();
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+
     return null;
   }
 

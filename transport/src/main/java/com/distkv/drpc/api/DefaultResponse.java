@@ -1,18 +1,14 @@
 package com.distkv.drpc.api;
 
-import java.util.HashMap;
-import java.util.Map;
-
-
 public class DefaultResponse implements Response {
 
   private long requestId;
 
+  private Enum<?> status;
+
   private Object value;
 
   private Throwable throwable;
-
-  private Map<String, Object> attributes = new HashMap<>();
 
   public DefaultResponse() {
   }
@@ -52,28 +48,22 @@ public class DefaultResponse implements Response {
   }
 
   @Override
-  public boolean hasAttribute(String key) {
-    return attributes.containsKey(key);
+  public Enum<?> getStatus() {
+    return status;
   }
 
   @Override
-  public Object getAttribute(String key) {
-    return attributes.get(key);
+  public void setStatus(Enum<?> status) {
+    this.status = status;
   }
 
   @Override
-  public void setAttribute(String key, Object value) {
-    if (value == null) {
-      attributes.remove(key);
-    } else {
-      attributes.put(key, value);
-    }
+  public void build() {
+    // do nothing;
   }
 
   @Override
-  public void removeAttribute(String key) {
-    attributes.remove(key);
+  public boolean isError() {
+    return throwable != null;
   }
-
-
 }

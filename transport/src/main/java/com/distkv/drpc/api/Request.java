@@ -1,78 +1,22 @@
 package com.distkv.drpc.api;
 
-import java.util.HashMap;
-import java.util.Map;
+public interface Request {
 
+  long getRequestId();
 
-public class Request {
+  void setRequestId(long requestId);
 
-  private long requestId;
+  String getInterfaceName();
 
-  private String interfaceName;
+  void setInterfaceName(String interfaceName);
 
-  private String methodName;
+  String getMethodName();
 
-  private Object[] argsValue;
+  void setMethodName(String methodName);
 
-  private Map<String, Object> attributes = new HashMap<>();
+  Object[] getArgsValue();
 
-  public long getRequestId() {
-    return requestId;
-  }
+  void setArgsValue(Object[] argsValue);
 
-  public void setRequestId(long requestId) {
-    this.requestId = requestId;
-  }
-
-  public String getInterfaceName() {
-    return interfaceName;
-  }
-
-  public void setInterfaceName(String interfaceName) {
-    this.interfaceName = interfaceName;
-  }
-
-  public String getMethodName() {
-    return methodName;
-  }
-
-  public void setMethodName(String methodName) {
-    this.methodName = methodName;
-  }
-
-  public Object[] getArgsValue() {
-    return argsValue;
-  }
-
-  public void setArgsValue(Object[] argsValue) {
-    this.argsValue = argsValue;
-  }
-
-  public boolean hasAttribute(String key) {
-    return attributes.containsKey(key);
-  }
-
-  public Object getAttribute(String key) {
-    return attributes.get(key);
-  }
-
-  public void setAttribute(String key, Object value) {
-    if (value == null) {
-      attributes.remove(key);
-    } else {
-      attributes.put(key, value);
-    }
-  }
-
-  public void removeAttribute(String key) {
-    attributes.remove(key);
-  }
-
-  public Map<String, Object> getAttributes() {
-    return attributes;
-  }
-
-  public void setAttributes(Map<String, Object> attributes) {
-    this.attributes = attributes;
-  }
+  void build();
 }

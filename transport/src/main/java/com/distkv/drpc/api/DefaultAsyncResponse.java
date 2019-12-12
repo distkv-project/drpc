@@ -13,7 +13,8 @@ public class DefaultAsyncResponse extends CompletableFuture<Response> implements
   private Response response;
 
   public DefaultAsyncResponse(long requestId) {
-    this.response = new DefaultResponse(requestId);
+    response = new PbResponseDelegate();
+    response.setRequestId(requestId);
   }
 
   @Override
@@ -38,6 +39,7 @@ public class DefaultAsyncResponse extends CompletableFuture<Response> implements
         this.get().setValue(value);
       } else {
         response.setValue(value);
+        build();
         super.complete(response);
       }
     } catch (Exception e) {
@@ -58,6 +60,7 @@ public class DefaultAsyncResponse extends CompletableFuture<Response> implements
         this.get().setThrowable(throwable);
       } else {
         response.setThrowable(throwable);
+        build();
         super.complete(response);
       }
     } catch (Exception e) {
@@ -67,23 +70,13 @@ public class DefaultAsyncResponse extends CompletableFuture<Response> implements
   }
 
   @Override
-  public boolean hasAttribute(String key) {
-    return response.hasAttribute(key);
+  public Enum<?> getStatus() {
+    return getDefaultResponse().getStatus();
   }
 
   @Override
-  public Object getAttribute(String key) {
-    return response.getAttribute(key);
-  }
-
-  @Override
-  public void setAttribute(String key, Object value) {
-    response.setAttribute(key, value);
-  }
-
-  @Override
-  public void removeAttribute(String key) {
-    response.removeAttribute(key);
+  public void setStatus(Enum<?> status) {
+    response.setStatus(status);
   }
 
   @Override
@@ -134,5 +127,13 @@ public class DefaultAsyncResponse extends CompletableFuture<Response> implements
     }
   }
 
+  @Override
+  public void build() {
+    response.build();
+  }
 
+  @Override
+  public boolean isError() {
+    return response.isError();
+  }
 }
