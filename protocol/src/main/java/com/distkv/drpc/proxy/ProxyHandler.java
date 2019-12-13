@@ -44,9 +44,7 @@ public class ProxyHandler<T> implements InvocationHandler {
 
     Class<?> returnType = method.getReturnType();
     Response response = invoker.invoke(request);
-    if(returnType == Void.TYPE) {
-      return null;
-    }
+
     // async-method
     if (CompletableFuture.class.isAssignableFrom(returnType)) {
       CompletableFuture future = new CompletableFuture();
