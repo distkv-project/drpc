@@ -1,9 +1,5 @@
 package com.distkv.drpc.codec;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.JSONSerializer;
-import com.alibaba.fastjson.serializer.SerializeWriter;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.protobuf.GeneratedMessageV3.Builder;
 import com.google.protobuf.Message;
 import java.io.IOException;
@@ -20,7 +16,7 @@ public class ProtoBufSerialization implements Serialization {
     if (object instanceof Message) {
       result = ((Message) object).toByteArray();
     } else {
-      result = backupSerialize(object);
+      throw new IOException("Serialize error, only support protobuf serialization");
     }
     return result;
   }
@@ -33,22 +29,10 @@ public class ProtoBufSerialization implements Serialization {
       Method method = clazz.getMethod("newBuilder");
       builder = (Builder) method.invoke(null, null);
     } catch (Exception e) {
-      return backupDeserialize(bytes, clazz);
+      throw new IOException("Deserialize error", e);
     }
     builder.mergeFrom(bytes);
     return (T) builder.build();
   }
 
-  private byte[] backupSerialize(Object object) throws IOException {
-    SerializeWriter out = new SerializeWriter();
-    JSONSerializer serializer = new JSONSerializer(out);
-    serializer.config(SerializerFeature.WriteEnumUsingToString, true);
-    serializer.config(SerializerFeature.WriteClassName, true);
-    serializer.write(object);
-    return out.toBytes("UTF-8");
-  }
-
-  private <T> T backupDeserialize(byte[] bytes, Class<T> clazz) throws IOException {
-    return JSON.parseObject(new String(bytes), clazz);
-  }
 }

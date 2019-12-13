@@ -3,11 +3,12 @@ package com.distkv.drpc;
 import com.distkv.drpc.api.DefaultResponse;
 import com.distkv.drpc.api.Request;
 import com.distkv.drpc.api.Response;
-import com.distkv.drpc.codec.DelayDeserialization;
-import com.distkv.drpc.codec.Serialization;
+import com.distkv.drpc.codec.generated.DrpcProtocol.DrpcStatus;
 import com.distkv.drpc.common.Void;
 import com.distkv.drpc.exception.DrpcException;
 import com.distkv.drpc.utils.ReflectUtils;
+import com.google.protobuf.Any;
+import com.google.protobuf.Message;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -57,6 +58,7 @@ public class ServerImpl<T> implements Invoker<T> {
     String methodName = request.getMethodName();
     Method method = methodMap.get(methodName);
     if (method == null) {
+      response.setStatus(DrpcStatus.OUTER_ERROR);
       response.setThrowable(new DrpcException("ServerImpl: can't find method: " + methodName));
       return response;
     }
@@ -68,17 +70,22 @@ public class ServerImpl<T> implements Invoker<T> {
       } else {
         response.setValue(value);
       }
+      response.setStatus(DrpcStatus.OK);
     } catch (Exception e) {
+      response.setStatus(DrpcStatus.INNER_ERROR);
       response.setThrowable(
           new DrpcException("ServerImpl: exception when invoke method: " + methodName, e));
     } catch (Error e) {
+      response.setStatus(DrpcStatus.INNER_ERROR);
       response
           .setThrowable(
               new DrpcException("ServerImpl: error when invoke method: " + methodName, e));
     }
+    response.build();
     return response;
   }
 
+  @SuppressWarnings("unchecked")
   private Object[] resolveArgsValue(Object[] args, Method method) throws IOException {
     if (args == null) {
       return null;
@@ -86,10 +93,8 @@ public class ServerImpl<T> implements Invoker<T> {
     Object[] resolvedArgs = new Object[args.length];
     Class<?>[] parameterTypes = method.getParameterTypes();
     for (int i = 0; i < args.length; i++) {
-      if (args[i] instanceof DelayDeserialization) {
-        byte[] argData = ((DelayDeserialization) args[i]).getData();
-        Serialization serialization = ((DelayDeserialization) args[i]).getSerialization();
-        resolvedArgs[i] = serialization.deserialize(argData, parameterTypes[i]);
+      if (args[i] instanceof Any && Message.class.isAssignableFrom(parameterTypes[i])) {
+        resolvedArgs[i] = ((Any) args[i]).unpack((Class<Message>) parameterTypes[i]);
       } else {
         resolvedArgs[i] = args[i];
       }

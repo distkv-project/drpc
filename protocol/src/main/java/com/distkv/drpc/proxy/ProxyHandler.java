@@ -1,14 +1,20 @@
 package com.distkv.drpc.proxy;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.util.concurrent.CompletableFuture;
 import com.distkv.drpc.Invoker;
 import com.distkv.drpc.api.AsyncResponse;
+import com.distkv.drpc.api.ProtobufRequestDelegate;
 import com.distkv.drpc.api.Request;
 import com.distkv.drpc.api.Response;
 import com.distkv.drpc.exception.DrpcException;
 import com.distkv.drpc.utils.RequestIdGenerator;
+import com.google.protobuf.Any;
+import com.google.protobuf.Message;
+import java.io.IOException;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.concurrent.CompletableFuture;
 
 
 public class ProxyHandler<T> implements InvocationHandler {
@@ -29,11 +35,12 @@ public class ProxyHandler<T> implements InvocationHandler {
       throw new DrpcException("Can not invoke local method: " + method.getName());
     }
 
-    Request request = new Request();
+    Request request = new ProtobufRequestDelegate();
     request.setRequestId(RequestIdGenerator.next());
     request.setInterfaceName(method.getDeclaringClass().getName());
     request.setMethodName(method.getName());
     request.setArgsValue(args);
+    request.build();
 
     Class<?> returnType = method.getReturnType();
     Response response = invoker.invoke(request);
@@ -46,10 +53,15 @@ public class ProxyHandler<T> implements InvocationHandler {
         if (t != null) {
           future.completeExceptionally(t);
         } else {
-          if (v.getThrowable() != null) {
+          if (v.isError()) {
             future.completeExceptionally(v.getThrowable());
           } else {
-            future.complete(v.getValue());
+            try {
+              Type returnGenericType = method.getGenericReturnType();
+              future.complete(resolveReturnValue(v.getValue(), returnGenericType));
+            } catch (Exception e) {
+              future.completeExceptionally(e);
+            }
           }
         }
       });
@@ -60,23 +72,19 @@ public class ProxyHandler<T> implements InvocationHandler {
     if (response.getThrowable() != null) {
       throw response.getThrowable();
     }
-
-    return response.getValue();
+    return resolveReturnValue(response.getValue(), returnType);
   }
 
-  private String getArgsTypeString(Method method) {
-    Class<?>[] pts = method.getParameterTypes();
-    if (pts.length <= 0) {
-      return "";
+  @SuppressWarnings("unchecked")
+  private Object resolveReturnValue(Object returnValue, Type resolvedReturnType)
+      throws IOException {
+    if (returnValue instanceof Any && resolvedReturnType instanceof ParameterizedType) {
+      return ((Any) returnValue).unpack(
+          (Class<? extends Message>) ((ParameterizedType) resolvedReturnType)
+              .getActualTypeArguments()[0]);
+    } else {
+      return returnValue;
     }
-    StringBuilder sb = new StringBuilder();
-    for (Class clazz : pts) {
-      sb.append(clazz.getName()).append(",");
-    }
-    if (sb.length() > 0) {
-      sb.setLength(sb.length() - ",".length());
-    }
-    return sb.toString();
   }
 
   private boolean isLocalMethod(Method method) {
