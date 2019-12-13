@@ -2,7 +2,7 @@ package com.distkv.drpc.proxy;
 
 import com.distkv.drpc.Invoker;
 import com.distkv.drpc.api.AsyncResponse;
-import com.distkv.drpc.api.PbRequestDelegate;
+import com.distkv.drpc.api.ProtobufRequestDelegate;
 import com.distkv.drpc.api.Request;
 import com.distkv.drpc.api.Response;
 import com.distkv.drpc.exception.DrpcException;
@@ -35,7 +35,7 @@ public class ProxyHandler<T> implements InvocationHandler {
       throw new DrpcException("Can not invoke local method: " + method.getName());
     }
 
-    Request request = new PbRequestDelegate();
+    Request request = new ProtobufRequestDelegate();
     request.setRequestId(RequestIdGenerator.next());
     request.setInterfaceName(method.getDeclaringClass().getName());
     request.setMethodName(method.getName());
@@ -44,7 +44,9 @@ public class ProxyHandler<T> implements InvocationHandler {
 
     Class<?> returnType = method.getReturnType();
     Response response = invoker.invoke(request);
-
+    if(returnType == Void.TYPE) {
+      return null;
+    }
     // async-method
     if (CompletableFuture.class.isAssignableFrom(returnType)) {
       CompletableFuture future = new CompletableFuture();

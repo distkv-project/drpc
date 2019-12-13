@@ -3,9 +3,10 @@ package com.distkv.drpc.netty;
 import com.distkv.drpc.api.AbstractClient;
 import com.distkv.drpc.api.AsyncResponse;
 import com.distkv.drpc.api.DefaultAsyncResponse;
-import com.distkv.drpc.api.PbResponseDelegate;
+import com.distkv.drpc.api.ProtobufResponseDelegate;
 import com.distkv.drpc.api.Request;
 import com.distkv.drpc.api.Response;
+import com.distkv.drpc.codec.Codec.DataTypeEnum;
 import com.distkv.drpc.codec.DrpcCodec;
 import com.distkv.drpc.codec.ProtoBufSerialization;
 import com.distkv.drpc.config.ClientConfig;
@@ -59,7 +60,7 @@ public class NettyClient extends AbstractClient {
                 ByteBuf byteBuf = (ByteBuf) msg;
                 byte[] data = new byte[byteBuf.readableBytes()];
                 byteBuf.readBytes(data);
-                Object object = getCodec().decode(data, false);
+                Object object = getCodec().decode(data, DataTypeEnum.RESPONSE);
                 if (!(object instanceof Response)) {
                   throw new DrpcException(
                       "NettyChannelHandler: unsupported message type when encode: " + object
@@ -119,7 +120,7 @@ public class NettyClient extends AbstractClient {
       }
       return response;
     } catch (Exception e) {
-      Response errorResponse = new PbResponseDelegate();
+      Response errorResponse = new ProtobufResponseDelegate();
       errorResponse.setRequestId(request.getRequestId());
       errorResponse
           .setThrowable(new TransportException("NettyClient: response.getValue interrupted!"));

@@ -5,16 +5,16 @@ import com.google.protobuf.Any;
 import com.google.protobuf.Any.Builder;
 import com.google.protobuf.Message;
 
-public class PbRequestDelegate implements Request {
+public class ProtobufRequestDelegate implements Request {
 
   private DrpcProtocol.Request.Builder builder;
   private DrpcProtocol.Request delegatedRequest;
 
-  public PbRequestDelegate() {
+  public ProtobufRequestDelegate() {
     builder = DrpcProtocol.Request.newBuilder();
   }
 
-  public PbRequestDelegate(DrpcProtocol.Request delegatedRequest) {
+  public ProtobufRequestDelegate(DrpcProtocol.Request delegatedRequest) {
     this.delegatedRequest = delegatedRequest;
   }
 

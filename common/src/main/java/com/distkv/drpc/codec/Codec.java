@@ -7,6 +7,12 @@ public interface Codec {
 
   byte[] encode(Object message) throws CodecException;
 
-  Object decode(byte[] data, boolean isRequest) throws CodecException;
+  Object decode(byte[] data, DataTypeEnum dataTypeEnum) throws CodecException;
+
+  enum DataTypeEnum {
+    REQUEST,
+    RESPONSE,
+    ;
+  }
 
 }

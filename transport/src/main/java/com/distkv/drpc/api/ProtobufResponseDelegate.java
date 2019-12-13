@@ -7,17 +7,17 @@ import com.google.protobuf.Any;
 import com.google.protobuf.Any.Builder;
 import com.google.protobuf.Message;
 
-public class PbResponseDelegate implements Response {
+public class ProtobufResponseDelegate implements Response {
 
   private DrpcProtocol.Response.Builder builder;
   private DrpcProtocol.Response delegatedResponse;
   private Object value;
 
-  public PbResponseDelegate() {
+  public ProtobufResponseDelegate() {
     builder = DrpcProtocol.Response.newBuilder();
   }
 
-  public PbResponseDelegate(DrpcProtocol.Response delegatedResponse) {
+  public ProtobufResponseDelegate(DrpcProtocol.Response delegatedResponse) {
     this.delegatedResponse = delegatedResponse;
   }
 

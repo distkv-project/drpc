@@ -13,7 +13,7 @@ public class DefaultAsyncResponse extends CompletableFuture<Response> implements
   private Response response;
 
   public DefaultAsyncResponse(long requestId) {
-    response = new PbResponseDelegate();
+    response = new ProtobufResponseDelegate();
     response.setRequestId(requestId);
   }
 

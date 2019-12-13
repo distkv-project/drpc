@@ -3,6 +3,7 @@ package com.distkv.drpc.netty;
 import com.distkv.drpc.api.Handler;
 import com.distkv.drpc.api.Request;
 import com.distkv.drpc.api.Response;
+import com.distkv.drpc.codec.Codec.DataTypeEnum;
 import com.distkv.drpc.common.Void;
 import com.distkv.drpc.exception.DrpcException;
 import io.netty.buffer.ByteBuf;
@@ -26,7 +27,7 @@ public class ServerChannelHandler extends ChannelDuplexHandler {
     ByteBuf byteBuf = (ByteBuf) msg;
     byte[] data = new byte[byteBuf.readableBytes()];
     byteBuf.readBytes(data);
-    Object object = nettyServer.getCodec().decode(data, true);
+    Object object = nettyServer.getCodec().decode(data, DataTypeEnum.REQUEST);
     if (!(object instanceof Request)) {
       throw new DrpcException(
           "ServerChannelHandler: unsupported message type when decode: " + object.getClass());

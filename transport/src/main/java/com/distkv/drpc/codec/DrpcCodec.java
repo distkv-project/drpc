@@ -1,8 +1,8 @@
 package com.distkv.drpc.codec;
 
 import com.distkv.drpc.api.DefaultResponse;
-import com.distkv.drpc.api.PbRequestDelegate;
-import com.distkv.drpc.api.PbResponseDelegate;
+import com.distkv.drpc.api.ProtobufRequestDelegate;
+import com.distkv.drpc.api.ProtobufResponseDelegate;
 import com.distkv.drpc.codec.generated.DrpcProtocol;
 import com.distkv.drpc.exception.CodecException;
 
@@ -16,16 +16,16 @@ public class DrpcCodec implements Codec {
 
   @Override
   public byte[] encode(Object message) throws CodecException {
-    if (message instanceof PbRequestDelegate) {
-      PbRequestDelegate request = (PbRequestDelegate) message;
+    if (message instanceof ProtobufRequestDelegate) {
+      ProtobufRequestDelegate request = (ProtobufRequestDelegate) message;
       return request.getDelegatedRequest().toByteArray();
     }
-    if (message instanceof PbResponseDelegate) {
-      PbResponseDelegate response = (PbResponseDelegate) message;
+    if (message instanceof ProtobufResponseDelegate) {
+      ProtobufResponseDelegate response = (ProtobufResponseDelegate) message;
       return response.getDelegatedResponse().toByteArray();
     }
     if (message instanceof DefaultResponse) {
-      PbResponseDelegate response = new PbResponseDelegate();
+      ProtobufResponseDelegate response = new ProtobufResponseDelegate();
       DefaultResponse defaultResponse = (DefaultResponse) message;
       response.setRequestId(defaultResponse.getRequestId());
       response.setStatus(defaultResponse.getStatus());
@@ -41,15 +41,17 @@ public class DrpcCodec implements Codec {
   }
 
   @Override
-  public Object decode(byte[] data, boolean isRequest) throws CodecException {
+  public Object decode(byte[] data, DataTypeEnum dataTypeEnum) throws CodecException {
     try {
-      if (isRequest) {
+      if (DataTypeEnum.REQUEST == dataTypeEnum) {
         DrpcProtocol.Request request = DrpcProtocol.Request.parseFrom(data);
-        return new PbRequestDelegate(request);
-      } else {
-        DrpcProtocol.Response response = DrpcProtocol.Response.parseFrom(data);
-        return new PbResponseDelegate(response);
+        return new ProtobufRequestDelegate(request);
       }
+      if (DataTypeEnum.RESPONSE == dataTypeEnum) {
+        DrpcProtocol.Response response = DrpcProtocol.Response.parseFrom(data);
+        return new ProtobufResponseDelegate(response);
+      }
+      throw new CodecException("Illegal DataTypeEnum: " + dataTypeEnum);
     } catch (Exception e) {
       throw new CodecException("Decode error", e);
     }
