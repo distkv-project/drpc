@@ -1,9 +1,11 @@
 package com.distkv.drpc.benchmark.common.consumer;
 
+import com.distkv.drpc.benchmark.common.BenchmarkException;
 import com.distkv.drpc.benchmark.common.IService;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
@@ -21,11 +23,19 @@ public class Consumer {
   private EventLoopGroup bossGroup;
   private EventLoopGroup workerGroup;
 
-  public void start(IService service) {
+  public void start(Object service) {
     ServerBootstrap bootstrap = new ServerBootstrap();
     bossGroup = new NioEventLoopGroup(1);
     workerGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors() * 2);
-    HttpProcessHandler handler = new HttpProcessHandler(service);
+    ChannelHandler handler;
+    if (service instanceof IService) {
+      handler = new HttpProcessHandler((IService) service);
+    } else if (service instanceof com.distkv.drpc.benchmark.dubbo.IService) {
+      handler = new DubboHttpProcessHandler((com.distkv.drpc.benchmark.dubbo.IService) service);
+    } else {
+      throw new BenchmarkException("Not support service type: " + service.getClass());
+    }
+
     bootstrap.group(bossGroup, workerGroup)
         .channel(NioServerSocketChannel.class)
         .childHandler(

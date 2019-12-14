@@ -9,6 +9,7 @@ public class DrpcProvider {
 
   public static void main(String[] args) {
     ServerConfig serverConfig = ServerConfig.builder()
+        .workerThreadNum(300)
         .port(25500)
         .build();
 
