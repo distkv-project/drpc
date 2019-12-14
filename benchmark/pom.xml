@@ -38,7 +38,7 @@
               <includeStdTypes>true</includeStdTypes>
               <outputDirectory>src/main/java</outputDirectory>
               <inputDirectories>
-                <include>src/main/java/com/distkv/drpc/benchmark</include>
+                <include>src/main/java/com/distkv/drpc/benchmark/common</include>
               </inputDirectories>
             </configuration>
           </execution>

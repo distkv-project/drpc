@@ -2,7 +2,7 @@ syntax="proto3";
 
 package com.distkv.drpc.benchmark.common;
 
-import "com/distkv/drpc/benchmark/common/common_pb.proto";
+import "common_pb.proto";
 
 option java_package="com.distkv.drpc.benchmark.common.generated";
 option java_outer_classname="StringProtocol";

@@ -1,7 +1,6 @@
 package com.distkv.drpc.benchmark.common;
 
 import com.distkv.drpc.benchmark.common.generated.CommonProtocol.Status;
-import com.distkv.drpc.benchmark.common.generated.StringProtocol;
 import com.distkv.drpc.benchmark.common.generated.StringProtocol.GetRequest;
 import com.distkv.drpc.benchmark.common.generated.StringProtocol.GetResponse;
 import com.distkv.drpc.benchmark.common.generated.StringProtocol.PutRequest;
@@ -10,7 +9,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ISeviceImpl implements IService {
+public class IServiceImpl implements IService {
 
   private Map<String, String> map = new ConcurrentHashMap<>();
 
