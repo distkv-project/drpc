@@ -10,6 +10,7 @@ import com.distkv.drpc.netty.NettyClient;
 import com.distkv.drpc.test.protocol.common.IService;
 import com.distkv.drpc.test.protocol.common.IServiceImpl;
 import com.distkv.drpc.test.protocol.generated.EchoProtocol;
+import java.util.concurrent.ExecutionException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -53,10 +54,8 @@ public class WorkerPoolTest {
 
       try {
         EchoProtocol.GetResponse response = service.get().get();
-        if (response.getValue() != i) {
-          Assert.fail("Response error: " + response.getValue() + " expect: " + i);
-        }
-      } catch (Exception e) {
+        Assert.assertEquals(response.getValue(), i);
+      } catch (InterruptedException | ExecutionException e) {
         Assert.fail("Error occurred!");
       }
     }
