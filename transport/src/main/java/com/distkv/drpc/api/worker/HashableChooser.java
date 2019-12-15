@@ -5,6 +5,6 @@ import io.netty.util.concurrent.EventExecutorChooserFactory;
 
 public interface HashableChooser extends EventExecutorChooserFactory.EventExecutorChooser {
 
-  EventExecutor next(int taskId);
+  EventExecutor next(int hash);
 
 }

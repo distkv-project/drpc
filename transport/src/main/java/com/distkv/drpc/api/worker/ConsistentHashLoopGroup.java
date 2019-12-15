@@ -11,16 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-public final class WorkerLoopGroup
+public final class ConsistentHashLoopGroup
     extends MultithreadEventExecutorGroup
-    implements TaskHashedExecutor {
+    implements HashableExecutor {
 
   private static final int DEFAULT_MAX_PENDING_EXECUTOR_TASKS = Integer.MAX_VALUE;
 
   private HashableChooser chooser;
   private static List<EventExecutor> children = new ArrayList<>(); // before <init>
 
-  public WorkerLoopGroup(int threadNum, EventExecutorChooserFactory chooserFactory) {
+  public ConsistentHashLoopGroup(int threadNum, EventExecutorChooserFactory chooserFactory) {
     this(threadNum, null, chooserFactory, DEFAULT_MAX_PENDING_EXECUTOR_TASKS,
         RejectedExecutionHandlers.reject());
     EventExecutorChooser chooser = chooserFactory
@@ -32,7 +32,7 @@ public final class WorkerLoopGroup
     }
   }
 
-  private WorkerLoopGroup(int threadNum, Executor executor,
+  private ConsistentHashLoopGroup(int threadNum, Executor executor,
       EventExecutorChooserFactory chooserFactory, Object... args) {
     super(threadNum, executor, chooserFactory, args);
   }
@@ -46,10 +46,10 @@ public final class WorkerLoopGroup
     return newChildren;
   }
 
-  // TaskHashedExecutor
+  // HashableExecutor
   @Override
-  public void submit(int taskId, Runnable task) {
-    chooser.next(taskId).submit(task);
+  public void submit(int hash, Runnable task) {
+    chooser.next(hash).submit(task);
   }
 
 }

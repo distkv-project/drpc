@@ -1,8 +1,8 @@
 package com.distkv.drpc.api;
 
 import com.distkv.drpc.api.worker.HashableChooser;
-import com.distkv.drpc.api.worker.TaskHashedExecutor;
-import com.distkv.drpc.api.worker.WorkerLoopGroup;
+import com.distkv.drpc.api.worker.HashableExecutor;
+import com.distkv.drpc.api.worker.ConsistentHashLoopGroup;
 import com.distkv.drpc.codec.Codec;
 import com.distkv.drpc.config.ServerConfig;
 import com.distkv.drpc.constants.GlobalConstants;
@@ -24,7 +24,7 @@ public abstract class AbstractServer implements Server {
   private volatile int status = NEW;
   private Codec codec;
   private RoutableHandler routableHandler;
-  private TaskHashedExecutor executor;
+  private HashableExecutor executor;
 
   public AbstractServer(ServerConfig serverConfig, Codec codec) {
     this.serverConfig = serverConfig;
@@ -44,7 +44,7 @@ public abstract class AbstractServer implements Server {
   }
 
   @Override
-  public TaskHashedExecutor getExecutor() {
+  public HashableExecutor getExecutor() {
     return executor;
   }
 
@@ -76,7 +76,7 @@ public abstract class AbstractServer implements Server {
   private void createExecutor() {
     int workerNum = serverConfig.getWorkerThreadNum() > 0 ? serverConfig.getWorkerThreadNum()
         : GlobalConstants.THREAD_NUMBER * 2;
-    executor = new WorkerLoopGroup(workerNum,
+    executor = new ConsistentHashLoopGroup(workerNum,
         (eventExecutors) ->
             new HashableChooser() {
               private final EventExecutor[] executors = eventExecutors;
@@ -85,8 +85,8 @@ public abstract class AbstractServer implements Server {
                   .newChooser(eventExecutors);
 
               @Override
-              public EventExecutor next(int taskId) {
-                return executors[taskId % size];
+              public EventExecutor next(int hash) {
+                return executors[hash % size];
               }
 
               @Override
