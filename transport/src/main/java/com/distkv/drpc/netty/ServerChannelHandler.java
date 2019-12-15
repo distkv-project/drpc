@@ -11,15 +11,11 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ServerChannelHandler extends ChannelDuplexHandler {
 
   private Handler handler;
   private NettyServer nettyServer;
-  private ExecutorService executorService = Executors.newSingleThreadExecutor();
-
 
   public ServerChannelHandler(NettyServer nettyServer) {
     this.nettyServer = nettyServer;
@@ -36,7 +32,11 @@ public class ServerChannelHandler extends ChannelDuplexHandler {
       throw new DrpcException(
           "ServerChannelHandler: unsupported message type when decode: " + object.getClass());
     }
-    executorService.submit(() -> processRequest(ctx, (Request) object));
+    if (nettyServer.getExecutor() != null) {
+      nettyServer.getExecutor().submit(hashCode(), () -> processRequest(ctx, (Request) object));
+    } else {
+      processRequest(ctx, (Request) object);
+    }
   }
 
   private void processRequest(ChannelHandlerContext ctx, Request request) {

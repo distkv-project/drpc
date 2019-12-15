@@ -1,11 +1,14 @@
 package com.distkv.drpc.api;
 
+import com.distkv.drpc.api.worker.ExecutorChooser;
+import com.distkv.drpc.api.worker.TaskHashedExecutor;
+import com.distkv.drpc.api.worker.WorkerLoopGroup;
 import com.distkv.drpc.codec.Codec;
 import com.distkv.drpc.config.ServerConfig;
 import com.distkv.drpc.constants.GlobalConstants;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import io.netty.util.concurrent.DefaultEventExecutorChooserFactory;
+import io.netty.util.concurrent.EventExecutor;
+import io.netty.util.concurrent.EventExecutorChooserFactory.EventExecutorChooser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +24,7 @@ public abstract class AbstractServer implements Server {
   private volatile int status = NEW;
   private Codec codec;
   private RoutableHandler routableHandler;
-  private ExecutorService executor;
+  private TaskHashedExecutor executor;
 
   public AbstractServer(ServerConfig serverConfig, Codec codec) {
     this.serverConfig = serverConfig;
@@ -41,7 +44,7 @@ public abstract class AbstractServer implements Server {
   }
 
   @Override
-  public Executor getExecutor() {
+  public TaskHashedExecutor getExecutor() {
     return executor;
   }
 
@@ -72,7 +75,25 @@ public abstract class AbstractServer implements Server {
   private void createExecutor() {
     int workerNum = serverConfig.getWorkerThreadNum() > 0 ? serverConfig.getWorkerThreadNum()
         : GlobalConstants.THREAD_NUMBER * 2;
-    executor = Executors.newFixedThreadPool(workerNum);
+    executor = new WorkerLoopGroup(workerNum,
+        (eventExecutors) ->
+            new ExecutorChooser() {
+              private final EventExecutor[] executors = eventExecutors;
+              private final int size = eventExecutors.length;
+              private EventExecutorChooser chooser = DefaultEventExecutorChooserFactory.INSTANCE
+                  .newChooser(eventExecutors);
+
+              @Override
+              public EventExecutor next(int taskId) {
+                return executors[taskId % size];
+              }
+
+              @Override
+              public EventExecutor next() {
+                return chooser.next();
+              }
+
+            });
   }
 
 }
