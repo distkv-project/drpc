@@ -69,6 +69,12 @@ public class NettyClient extends AbstractClient {
                 processResponse((Response) object);
               }
 
+              @Override
+              public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+                  throws Exception {
+
+              }
+
               private void processResponse(Response response) {
                 Response future = getResponseFuture(response.getRequestId());
                 future.setStatus(response.getStatus());

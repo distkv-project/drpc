@@ -11,6 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+/**
+ * ConsistentHashLoopGroup guarantees that the task from the same hash number will
+ * be dispatched to the same thread.
+ *
+ * If you need to execute some task by order, you could use ConsistentHashLoopGroup.
+ */
 public final class ConsistentHashLoopGroup
     extends MultithreadEventExecutorGroup
     implements HashableExecutor {

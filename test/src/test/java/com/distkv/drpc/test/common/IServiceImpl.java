@@ -1,6 +1,6 @@
-package com.distkv.drpc.test.protocol.common;
+package com.distkv.drpc.test.common;
 
-import com.distkv.drpc.test.protocol.generated.EchoProtocol;
+import com.distkv.drpc.test.generated.EchoProtocol;
 import java.util.concurrent.CompletableFuture;
 
 public class IServiceImpl implements IService {

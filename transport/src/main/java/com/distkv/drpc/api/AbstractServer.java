@@ -1,14 +1,11 @@
 package com.distkv.drpc.api;
 
-import com.distkv.drpc.api.worker.HashableChooser;
+import com.distkv.drpc.api.worker.HashableChooserFactory;
 import com.distkv.drpc.api.worker.HashableExecutor;
 import com.distkv.drpc.api.worker.ConsistentHashLoopGroup;
 import com.distkv.drpc.codec.Codec;
 import com.distkv.drpc.config.ServerConfig;
 import com.distkv.drpc.constants.GlobalConstants;
-import io.netty.util.concurrent.DefaultEventExecutorChooserFactory;
-import io.netty.util.concurrent.EventExecutor;
-import io.netty.util.concurrent.EventExecutorChooserFactory.EventExecutorChooser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +21,23 @@ public abstract class AbstractServer implements Server {
   private volatile int status = NEW;
   private Codec codec;
   private RoutableHandler routableHandler;
+
+  /**
+   * HashableExecutor is needed, because if a request just be submitted randomly to a
+   * generic executor such as ThreadPollExecutor, then the a series of requests can't
+   * be able to be executed by the origin order even if they are transformed by the same
+   * TCP link. And in some cases, this will cause severe problem.
+   *
+   * To fix this problem, we introduce HashableExecutor.
+   *
+   * When you need keep order for a series of requests, you can invoke
+   * {@link HashableExecutor#submit(int, Runnable)} and pass a same hash number as the first
+   * argument of those requests, as result, those requests will be executed by submitting
+   * order.
+   *
+   * If you use the hash feature to keep order, the requests will be executed by a same thread.
+   * In some cases, it could cause performance problem.
+   */
   private HashableExecutor executor;
 
   public AbstractServer(ServerConfig serverConfig, Codec codec) {
@@ -76,25 +90,7 @@ public abstract class AbstractServer implements Server {
   private void createExecutor() {
     int workerNum = serverConfig.getWorkerThreadNum() > 0 ? serverConfig.getWorkerThreadNum()
         : GlobalConstants.THREAD_NUMBER * 2;
-    executor = new ConsistentHashLoopGroup(workerNum,
-        (eventExecutors) ->
-            new HashableChooser() {
-              private final EventExecutor[] executors = eventExecutors;
-              private final int size = eventExecutors.length;
-              private EventExecutorChooser chooser = DefaultEventExecutorChooserFactory.INSTANCE
-                  .newChooser(eventExecutors);
-
-              @Override
-              public EventExecutor next(int hash) {
-                return executors[hash % size];
-              }
-
-              @Override
-              public EventExecutor next() {
-                return chooser.next();
-              }
-
-            });
+    executor = new ConsistentHashLoopGroup(workerNum, HashableChooserFactory.INSTANCE);
   }
 
 }

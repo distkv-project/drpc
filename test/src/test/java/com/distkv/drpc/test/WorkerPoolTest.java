@@ -1,4 +1,4 @@
-package com.distkv.drpc.test.protocol;
+package com.distkv.drpc.test;
 
 
 import com.distkv.drpc.DrpcServer;
@@ -7,9 +7,9 @@ import com.distkv.drpc.api.Client;
 import com.distkv.drpc.config.ClientConfig;
 import com.distkv.drpc.config.ServerConfig;
 import com.distkv.drpc.netty.NettyClient;
-import com.distkv.drpc.test.protocol.common.IService;
-import com.distkv.drpc.test.protocol.common.IServiceImpl;
-import com.distkv.drpc.test.protocol.generated.EchoProtocol;
+import com.distkv.drpc.test.common.IService;
+import com.distkv.drpc.test.common.IServiceImpl;
+import com.distkv.drpc.test.generated.EchoProtocol;
 import java.util.concurrent.ExecutionException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
