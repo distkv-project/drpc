@@ -66,6 +66,7 @@ public abstract class AbstractServer implements Server {
   @Override
   public void close() {
     doClose();
+    executor.shutdownGracefully();
   }
 
   protected abstract void doOpen();
