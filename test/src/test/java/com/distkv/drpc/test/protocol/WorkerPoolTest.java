@@ -10,7 +10,6 @@ import com.distkv.drpc.netty.NettyClient;
 import com.distkv.drpc.test.protocol.common.IService;
 import com.distkv.drpc.test.protocol.common.IServiceImpl;
 import com.distkv.drpc.test.protocol.generated.EchoProtocol;
-import java.util.concurrent.CompletableFuture;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
