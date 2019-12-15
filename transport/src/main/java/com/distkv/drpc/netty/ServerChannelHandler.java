@@ -34,6 +34,7 @@ public class ServerChannelHandler extends ChannelDuplexHandler {
     }
     if (nettyServer.getExecutor() != null) {
       nettyServer.getExecutor().submit(hashCode(), () -> processRequest(ctx, (Request) object));
+      // nettyServer.getExecutor().submit(() -> processRequest(ctx, (Request) object));
     } else {
       processRequest(ctx, (Request) object);
     }

@@ -67,6 +67,9 @@ public class ProtobufRequestDelegate implements Request {
 
   @Override
   public void setArgsValue(Object[] argsValue) {
+    if (argsValue == null) {
+      return;
+    }
     for (Object arg : argsValue) {
       if (arg instanceof Any) {
         builder.addArgs((Any) arg);
