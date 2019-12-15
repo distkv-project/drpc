@@ -18,17 +18,12 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-/**
- * 业务线程组，借用netty的EventExecutorGroup实现，为了使用自定义EventExecutorChooserFactory
- *
- * @author zrj CreateDate: 2019/11/20
- */
 final public class WorkerLoopGroup extends MultithreadEventExecutorGroup implements TaskHashedExecutor {
 
   private static final int DEFAULT_MAX_PENDING_EXECUTOR_TASKS = Integer.MAX_VALUE;
 
   private ExecutorChooser chooser;
-  private static List<EventExecutor> children = new ArrayList<>(); // 抢在<init>方法执行之前
+  private static List<EventExecutor> children = new ArrayList<>(); // before <init>
 
 
   public WorkerLoopGroup(int nThreads, EventExecutorChooserFactory chooserFactory) {
@@ -38,7 +33,7 @@ final public class WorkerLoopGroup extends MultithreadEventExecutorGroup impleme
     if(chooser instanceof ExecutorChooser) {
       this.chooser = (ExecutorChooser) chooser;
     } else {
-      throw new IllegalArgumentException("WorkerLoopGroup必须使用com.nowcoder.pk.core.ExecutorChooser的chooser");
+      throw new IllegalArgumentException();
     }
   }
 
@@ -62,9 +57,6 @@ final public class WorkerLoopGroup extends MultithreadEventExecutorGroup impleme
     return newChildren;
   }
 
-  /**
-   * 所有netty提供的提交任务的方法都不再建议使用。
-   */
   @Override
   @Deprecated
   public Future<?> submit(Runnable task) {
