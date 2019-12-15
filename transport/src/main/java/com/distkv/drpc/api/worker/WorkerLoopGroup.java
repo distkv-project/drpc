@@ -17,7 +17,7 @@ public final class WorkerLoopGroup
 
   private static final int DEFAULT_MAX_PENDING_EXECUTOR_TASKS = Integer.MAX_VALUE;
 
-  private ExecutorChooser chooser;
+  private HashableChooser chooser;
   private static List<EventExecutor> children = new ArrayList<>(); // before <init>
 
   public WorkerLoopGroup(int threadNum, EventExecutorChooserFactory chooserFactory) {
@@ -25,8 +25,8 @@ public final class WorkerLoopGroup
         RejectedExecutionHandlers.reject());
     EventExecutorChooser chooser = chooserFactory
         .newChooser(children.toArray(new EventExecutor[0]));
-    if (chooser instanceof ExecutorChooser) {
-      this.chooser = (ExecutorChooser) chooser;
+    if (chooser instanceof HashableChooser) {
+      this.chooser = (HashableChooser) chooser;
     } else {
       throw new IllegalArgumentException();
     }

@@ -1,6 +1,6 @@
 package com.distkv.drpc.api;
 
-import com.distkv.drpc.api.worker.ExecutorChooser;
+import com.distkv.drpc.api.worker.HashableChooser;
 import com.distkv.drpc.api.worker.TaskHashedExecutor;
 import com.distkv.drpc.api.worker.WorkerLoopGroup;
 import com.distkv.drpc.codec.Codec;
@@ -78,7 +78,7 @@ public abstract class AbstractServer implements Server {
         : GlobalConstants.THREAD_NUMBER * 2;
     executor = new WorkerLoopGroup(workerNum,
         (eventExecutors) ->
-            new ExecutorChooser() {
+            new HashableChooser() {
               private final EventExecutor[] executors = eventExecutors;
               private final int size = eventExecutors.length;
               private EventExecutorChooser chooser = DefaultEventExecutorChooserFactory.INSTANCE
