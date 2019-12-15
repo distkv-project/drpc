@@ -32,7 +32,7 @@ public abstract class AbstractServer implements Server {
    *
    * When you need keep order for a series of requests, you can invoke
    * {@link HashableExecutor#submit(int, Runnable)} and pass a same hash number as the first
-   * argument of those requests, as result, those requests will be executed by submitting
+   * argument of those tasks, as result, those requests will be executed by submitting
    * order.
    *
    * If you use the hash feature to keep order, the requests will be executed by a same thread.
