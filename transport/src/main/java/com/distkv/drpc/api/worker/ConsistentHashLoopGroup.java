@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 /**
- * ConsistentHashLoopGroup guarantees that the task from the same hash number will
- * be dispatched to the same thread.
+ * ConsistentHashLoopGroup guarantees that the task from the same hash number will be dispatched to
+ * the same thread.
  *
  * If you need to execute some task by order, you could use ConsistentHashLoopGroup.
  */
@@ -26,16 +26,12 @@ public final class ConsistentHashLoopGroup
   private HashableChooser chooser;
   private static List<EventExecutor> children = new ArrayList<>(); // before <init>
 
-  public ConsistentHashLoopGroup(int threadNum, EventExecutorChooserFactory chooserFactory) {
+  public ConsistentHashLoopGroup(int threadNum, HashableChooserFactory chooserFactory) {
     this(threadNum, null, chooserFactory, DEFAULT_MAX_PENDING_EXECUTOR_TASKS,
         RejectedExecutionHandlers.reject());
     EventExecutorChooser chooser = chooserFactory
         .newChooser(children.toArray(new EventExecutor[0]));
-    if (chooser instanceof HashableChooser) {
-      this.chooser = (HashableChooser) chooser;
-    } else {
-      throw new IllegalArgumentException();
-    }
+    this.chooser = (HashableChooser) chooser;
   }
 
   private ConsistentHashLoopGroup(int threadNum, Executor executor,
