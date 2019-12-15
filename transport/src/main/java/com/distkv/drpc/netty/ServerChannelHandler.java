@@ -33,7 +33,8 @@ public class ServerChannelHandler extends ChannelDuplexHandler {
           "ServerChannelHandler: unsupported message type when decode: " + object.getClass());
     }
     if (nettyServer.getExecutor() != null) {
-      nettyServer.getExecutor().execute(() -> processRequest(ctx, (Request) object));
+      // TODO: add a option to determine if it needs keep order.
+      nettyServer.getExecutor().submit(hashCode(), () -> processRequest(ctx, (Request) object));
     } else {
       processRequest(ctx, (Request) object);
     }
