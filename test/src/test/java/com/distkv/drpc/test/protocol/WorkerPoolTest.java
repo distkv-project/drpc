@@ -60,16 +60,6 @@ public class WorkerPoolTest {
       } catch (Exception e) {
         Assert.fail("Error occurred!");
       }
-
     }
   }
-
-  @Test
-  public void testCompletable() {
-    CompletableFuture<Integer> future = new CompletableFuture<>();
-    future.complete(1);
-    future.whenComplete((v, t) -> System.out.println(v));
-  }
-
-
 }
