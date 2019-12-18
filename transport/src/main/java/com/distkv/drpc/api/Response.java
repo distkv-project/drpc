@@ -1,5 +1,4 @@
-package com.distkv.drpc.api.async;
-
+package com.distkv.drpc.api;
 
 public interface Response {
 
@@ -15,12 +14,12 @@ public interface Response {
 
   void setThrowable(Throwable throwable);
 
-  boolean hasAttribute(String key);
+  Enum<?> getStatus();
 
-  Object getAttribute(String key);
+  void setStatus(Enum<?> status);
 
-  void setAttribute(String key, Object value);
-  
-  void removeAttribute(String key);
+  boolean isError();
+
+  void build();
 
 }

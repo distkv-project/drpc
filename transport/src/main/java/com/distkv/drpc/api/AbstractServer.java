@@ -1,11 +1,11 @@
 package com.distkv.drpc.api;
 
+import com.distkv.drpc.api.worker.HashableChooserFactory;
+import com.distkv.drpc.api.worker.HashableExecutor;
+import com.distkv.drpc.api.worker.ConsistentHashLoopGroup;
 import com.distkv.drpc.codec.Codec;
 import com.distkv.drpc.config.ServerConfig;
 import com.distkv.drpc.constants.GlobalConstants;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +21,24 @@ public abstract class AbstractServer implements Server {
   private volatile int status = NEW;
   private Codec codec;
   private RoutableHandler routableHandler;
-  private ExecutorService executor;
+
+  /**
+   * HashableExecutor is needed, because if a request just be submitted randomly to a
+   * generic executor such as ThreadPollExecutor, then the a series of requests can't
+   * be able to be executed by the origin order even if they are transformed by the same
+   * TCP link. And in some cases, this will cause severe problem.
+   *
+   * To fix this problem, we introduce HashableExecutor.
+   *
+   * When you need keep order for a series of requests, you can invoke
+   * {@link HashableExecutor#submit(int, Runnable)} and pass a same hash number as the first
+   * argument of those tasks, as result, those requests will be executed by submitting
+   * order.
+   *
+   * If you use the hash feature to keep order, the requests will be executed by a same thread.
+   * In some cases, it could cause performance problem.
+   */
+  private HashableExecutor executor;
 
   public AbstractServer(ServerConfig serverConfig, Codec codec) {
     this.serverConfig = serverConfig;
@@ -41,7 +58,7 @@ public abstract class AbstractServer implements Server {
   }
 
   @Override
-  public Executor getExecutor() {
+  public HashableExecutor getExecutor() {
     return executor;
   }
 
@@ -63,6 +80,7 @@ public abstract class AbstractServer implements Server {
   @Override
   public void close() {
     doClose();
+    executor.shutdownGracefully();
   }
 
   protected abstract void doOpen();
@@ -72,7 +90,7 @@ public abstract class AbstractServer implements Server {
   private void createExecutor() {
     int workerNum = serverConfig.getWorkerThreadNum() > 0 ? serverConfig.getWorkerThreadNum()
         : GlobalConstants.THREAD_NUMBER * 2;
-    executor = Executors.newFixedThreadPool(workerNum);
+    executor = new ConsistentHashLoopGroup(workerNum, HashableChooserFactory.INSTANCE);
   }
 
 }

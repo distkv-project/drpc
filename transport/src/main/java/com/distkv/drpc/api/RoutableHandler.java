@@ -14,7 +14,7 @@ public interface RoutableHandler extends Handler {
   Object handle(Object message);
 
   @Override
-  default String getServerName() {
+  default String getServiceName() {
     throw new UnsupportedOperationException();
   }
 

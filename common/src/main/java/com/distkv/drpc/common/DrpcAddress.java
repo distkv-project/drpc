@@ -38,9 +38,6 @@ public class DrpcAddress {
     if (!Objects.equals(ip, other.ip)) {
       return false;
     }
-    if (!Objects.equals(port, other.port)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(port, other.port);
   }
 }

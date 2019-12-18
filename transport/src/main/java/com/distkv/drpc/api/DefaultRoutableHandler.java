@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import com.distkv.drpc.api.async.Request;
-
 
 public class DefaultRoutableHandler implements RoutableHandler {
 
@@ -22,7 +20,7 @@ public class DefaultRoutableHandler implements RoutableHandler {
 
   @Override
   public void registerHandler(Handler handler) {
-    String serverIdentify = handler.getServerName();
+    String serverIdentify = handler.getServiceName();
     handlerMap.put(serverIdentify, handler);
   }
 
@@ -42,14 +40,14 @@ public class DefaultRoutableHandler implements RoutableHandler {
 
   @Override
   public Object handle(Object message) {
-    String serverName = ((Request) message).getInterfaceName();
-    return handlerMap.getOrDefault(serverName, new DefaultHandler()).handle(message);
+    String serviceName = ((Request) message).getInterfaceName();
+    return handlerMap.getOrDefault(serviceName, new DefaultHandler()).handle(message);
   }
 
   public static class DefaultHandler implements Handler {
 
     @Override
-    public String getServerName() {
+    public String getServiceName() {
       return null;
     }
 

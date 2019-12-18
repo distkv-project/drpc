@@ -1,7 +1,7 @@
 package com.distkv.drpc.api;
 
+import com.distkv.drpc.api.worker.HashableExecutor;
 import com.distkv.drpc.config.ServerConfig;
-import java.util.concurrent.Executor;
 import com.distkv.drpc.codec.Codec;
 
 public interface Server {
@@ -18,6 +18,6 @@ public interface Server {
 
   RoutableHandler getRoutableHandler();
 
-  Executor getExecutor();
+  HashableExecutor getExecutor();
 
 }

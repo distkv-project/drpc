@@ -1,6 +1,6 @@
 package com.distkv.drpc.pb;
 
-import com.distkv.drpc.Exporter;
+import com.distkv.drpc.DrpcServer;
 import com.distkv.drpc.config.ServerConfig;
 
 public class PBServer {
@@ -10,9 +10,9 @@ public class PBServer {
         .port(8080)
         .build();
 
-    Exporter exporter = new Exporter(serverConfig);
-    exporter.registerService(IPBService.class, new PBServiceImpl());
-    exporter.registerService(IPBService2.class, new PBServiceImpl2());
-    exporter.export();
+    DrpcServer drpcServer = new DrpcServer(serverConfig);
+    drpcServer.registerService(IPBService.class, new PBServiceImpl());
+    drpcServer.registerService(IPBService2.class, new PBServiceImpl2());
+    drpcServer.run();
   }
 }

@@ -7,7 +7,10 @@ import com.distkv.drpc.netty.NettyTransportFactory;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
-public class Exporter {
+/**
+ * The class that represents a drpc server.
+ */
+public class DrpcServer {
 
   /**
    * The service handlers.
@@ -18,7 +21,7 @@ public class Exporter {
 
   private ServerConfig serverConfig;
 
-  public Exporter(ServerConfig serverConfig) {
+  public DrpcServer(ServerConfig serverConfig) {
     this.serverConfig = serverConfig;
   }
 
@@ -32,7 +35,7 @@ public class Exporter {
     serviceHandlers.add(new HandlerDelegate(new ServerImpl<T>(serviceObject, interfaceClass)));
   }
 
-  public void export() {
+  public void run() {
     Server server = NettyTransportFactory.getInstance().createServer(serverConfig, serviceHandlers);
     server.open();
   }

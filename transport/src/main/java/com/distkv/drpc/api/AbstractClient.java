@@ -3,14 +3,10 @@ package com.distkv.drpc.api;
 import com.distkv.drpc.config.ClientConfig;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import com.distkv.drpc.api.async.Response;
 import com.distkv.drpc.codec.Codec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * 客户端，保存了当前已经发送的所有请求，并保存了返回的Future
- */
 public abstract class AbstractClient implements Client {
 
   protected Logger logger = LoggerFactory.getLogger(getClass());
@@ -55,12 +51,14 @@ public abstract class AbstractClient implements Client {
 
   @Override
   public void open() {
+    status = CONNECTED;
     doOpen();
   }
 
   @Override
   public void close() {
     doClose();
+    status = DISCONNECTED;
   }
 
   protected abstract void doOpen();

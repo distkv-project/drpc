@@ -1,10 +1,7 @@
 package com.distkv.drpc.api;
 
-import com.distkv.drpc.api.async.Request;
-import com.distkv.drpc.api.async.Response;
 import com.distkv.drpc.codec.Codec;
 import com.distkv.drpc.config.ClientConfig;
-
 
 public interface Client {
 
