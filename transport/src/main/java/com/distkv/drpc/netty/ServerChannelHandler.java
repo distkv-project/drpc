@@ -27,14 +27,18 @@ public class ServerChannelHandler extends ChannelDuplexHandler {
     ByteBuf byteBuf = (ByteBuf) msg;
     byte[] data = new byte[byteBuf.readableBytes()];
     byteBuf.readBytes(data);
+    byteBuf.release();
     Object object = nettyServer.getCodec().decode(data, DataTypeEnum.REQUEST);
     if (!(object instanceof Request)) {
       throw new DrpcException(
           "ServerChannelHandler: unsupported message type when decode: " + object.getClass());
     }
     if (nettyServer.getExecutor() != null) {
-      // TODO: add a option to determine if it needs keep order.
-      nettyServer.getExecutor().submit(hashCode(), () -> processRequest(ctx, (Request) object));
+      if(nettyServer.getConfig().isNeedOrder()) {
+        nettyServer.getExecutor().submit(hashCode(), () -> processRequest(ctx, (Request) object));
+      } else {
+        nettyServer.getExecutor().submit(() -> processRequest(ctx, (Request) object));
+      }
     } else {
       processRequest(ctx, (Request) object);
     }
