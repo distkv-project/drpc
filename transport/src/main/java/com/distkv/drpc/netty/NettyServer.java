@@ -6,6 +6,7 @@ import com.distkv.drpc.codec.DrpcCodec;
 import com.distkv.drpc.codec.ProtoBufSerialization;
 import com.distkv.drpc.config.ServerConfig;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -52,7 +53,7 @@ public class NettyServer extends AbstractServer {
         });
     serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);
     serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
-    serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
+    serverBootstrap.childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
     try {
       ChannelFuture f = serverBootstrap.bind(getConfig().getPort()).sync();
       serverChannel = f.channel();
