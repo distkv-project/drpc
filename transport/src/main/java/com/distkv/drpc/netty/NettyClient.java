@@ -15,6 +15,7 @@ import com.distkv.drpc.exception.DrpcException;
 import com.distkv.drpc.exception.TransportException;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
@@ -34,7 +35,7 @@ public class NettyClient extends AbstractClient {
 
   public NettyClient(ClientConfig clientConfig) {
     super(clientConfig, new DrpcCodec(new ProtoBufSerialization()));
-    nioEventLoopGroup = new NioEventLoopGroup();
+    nioEventLoopGroup = new NioEventLoopGroup(GlobalConstants.THREAD_NUMBER + 1);
   }
 
   @Override
@@ -45,6 +46,7 @@ public class NettyClient extends AbstractClient {
     bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectTimeoutMillis);
     bootstrap.option(ChannelOption.TCP_NODELAY, true);
     bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
+    bootstrap.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
     bootstrap.group(nioEventLoopGroup)
         .channel(NioSocketChannel.class)
         .handler(new ChannelInitializer<SocketChannel>() {
@@ -60,6 +62,7 @@ public class NettyClient extends AbstractClient {
                 ByteBuf byteBuf = (ByteBuf) msg;
                 byte[] data = new byte[byteBuf.readableBytes()];
                 byteBuf.readBytes(data);
+                byteBuf.release();
                 Object object = getCodec().decode(data, DataTypeEnum.RESPONSE);
                 if (!(object instanceof Response)) {
                   throw new DrpcException(
