@@ -44,6 +44,10 @@ public class ServerChannelHandler extends ChannelDuplexHandler {
   private void processRequest(ChannelHandlerContext ctx, Request request) {
     Response response = (Response) handler.handle(request);
     response.setRequestId(request.getRequestId());
+    if (response.getThrowable() != null) {
+      sendResponse(ctx, response);
+      return;
+    }
     Object value = response.getValue();
     if (value == null || value instanceof Void) {
       return;
