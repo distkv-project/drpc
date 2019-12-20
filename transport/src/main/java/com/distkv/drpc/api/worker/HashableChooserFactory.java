@@ -72,7 +72,7 @@ public class HashableChooserFactory implements EventExecutorChooserFactory {
 
     @Override
     public EventExecutor next(int hash) {
-      return executors[hash % size];
+      return executors[(hash < 0 ? -hash : hash) % size];
     }
   }
 }
