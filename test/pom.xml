@@ -54,8 +54,10 @@
               <addSources>none</addSources>
               <includeStdTypes>true</includeStdTypes>
               <outputDirectory>src/main/java</outputDirectory>
+              <outputDirectory>src/test/java</outputDirectory>
               <inputDirectories>
                 <include>src/main/resources/pb</include>
+                <include>src/test/resources/pb</include>
               </inputDirectories>
             </configuration>
           </execution>
