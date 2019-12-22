@@ -8,7 +8,7 @@ import com.distkv.drpc.pb.generated.StringProtocol;
 
 import java.util.concurrent.CompletableFuture;
 
-public class PBClient {
+public class ExampleClient {
 
   public static void main(String[] args) throws Throwable {
     ClientConfig clientConfig = ClientConfig.builder()
@@ -17,9 +17,9 @@ public class PBClient {
 
     Client client = new NettyClient(clientConfig);
     client.open();
-    Proxy<IPBService> proxy = new Proxy<>();
-    proxy.setInterfaceClass(IPBService.class);
-    IPBService service = proxy.getService(client);
+    Proxy<ExampleService> proxy = new Proxy<>();
+    proxy.setInterfaceClass(ExampleService.class);
+    ExampleService service = proxy.getService(client);
 
     StringProtocol.PutRequest putRequest = StringProtocol.PutRequest.newBuilder()
         .setKey("dstPut")
