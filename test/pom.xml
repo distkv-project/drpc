@@ -53,8 +53,6 @@
               <protocVersion>3.5.1</protocVersion>
               <addSources>none</addSources>
               <includeStdTypes>true</includeStdTypes>
-              <outputDirectory>src/main/java</outputDirectory>
-              <outputDirectory>src/test/java</outputDirectory>
               <inputDirectories>
                 <include>src/main/resources/pb</include>
                 <include>src/test/resources/pb</include>
