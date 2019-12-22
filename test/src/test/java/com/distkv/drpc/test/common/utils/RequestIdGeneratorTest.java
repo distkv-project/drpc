@@ -8,11 +8,11 @@ public class RequestIdGeneratorTest {
 
   @Test
   public void testNext() {
-    Assert.assertNotEquals(RequestIdGenerator.next(), 0);
-    Assert.assertEquals(RequestIdGenerator.next(), 2);
-    Assert.assertEquals(RequestIdGenerator.next(), 3);
-    Assert.assertEquals(RequestIdGenerator.next(), 4);
-    Assert.assertNotEquals(RequestIdGenerator.next(), 6);
+    long begin = RequestIdGenerator.next();
+    RequestIdGenerator.next();
+    RequestIdGenerator.next();
+    long end = RequestIdGenerator.next();
+    Assert.assertEquals(end-begin, 3);
   }
 
 }
