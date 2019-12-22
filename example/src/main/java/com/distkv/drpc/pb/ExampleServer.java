@@ -3,7 +3,7 @@ package com.distkv.drpc.pb;
 import com.distkv.drpc.DrpcServer;
 import com.distkv.drpc.config.ServerConfig;
 
-public class PBServer {
+public class ExampleServer {
 
   public static void main(String[] args) {
     ServerConfig serverConfig = ServerConfig.builder()
@@ -11,8 +11,7 @@ public class PBServer {
         .build();
 
     DrpcServer drpcServer = new DrpcServer(serverConfig);
-    drpcServer.registerService(IPBService.class, new PBServiceImpl());
-    drpcServer.registerService(IPBService2.class, new PBServiceImpl2());
+    drpcServer.registerService(ExampleService.class, new ExampleServiceImpl());
     drpcServer.run();
   }
 }
