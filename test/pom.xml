@@ -54,8 +54,8 @@
               <addSources>none</addSources>
               <includeStdTypes>true</includeStdTypes>
               <inputDirectories>
-                <include>src/main/resources/pb</include>
-                <include>src/test/resources/pb</include>
+                <include>src/main/resources/proto</include>
+                <include>src/test/resources/proto</include>
               </inputDirectories>
             </configuration>
           </execution>

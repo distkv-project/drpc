@@ -2,7 +2,7 @@ syntax="proto3";
 
 package com.distkv.drpc.pb;
 
-option java_package="com.distkv.drpc.pb.generated";
+option java_package="com.distkv.drpc.proto.generated";
 option java_outer_classname="CommonProtocol";
 
 enum Status {
