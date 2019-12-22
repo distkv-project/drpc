@@ -22,9 +22,8 @@ public class ReflectUtilsTest {
         methods.get(1).toString());
 
     Assert.assertEquals(
-        "public static java.lang.Class[] " +
-            "com.distkv.drpc.utils.ReflectUtils.forNames(java.lang.String) " +
-            "throws java.lang.ClassNotFoundException",
+        "public static java.lang.String " +
+            "com.distkv.drpc.utils.ReflectUtils.getMethodDesc(java.lang.reflect.Method)",
         methods.get(2).toString());
   }
 
