@@ -15,4 +15,14 @@ public class RequestIdGeneratorTest {
     Assert.assertEquals(end - begin, 3);
   }
 
+  @Test
+  public void testIDOverFlow() {
+    int MAX_PER_ROUND = 1 << 24;
+    for (int i = 0; i < MAX_PER_ROUND; i++) {
+      RequestIdGenerator.next();
+    }
+    RequestIdGenerator.next();
+    Assert.assertEquals(RequestIdGenerator.next() < MAX_PER_ROUND, true);
+
+  }
 }

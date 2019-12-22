@@ -26,13 +26,13 @@ public class ClientConfigTest {
 
   }
 
-  @Test
+  @Test(expectedExceptions = DrpcIllegalAddressException.class)
   public void testGetServerPortNumberFormatException() {
     ClientConfig clientConfig = ClientConfig.builder()
         .address("list://127.0.0.1:abcd")
         .timeout(1000)
         .build();
-    clientConfig.getServerIp();
+    clientConfig.getServerPort();
   }
 
   @Test
