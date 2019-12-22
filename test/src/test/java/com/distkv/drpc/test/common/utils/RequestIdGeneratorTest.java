@@ -17,12 +17,12 @@ public class RequestIdGeneratorTest {
 
   @Test
   public void testIDOverFlow() {
-    int MAX_PER_ROUND = 1 << 24;
-    for (int i = 0; i < MAX_PER_ROUND; i++) {
+    int maxPerRound = 1 << 24;
+    for (int i = 0; i < maxPerRound; i++) {
       RequestIdGenerator.next();
     }
     RequestIdGenerator.next();
-    Assert.assertEquals(RequestIdGenerator.next() < MAX_PER_ROUND, true);
+    Assert.assertEquals(RequestIdGenerator.next() < maxPerRound, true);
 
   }
 }
