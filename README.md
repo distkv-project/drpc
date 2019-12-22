@@ -1,16 +1,16 @@
 # drpc
-DRPC is a high performance RPC framework with multiple-languages server and client.
+The next generation RPC framework.
 
 ## Project Description
 `DRPC` is a high performance RPC framework, which aims to help users build their networking communications easily.
 The biggest feature to distinguish with other RPC frameworks is it supports multiple languages server.
 
 ## Awesome Features
-- Support multiple languages server
-- Support Asynchronous server
-- Support multiple languages client
+- Multiple languages server and client
+- Asynchronous services in server
 - Dynamic registration for service
 - The ability for order preserving
+- High performance and easy to use
 
 ## Quick Started
 TODO
@@ -19,16 +19,16 @@ TODO
 TODO
 ## Roadmap
 
-### Done
-- Asynchronous server
+#### Done
+- Asynchronous services in server
 - Order preserving in one client context
 
-### Doing
+#### Doing
 - Go client and C++ client
 - Session concept for Order preserving
 - Dynamic registration for service
 
-### Planned and TBD
+#### Planned and TBD
 - Support Multiple languages for server
 - Load balance for services
 
