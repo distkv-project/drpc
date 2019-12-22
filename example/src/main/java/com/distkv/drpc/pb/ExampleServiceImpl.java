@@ -1,6 +1,5 @@
 package com.distkv.drpc.pb;
 
-import com.distkv.drpc.pb.generated.CommonProtocol;
 import com.distkv.drpc.pb.generated.StringProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,7 @@ public class ExampleServiceImpl implements ExampleService {
     CompletableFuture<StringProtocol.GetResponse> future = new CompletableFuture<>();
     StringProtocol.GetResponse response = StringProtocol.GetResponse.newBuilder()
           .setValue(request.getKey() + " get() request success")
-          .setStatus(CommonProtocol.Status.OK)
+          .setStatus(StringProtocol.Status.OK)
           .build();
     future.complete(response);
     logger.info("server receive: " + request.getKey());
@@ -26,7 +25,7 @@ public class ExampleServiceImpl implements ExampleService {
   public CompletableFuture<StringProtocol.PutResponse> put(StringProtocol.PutRequest request) {
     CompletableFuture<StringProtocol.PutResponse> future = new CompletableFuture<>();
     StringProtocol.PutResponse response = StringProtocol.PutResponse.newBuilder()
-          .setStatus(CommonProtocol.Status.OK)
+          .setStatus(StringProtocol.Status.OK)
           .build();
     future.complete(response);
     logger.info("server receive key: " + request.getKey());

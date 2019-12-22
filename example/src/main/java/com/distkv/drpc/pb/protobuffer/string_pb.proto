@@ -2,11 +2,15 @@ syntax="proto3";
 
 package com.distkv.drpc.pb;
 
-import "common_pb.proto";
-
 option java_package="com.distkv.drpc.pb.generated";
 option java_outer_classname="StringProtocol";
 option cc_generic_services = true;
+
+enum Status {
+    OK = 0;
+    KEY_NOT_FOUND = 1;
+    UNKNOWN_ERROR = 2;
+};
 
 message PutRequest {
     string key = 1;
