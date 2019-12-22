@@ -3,9 +3,7 @@ package com.distkv.drpc.test.common.utils;
 import com.distkv.drpc.utils.ReflectUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import java.lang.reflect.Method;
-import java.util.Date;
 import java.util.List;
 
 public class ReflectUtilsTest {

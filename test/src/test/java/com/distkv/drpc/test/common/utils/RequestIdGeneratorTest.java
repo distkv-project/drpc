@@ -12,7 +12,7 @@ public class RequestIdGeneratorTest {
     RequestIdGenerator.next();
     RequestIdGenerator.next();
     long end = RequestIdGenerator.next();
-    Assert.assertEquals(end-begin, 3);
+    Assert.assertEquals(end - begin, 3);
   }
 
 }
