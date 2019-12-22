@@ -12,7 +12,6 @@ public class PBServer {
 
     DrpcServer drpcServer = new DrpcServer(serverConfig);
     drpcServer.registerService(IPBService.class, new PBServiceImpl());
-    drpcServer.registerService(IPBService2.class, new PBServiceImpl2());
     drpcServer.run();
   }
 }

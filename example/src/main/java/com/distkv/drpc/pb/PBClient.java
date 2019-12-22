@@ -6,6 +6,8 @@ import com.distkv.drpc.config.ClientConfig;
 import com.distkv.drpc.netty.NettyClient;
 import com.distkv.drpc.pb.generated.StringProtocol;
 
+import java.util.concurrent.CompletableFuture;
+
 public class PBClient {
 
   public static void main(String[] args) throws Throwable {
@@ -19,42 +21,35 @@ public class PBClient {
     proxy.setInterfaceClass(IPBService.class);
     IPBService service = proxy.getService(client);
 
-    //get
+    StringProtocol.PutRequest putRequest = StringProtocol.PutRequest.newBuilder()
+        .setKey("dstPut")
+        .setValue("PutValue")
+        .build();
+
     StringProtocol.GetRequest getRequest = StringProtocol.GetRequest.newBuilder()
-            .setKey("dstGet").build();
+        .setKey("dstGet").build();
+
+    //sync
     StringProtocol.GetResponse getResponse = service.get(getRequest).get();
     System.out.println(getResponse.getStatus());
     System.out.println(getResponse.getValue());
-
-    // put
-    StringProtocol.PutRequest putRequest = StringProtocol.PutRequest.newBuilder()
-            .setKey("dstPut")
-            .setValue("PutValue")
-            .build();
     StringProtocol.PutResponse putResponse = service.put(putRequest).get();
     System.out.println(putResponse.getStatus());
 
-    System.out.println("-------------------------------------------------------");
+    //async
+    CompletableFuture future1 = service.get(getRequest);
+    future1.whenComplete((r, t) -> {
+      if (t == null) {
+        System.out.println(getResponse.getStatus());
+        System.out.println(getResponse.getValue());
+      }
+    });
 
-    Client client2 = new NettyClient(clientConfig);
-    client2.open();
-    Proxy<IPBService2> proxy2 = new Proxy<>();
-    proxy2.setInterfaceClass(IPBService2.class);
-    IPBService2 service2 = proxy2.getService(client2);
-    //get2
-    StringProtocol.GetRequest getRequest2 = StringProtocol.GetRequest.newBuilder()
-            .setKey("dstGet2").build();
-    StringProtocol.GetResponse getResponse2 = service2.get2(getRequest2).get();
-    System.out.println(getResponse2.getStatus());
-    System.out.println(getResponse2.getValue());
+    CompletableFuture future2 = service.put(putRequest);
+    service.put(putRequest).whenComplete((r, t) -> {
+      System.out.println(putResponse.getStatus());
+    });
 
-    // put2
-    StringProtocol.PutRequest putRequest2 = StringProtocol.PutRequest.newBuilder()
-            .setKey("dstPut2")
-            .setValue("PutValue2")
-            .build();
-    StringProtocol.PutResponse putResponse2 = service2.put2(putRequest2).get();
-    System.out.println(putResponse2.getStatus());
-
+    client.close();
   }
 }

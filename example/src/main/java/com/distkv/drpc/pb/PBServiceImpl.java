@@ -11,7 +11,6 @@ import java.util.concurrent.Executors;
 public class PBServiceImpl implements IPBService {
 
   private Logger logger = LoggerFactory.getLogger(getClass());
-  private ExecutorService executorService = Executors.newFixedThreadPool(32);
 
   @Override
   public CompletableFuture<StringProtocol.GetResponse> get(StringProtocol.GetRequest request) {
@@ -20,12 +19,8 @@ public class PBServiceImpl implements IPBService {
           .setValue(request.getKey() + " get() request success")
           .setStatus(CommonProtocol.Status.OK)
           .build();
-    //exec sth delayed async
-    executorService.submit(() -> {
-      sleep(3000);
-      future.complete(response);
-    });
-    System.out.println("server receive: " + request.getKey());
+    future.complete(response);
+    logger.info("server receive: " + request.getKey());
     return future;
   }
 
@@ -35,21 +30,9 @@ public class PBServiceImpl implements IPBService {
     StringProtocol.PutResponse response = StringProtocol.PutResponse.newBuilder()
           .setStatus(CommonProtocol.Status.OK)
           .build();
-    //exec sth delayed async
-    executorService.submit(() -> {
-      sleep(3000);
-      future.complete(response);
-    });
-    System.out.println("server receive key: " + request.getKey());
-    System.out.println("server receive value: " + request.getValue());
+    future.complete(response);
+    logger.info("server receive key: " + request.getKey());
+    logger.info("server receive value: " + request.getValue());
     return future;
-  }
-
-  private void sleep(long t) {
-    try {
-      Thread.sleep(t);
-    } catch (Exception e) {
-      logger.error("exception", e);
-    }
   }
 }
