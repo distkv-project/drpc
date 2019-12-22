@@ -20,8 +20,8 @@ TODO
 ## Roadmap
 
 #### Done
-- Asynchronous services in server
-- Order preserving in one client context
+- ~~Asynchronous services in server~~
+- ~~Order preserving in one client context~~
 
 #### Doing
 - Go client and C++ client
