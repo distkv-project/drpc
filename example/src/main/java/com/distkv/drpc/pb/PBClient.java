@@ -46,8 +46,10 @@ public class PBClient {
     });
 
     CompletableFuture future2 = service.put(putRequest);
-    service.put(putRequest).whenComplete((r, t) -> {
-      System.out.println(putResponse.getStatus());
+    future2.whenComplete((r, t) -> {
+      if (t == null) {
+        System.out.println(putResponse.getStatus());
+      }
     });
 
     client.close();
