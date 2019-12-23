@@ -38,7 +38,7 @@
               <includeStdTypes>true</includeStdTypes>
               <outputDirectory>src/main/java</outputDirectory>
               <inputDirectories>
-                <include>src/main/java/com/distkv/drpc/pb</include>
+                <include>src/main/java/com/distkv/drpc/pb/protobuffer</include>
               </inputDirectories>
             </configuration>
           </execution>
