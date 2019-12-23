@@ -1,47 +1,60 @@
 package com.distkv.drpc.test.common;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Arrays;
+import java.util.Random;
 
 public class DymmyData {
 
-  /**
-   * The threshold of determinant weather need fill content randomly.
-   *
-   * If size is greater than threshold, 36 bytes will be filled randomly while left bytes filled
-   * with an constance content. Be simple, only 36 bytes will be randomly.
-   */
-  private static final int THRESHOLD = 36;
+  private static ThreadLocal<Long> SEED = new ThreadLocal<>();
+  private static final int SIZE_MB = 1024 * 1024; // 1MB
+  private static final int SEED_SIZE = Long.BYTES;
+  private static final byte[] BIG_SIZE_DEFAULT_VALUE = new byte[SIZE_MB];
 
-  public static DymmyData INSTANCE_5_BYTES = new DymmyData(5);
-  public static DymmyData INSTANCE_1K_BYTES = new DymmyData(1024);
+  static {
+    Random random = new Random();
+    random.nextBytes(BIG_SIZE_DEFAULT_VALUE);
+  }
 
   private final byte[] content;
-  private final int size;
+  private final int hashCode;
 
   public DymmyData(int size) {
-    this.size = size;
-    if (size <= THRESHOLD) {
-      content = null;
-    } else {
-      content = new byte[size];
-      ThreadLocalRandom random = ThreadLocalRandom.current();
-      byte[] constanceContent = new byte[size - THRESHOLD];
-      random.nextBytes(constanceContent);
-      System.arraycopy(constanceContent, 0, content, 0, constanceContent.length);
+    if (size > SIZE_MB) {
+      throw new IllegalArgumentException("Size could not larger than 1MB(1024 * 1024)");
     }
+    this.content = new byte[size];
+    Long seed = SEED.get();
+    if (seed == null) {
+      SEED.set(0L);
+      seed = SEED.get();
+    }
+    longToBytes(content, Math.max(0, size - SEED_SIZE), seed);
+    seed++;
+    SEED.set(seed);
+
+    this.hashCode = Arrays.hashCode(content);
   }
 
   public byte[] getContent() {
-    ThreadLocalRandom random = ThreadLocalRandom.current();
-    if (size <= THRESHOLD) {
-      byte[] randomContent = new byte[size];
-      random.nextBytes(randomContent);
-      return randomContent;
-    } else {
-      byte[] randomContent = new byte[THRESHOLD];
-      random.nextBytes(randomContent);
-      System.arraycopy(randomContent, 0, content, size - THRESHOLD, THRESHOLD);
-      return content;
+    return content;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof DymmyData)) {
+      return false;
+    }
+    return Arrays.equals(content, ((DymmyData) obj).getContent());
+  }
+
+  @Override
+  public int hashCode() {
+    return hashCode;
+  }
+
+  private void longToBytes(byte[] dst, int pos, long val) {
+    for (int i = 0; i < Math.min(dst.length, Long.BYTES); i++) {
+      dst[pos + i] = (byte) ((val >> (8 * i)) & 0xff);
     }
   }
 }

@@ -39,7 +39,7 @@ public class HttpProcessHandler extends SimpleChannelInboundHandler<FullHttpRequ
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) {
     long start = System.currentTimeMillis();
-    byte[] content = DymmyData.INSTANCE_5_BYTES.getContent();
+    byte[] content = new DymmyData(5).getContent();
 
     // put
     BenchmarkProtocol.Request request = BenchmarkProtocol.Request.newBuilder()
