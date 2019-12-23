@@ -6,10 +6,10 @@ option java_package = "com.distkv.drpc.test.generated";
 option java_outer_classname = "BenchmarkProtocol";
 
 message Request {
-  string value = 1;
+  bytes value = 1;
 };
 
 message Response {
-  string value = 1;
+  bytes value = 1;
 };
 
