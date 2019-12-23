@@ -3,9 +3,9 @@ package com.distkv.drpc.test.common;
 public class Constants {
 
   /**
-   * benchmark content.
+   * benchmark content. length: 2637
    */
-  public static final String TEST_CONTENT =
+  private static final String TEST_CONTENT =
       "And in another Reddit thread, users on Sprint, T-Mobile, Verizon, and Xfinity Mobile have"
           + " been reporting throughout the day that they have the update.\n"
           + "\n"
@@ -45,5 +45,9 @@ public class Constants {
           + "refreshed version of its One UI, dubbed One UI 2. My colleague Dieter Bohn found the"
           + " original One UI to be pretty good, and One UI 2 looks to have a lot small "
           + "improvements to make things more consistent and efficient across the software:";
+
+  public static final String TEST_5_CHARS_CONTENT = TEST_CONTENT.substring(0, 5);
+
+  public static final String TEST_2500_CHARS_CONTENT = TEST_CONTENT.substring(0, 2500);
 
 }

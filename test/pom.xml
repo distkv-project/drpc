@@ -57,6 +57,18 @@
                 <include>src/main/resources/proto</include>
                 <include>src/test/resources/proto</include>
               </inputDirectories>
+              <outputTargets>
+                <outputTarget>
+                  <type>java</type>
+                  <addSources>none</addSources>
+                  <outputDirectory>src/test/java</outputDirectory>
+                </outputTarget>
+                <outputTarget>
+                  <type>java</type>
+                  <addSources>none</addSources>
+                  <outputDirectory>src/main/java</outputDirectory>
+                </outputTarget>
+              </outputTargets>
             </configuration>
           </execution>
         </executions>

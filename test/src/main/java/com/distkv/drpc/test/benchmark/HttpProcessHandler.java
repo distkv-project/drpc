@@ -39,7 +39,7 @@ public class HttpProcessHandler extends SimpleChannelInboundHandler<FullHttpRequ
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) {
     long start = System.currentTimeMillis();
-    String value = Constants.TEST_CONTENT + UUID.randomUUID();
+    String value = Constants.TEST_5_CHARS_CONTENT + UUID.randomUUID();
 
     // put
     BenchmarkProtocol.Request request = BenchmarkProtocol.Request.newBuilder()
