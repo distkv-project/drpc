@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # benchmark script.
-# use: sh benchmark.sh
+# usage: sh benchmark.sh
 
 set -e
 set -x
