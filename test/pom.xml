@@ -27,11 +27,6 @@
       <artifactId>drpc-protocol</artifactId>
       <version>0.1.0-SNAPSHOT</version>
     </dependency>
-    <dependency>
-      <groupId>com.distkv</groupId>
-      <artifactId>drpc-example</artifactId>
-      <version>0.1.0-SNAPSHOT</version>
-    </dependency>
 
     <dependency>
       <groupId>org.testng</groupId>
@@ -58,11 +53,46 @@
               <protocVersion>3.5.1</protocVersion>
               <addSources>none</addSources>
               <includeStdTypes>true</includeStdTypes>
-              <outputDirectory>src/test/java</outputDirectory>
               <inputDirectories>
-                <include>src/test/resources/pb</include>
+                <include>src/main/resources/proto</include>
+                <include>src/test/resources/proto</include>
               </inputDirectories>
+              <outputTargets>
+                <outputTarget>
+                  <type>java</type>
+                  <addSources>none</addSources>
+                  <outputDirectory>src/test/java</outputDirectory>
+                </outputTarget>
+                <outputTarget>
+                  <type>java</type>
+                  <addSources>none</addSources>
+                  <outputDirectory>src/main/java</outputDirectory>
+                </outputTarget>
+              </outputTargets>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <mainClass>com.distkv.drpc.test.benchmark.Benchmark</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>

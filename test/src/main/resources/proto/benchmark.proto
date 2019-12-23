@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package com.distkv.drpc.test;
+
+option java_package = "com.distkv.drpc.test.generated";
+option java_outer_classname = "BenchmarkProtocol";
+
+message Request {
+  bytes value = 1;
+};
+
+message Response {
+  bytes value = 1;
+};
+
