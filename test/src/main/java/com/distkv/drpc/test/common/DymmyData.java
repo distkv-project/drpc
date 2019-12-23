@@ -7,7 +7,7 @@ public class DymmyData {
   /**
    * The threshold of determinant weather need fill content randomly.
    *
-   * If size is greater than threshold, 36 bytes will be filled with UUID while left bytes filled
+   * If size is greater than threshold, 36 bytes will be filled randomly while left bytes filled
    * with an constance content. Be simple, only 36 bytes will be randomly.
    */
   private static final int THRESHOLD = 36;
