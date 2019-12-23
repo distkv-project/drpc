@@ -21,7 +21,8 @@ public class RequestIdGeneratorTest {
     for (int i = 0; i < maxPerRound; i++) {
       RequestIdGenerator.next();
     }
-    Assert.assertEquals(RequestIdGenerator.next(), 1);
-    Assert.assertTrue(RequestIdGenerator.next() < maxPerRound);
+    RequestIdGenerator.next();
+    Assert.assertEquals(RequestIdGenerator.next() < maxPerRound, true);
+
   }
 }
