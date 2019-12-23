@@ -16,9 +16,9 @@ public class DymmyDataTest {
   @Test
   public void testNoRepeated() {
     Set<DymmyData> dataSet = new HashSet<>();
-    for (int j = 0; j < 100000; j++) {
-      DymmyData newData = new DymmyData(10);
-      Assert.assertTrue(!dataSet.contains(newData));
+    for (int j = 0; j < 1000; j++) {
+      DymmyData newData = new DymmyData(100);
+      dataSet.forEach(dymmyData -> Assert.assertNotEquals(dymmyData, newData));
       dataSet.add(newData);
     }
   }

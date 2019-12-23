@@ -16,7 +16,6 @@ public class DymmyData {
   }
 
   private final byte[] content;
-  private final int hashCode;
 
   public DymmyData(int size) {
     if (size > SIZE_MB) {
@@ -31,8 +30,6 @@ public class DymmyData {
     longToBytes(content, Math.max(0, size - SEED_SIZE), seed);
     seed++;
     SEED.set(seed);
-
-    this.hashCode = Arrays.hashCode(content);
   }
 
   public byte[] getContent() {
@@ -45,11 +42,6 @@ public class DymmyData {
       return false;
     }
     return Arrays.equals(content, ((DymmyData) obj).getContent());
-  }
-
-  @Override
-  public int hashCode() {
-    return hashCode;
   }
 
   private void longToBytes(byte[] dst, int pos, long val) {
