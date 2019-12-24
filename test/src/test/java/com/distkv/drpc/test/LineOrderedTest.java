@@ -25,6 +25,7 @@ public class LineOrderedTest {
   public void beforeTest() {
     ServerConfig serverConfig = ServerConfig.builder()
         .port(8080)
+        .sequential(true)
         .build();
 
     drpcServer = new DrpcServer(serverConfig);
