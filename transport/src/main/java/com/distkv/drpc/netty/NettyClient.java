@@ -3,7 +3,6 @@ package com.distkv.drpc.netty;
 import com.distkv.drpc.api.AbstractClient;
 import com.distkv.drpc.api.AsyncResponse;
 import com.distkv.drpc.api.DefaultAsyncResponse;
-import com.distkv.drpc.api.ProtobufResponseDelegate;
 import com.distkv.drpc.api.Request;
 import com.distkv.drpc.api.Response;
 import com.distkv.drpc.codec.Codec.DataTypeEnum;
@@ -119,15 +118,15 @@ public class NettyClient extends AbstractClient {
       if (clientChannel.isActive()) {
         clientChannel.writeAndFlush(byteBuf).sync();
       } else {
-        throw new DrpcException("ClientChannel closed");
+        response.setThrowable(new DrpcException("ClientChannel closed"));
+        response.isError();
+        return response;
       }
       return response;
     } catch (Exception e) {
-      Response errorResponse = new ProtobufResponseDelegate();
-      errorResponse.setRequestId(request.getRequestId());
-      errorResponse
-          .setThrowable(new TransportException("NettyClient: response.getValue interrupted!"));
-      return errorResponse;
+      response.setThrowable(new TransportException("NettyClient: response.getValue interrupted!"));
+      response.isError();
+      return response;
     }
   }
 }
