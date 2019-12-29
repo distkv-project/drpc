@@ -131,10 +131,6 @@ public class NettyClient extends AbstractClient {
     } catch (IllegalArgumentException e) {
       response.setThrowable(new TransportException(e));
       return response;
-    } catch (Exception e) {
-      response.setThrowable(new DrpcException("NettyClient: invoke error", e));
-      return response;
     }
-
   }
 }
