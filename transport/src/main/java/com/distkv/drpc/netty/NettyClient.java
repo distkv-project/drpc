@@ -123,10 +123,10 @@ public class NettyClient extends AbstractClient {
       }
       return response;
     } catch (CodecException e) {
-      response.setThrowable(new CodecException("NettyClient: failed encode.", e));
+      response.setThrowable(e);
       return response;
     } catch (IllegalArgumentException e) {
-      response.setThrowable(new TransportException(e));
+      response.setThrowable(e);
       return response;
     }
   }
