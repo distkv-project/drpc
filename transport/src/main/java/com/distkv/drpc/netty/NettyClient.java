@@ -10,6 +10,7 @@ import com.distkv.drpc.codec.DrpcCodec;
 import com.distkv.drpc.codec.ProtoBufSerialization;
 import com.distkv.drpc.config.ClientConfig;
 import com.distkv.drpc.constants.GlobalConstants;
+import com.distkv.drpc.exception.CodecException;
 import com.distkv.drpc.exception.DrpcException;
 import com.distkv.drpc.exception.TransportException;
 import io.netty.bootstrap.Bootstrap;
@@ -118,15 +119,22 @@ public class NettyClient extends AbstractClient {
       if (clientChannel.isActive()) {
         clientChannel.writeAndFlush(byteBuf).sync();
       } else {
-        response.setThrowable(new DrpcException("ClientChannel closed"));
-        response.isError();
-        return response;
+        throw new DrpcException("ClientChannel closed");
       }
       return response;
+    } catch (CodecException e) {
+      response.setThrowable(new CodecException("NettyClient: failed encode.", e));
+      return response;
+    } catch (InterruptedException e) {
+      response.setThrowable(new TransportException("NettyClient: response.getValue interrupted!", e));
+      return response;
+    } catch (IllegalArgumentException e) {
+      response.setThrowable(new TransportException(e));
+      return response;
     } catch (Exception e) {
-      response.setThrowable(new TransportException("NettyClient: response.getValue interrupted!"));
-      response.isError();
+      response.setThrowable(new DrpcException("NettyClient: invoke error", e));
       return response;
     }
+
   }
 }
