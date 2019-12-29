@@ -109,7 +109,7 @@ public class NettyClient extends AbstractClient {
   }
 
   @Override
-  public Response invoke(Request request) {
+  public Response invoke(Request request) throws InterruptedException {
     AsyncResponse response = new DefaultAsyncResponse(request.getRequestId());
     addCurrentTask(request.getRequestId(), response);
     try {
@@ -124,9 +124,6 @@ public class NettyClient extends AbstractClient {
       return response;
     } catch (CodecException e) {
       response.setThrowable(new CodecException("NettyClient: failed encode.", e));
-      return response;
-    } catch (InterruptedException e) {
-      response.setThrowable(new TransportException("NettyClient: response.getValue interrupted!", e));
       return response;
     } catch (IllegalArgumentException e) {
       response.setThrowable(new TransportException(e));

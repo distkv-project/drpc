@@ -15,6 +15,6 @@ public interface Client {
 
   Codec getCodec();
 
-  Response invoke(Request request);
+  Response invoke(Request request)  throws InterruptedException;
 
 }
