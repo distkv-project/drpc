@@ -10,25 +10,16 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
-
 import java.util.concurrent.CompletableFuture;
 
 public class ServerChannelHandler extends ChannelDuplexHandler {
 
   private Handler handler;
   private NettyServer nettyServer;
-  private boolean enableIOThreadOnly;
 
   public ServerChannelHandler(NettyServer nettyServer) {
     this.nettyServer = nettyServer;
     this.handler = nettyServer.getRoutableHandler();
-    this.enableIOThreadOnly = false;
-  }
-
-  public ServerChannelHandler(NettyServer nettyServer, boolean enableIOThreadOnly) {
-    this.nettyServer = nettyServer;
-    this.handler = nettyServer.getRoutableHandler();
-    this.enableIOThreadOnly = enableIOThreadOnly;
   }
 
   @Override
@@ -42,18 +33,14 @@ public class ServerChannelHandler extends ChannelDuplexHandler {
       throw new DrpcException(
           "ServerChannelHandler: unsupported message type when decode: " + object.getClass());
     }
-    if (enableIOThreadOnly) {
-      processRequest(ctx, (Request) object);
-    } else {
-      if (nettyServer.getExecutor() != null) {
-        if (nettyServer.getConfig().isSequential()) {
-          nettyServer.getExecutor().submit(hashCode(), () -> processRequest(ctx, (Request) object));
-        } else {
-          nettyServer.getExecutor().submit(() -> processRequest(ctx, (Request) object));
-        }
+    if (nettyServer.getExecutor() != null) {
+      if (nettyServer.getConfig().isSequential()) {
+        nettyServer.getExecutor().submit(hashCode(), () -> processRequest(ctx, (Request) object));
       } else {
-        processRequest(ctx, (Request) object);
+        nettyServer.getExecutor().submit(() -> processRequest(ctx, (Request) object));
       }
+    } else {
+      processRequest(ctx, (Request) object);
     }
   }
 
