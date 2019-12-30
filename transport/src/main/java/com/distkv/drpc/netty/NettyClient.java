@@ -12,6 +12,7 @@ import com.distkv.drpc.config.ClientConfig;
 import com.distkv.drpc.constants.GlobalConstants;
 import com.distkv.drpc.exception.CodecException;
 import com.distkv.drpc.exception.DrpcException;
+import com.distkv.drpc.exception.DrpcRuntimeException;
 import com.distkv.drpc.exception.TransportException;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -27,8 +28,12 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NettyClient extends AbstractClient {
+
+  private static Logger logger = LoggerFactory.getLogger(NettyClient.class);
 
   private io.netty.channel.Channel clientChannel;
   private NioEventLoopGroup nioEventLoopGroup;
@@ -109,7 +114,7 @@ public class NettyClient extends AbstractClient {
   }
 
   @Override
-  public Response invoke(Request request) throws InterruptedException {
+  public Response invoke(Request request) {
     AsyncResponse response = new DefaultAsyncResponse(request.getRequestId());
     addCurrentTask(request.getRequestId(), response);
     try {
@@ -122,10 +127,10 @@ public class NettyClient extends AbstractClient {
         throw new DrpcException("ClientChannel closed");
       }
       return response;
-    } catch (CodecException e) {
-      response.setThrowable(e);
-      return response;
-    } catch (IllegalArgumentException e) {
+    } catch (InterruptedException e) {
+      logger.error("NettyClient: response.getValue interrupted!");
+      throw new DrpcRuntimeException("NettyClient: response.getValue interrupted!");
+    } catch (CodecException | IllegalArgumentException e) {
       response.setThrowable(e);
       return response;
     }
