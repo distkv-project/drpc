@@ -3,7 +3,6 @@ package com.distkv.drpc.netty;
 import com.distkv.drpc.api.AbstractClient;
 import com.distkv.drpc.api.AsyncResponse;
 import com.distkv.drpc.api.DefaultAsyncResponse;
-import com.distkv.drpc.api.ProtobufResponseDelegate;
 import com.distkv.drpc.api.Request;
 import com.distkv.drpc.api.Response;
 import com.distkv.drpc.codec.Codec.DataTypeEnum;
@@ -11,7 +10,9 @@ import com.distkv.drpc.codec.DrpcCodec;
 import com.distkv.drpc.codec.ProtoBufSerialization;
 import com.distkv.drpc.config.ClientConfig;
 import com.distkv.drpc.constants.GlobalConstants;
+import com.distkv.drpc.exception.CodecException;
 import com.distkv.drpc.exception.DrpcException;
+import com.distkv.drpc.exception.DrpcRuntimeException;
 import com.distkv.drpc.exception.TransportException;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -27,8 +28,12 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NettyClient extends AbstractClient {
+
+  private static Logger logger = LoggerFactory.getLogger(NettyClient.class);
 
   private io.netty.channel.Channel clientChannel;
   private NioEventLoopGroup nioEventLoopGroup;
@@ -122,12 +127,12 @@ public class NettyClient extends AbstractClient {
         throw new DrpcException("ClientChannel closed");
       }
       return response;
-    } catch (Exception e) {
-      Response errorResponse = new ProtobufResponseDelegate();
-      errorResponse.setRequestId(request.getRequestId());
-      errorResponse
-          .setThrowable(new TransportException("NettyClient: response.getValue interrupted!"));
-      return errorResponse;
+    } catch (InterruptedException e) {
+      logger.error("NettyClient: response.getValue interrupted!");
+      throw new DrpcRuntimeException("NettyClient: response.getValue interrupted!");
+    } catch (CodecException | IllegalArgumentException e) {
+      response.setThrowable(e);
+      return response;
     }
   }
 }
