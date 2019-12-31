@@ -16,11 +16,9 @@ public class ServerConfig {
 
   /**
    * If every request from the same TCP should be executed by order, set this option true.
-   * <p>
    * You should be carefully to set this option true. If you do so, all requests from the same
    * rpc-client would be executed one by one in the same thread in rpc-server to guarantee to keep
    * the invoking order, when might cause bad performance.
-   * <p>
    * Actually, there are rarely conditions you should set this option true.
    */
   private boolean sequential = false;
