@@ -46,17 +46,14 @@ public abstract class AbstractServer implements Server {
     routableHandler = new DefaultRoutableHandler();
 
     /**
+     * If `enableIOThreadOnly` is true, that means the rpc server will execute the
+     * requests in IO threads instead of separated worker threads.
      *
-     * If `ServerConfig` is enable io thread only,it means that `HashableExecutor`
-     * is needn't,a series of requests can't be able to be executed by the origin order.
-     * then the `HashableExecutor` will be null.
-     *
-     * If condition is false the requests will be executed by a same thread.the request
-     * will keep order, When you need keep order for a series of requests,you can set
-     * this to be false.
-     *
+     * The `createExecutor()` method here will create the separated worker threads 
+     * as worker executors.
      */
     if (!serverConfig.enableIOThreadOnly()) {
+      // TODO(qwang): Rename this to `createExecutors()`
       createExecutor();
     }
   }
