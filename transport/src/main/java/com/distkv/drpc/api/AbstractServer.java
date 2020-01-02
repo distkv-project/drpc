@@ -44,7 +44,18 @@ public abstract class AbstractServer implements Server {
     this.serverConfig = serverConfig;
     this.codec = codec;
     routableHandler = new DefaultRoutableHandler();
-    createExecutor();
+
+    /**
+     * If `enableIOThreadOnly` is true, that means the rpc server will execute the
+     * requests in IO threads instead of separated worker threads.
+     *
+     * The `createExecutor()` method here will create the separated worker threads 
+     * as worker executors.
+     */
+    if (!serverConfig.enableIOThreadOnly()) {
+      // TODO(qwang): Rename this to `createExecutors()`
+      createExecutor();
+    }
   }
 
   @Override

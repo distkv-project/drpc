@@ -11,6 +11,9 @@ public class ServerConfig {
 
   private int workerThreadNum;
 
+  @Builder.Default
+  private boolean enableIOThreadOnly = true;
+
   /**
    * If every request from the same TCP should be executed by order, set this option true.
    *
@@ -32,6 +35,10 @@ public class ServerConfig {
 
   public boolean isSequential() {
     return sequential;
+  }
+
+  public boolean enableIOThreadOnly() {
+    return enableIOThreadOnly;
   }
 
   public DrpcAddress getDrpcAddress() {
