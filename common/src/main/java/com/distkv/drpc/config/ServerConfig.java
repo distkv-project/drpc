@@ -15,12 +15,13 @@ public class ServerConfig {
    * Enable thread io only is true by default.
    *
    * If this is true,it means that `HashableExecutor` is needn't,a series
-   * of requests can't be able to be executed by the origin order.
-   * When you need keep order for a series of requests,you can set this to
-   * be false, then the `HashableExecutor` will be null.
+   * of requests can't be able to be executed by the origin order. then the
+   * `HashableExecutor` will be null.
    *
    * If this is false the request will keep order,the requests will be
-   * executed by a same thread.
+   * executed by a same thread.When you need keep order for a series of
+   * requests,you can set this to be false.
+   *
    */
   @Builder.Default
   private boolean enableIOThreadOnly = true;
