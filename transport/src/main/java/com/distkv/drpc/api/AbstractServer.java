@@ -44,6 +44,18 @@ public abstract class AbstractServer implements Server {
     this.serverConfig = serverConfig;
     this.codec = codec;
     routableHandler = new DefaultRoutableHandler();
+
+    /**
+     *
+     * If `ServerConfig` is enable io thread only,it means that `HashableExecutor`
+     * is needn't,a series of requests can't be able to be executed by the origin order.
+     * then the `HashableExecutor` will be null.
+     *
+     * If condition is false the requests will be executed by a same thread.the request
+     * will keep order, When you need keep order for a series of requests,you can set
+     * this to be false.
+     *
+     */
     if (!serverConfig.enableIOThreadOnly()) {
       createExecutor();
     }
