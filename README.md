@@ -1,8 +1,8 @@
-# drpc [![Build Status](https://travis-ci.com/dst-project/drpc.svg?branch=master)](https://travis-ci.com/dst-project/drpc)
+# Drpc [![Build Status](https://travis-ci.com/dst-project/drpc.svg?branch=master)](https://travis-ci.com/dst-project/drpc)
 The next generation RPC framework.
 
 ## Project Description
-`DRPC` is a high performance RPC framework, which aims to help users build their networking communications easily.
+`Drpc` is a high performance RPC framework, which aims to help users build their networking communications easily.
 The biggest feature to distinguish with other RPC frameworks is it supports multiple languages server.
 
 ## Awesome Features
@@ -121,4 +121,4 @@ public class ExampleClient {
 TODO
 
 ## Getting Involved
-Thank you for your attention to the `dprc` project. If you have any questions, you can create a new issue in our Issues list. And we welcome you to participate in our project. If you want to make some contributions, you can refer the file [CONTRIBUTING.md](https://github.com/dst-project/drpc/blob/master/CONTRIBUTING.md).
+Thank you for your attention to the `Drpc` project. If you have any questions, you can create a new issue in our Issues list. And we welcome you to participate in our project. If you want to make some contributions, you can refer the file [CONTRIBUTING.md](https://github.com/dst-project/drpc/blob/master/CONTRIBUTING.md).
