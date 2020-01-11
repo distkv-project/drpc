@@ -7,7 +7,6 @@ import com.distkv.drpc.api.Request;
 import com.distkv.drpc.api.Response;
 import com.distkv.drpc.codec.Codec.DataTypeEnum;
 import com.distkv.drpc.codec.DrpcCodec;
-import com.distkv.drpc.codec.ProtoBufSerialization;
 import com.distkv.drpc.config.ClientConfig;
 import com.distkv.drpc.constants.GlobalConstants;
 import com.distkv.drpc.exception.CodecException;
@@ -39,7 +38,7 @@ public class NettyClient extends AbstractClient {
   private NioEventLoopGroup nioEventLoopGroup;
 
   public NettyClient(ClientConfig clientConfig) {
-    super(clientConfig, new DrpcCodec(new ProtoBufSerialization()));
+    super(clientConfig, new DrpcCodec());
     nioEventLoopGroup = new NioEventLoopGroup(GlobalConstants.THREAD_NUMBER + 1);
   }
 
