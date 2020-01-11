@@ -8,10 +8,8 @@ import com.distkv.drpc.exception.CodecException;
 
 public class DrpcCodec implements Codec {
 
-  private Serialization serialization;
+  public DrpcCodec() {
 
-  public DrpcCodec(Serialization serialization) {
-    this.serialization = serialization;
   }
 
   @Override

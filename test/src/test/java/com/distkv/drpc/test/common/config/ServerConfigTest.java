@@ -24,12 +24,4 @@ public class ServerConfigTest {
     Assert.assertEquals(5, serverConfig.getWorkerThreadNum());
   }
 
-  @Test
-  public void testGgetDrpcAddress() {
-    ServerConfig serverConfig = ServerConfig.builder()
-        .workerThreadNum(5)
-        .port(8082)
-        .build();
-    Assert.assertEquals(8082, serverConfig.getDrpcAddress().getPort());
-  }
 }
