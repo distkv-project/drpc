@@ -4,7 +4,7 @@ public class RegisterInfo extends NamingOptions {
 
   private String host;
 
-  private String port;
+  private int port;
 
   private String interfaceName;
 
@@ -16,7 +16,7 @@ public class RegisterInfo extends NamingOptions {
     super(op);
   }
 
-  public RegisterInfo(NamingOptions op, String host, String port, String interfaceName) {
+  public RegisterInfo(NamingOptions op, String host, int port, String interfaceName) {
     super(op);
     this.host = host;
     this.port = port;
@@ -38,11 +38,11 @@ public class RegisterInfo extends NamingOptions {
     this.host = host;
   }
 
-  public String getPort() {
+  public int getPort() {
     return port;
   }
 
-  public void setPort(String port) {
+  public void setPort(int port) {
     this.port = port;
   }
 
