@@ -2,6 +2,7 @@ package registry;
 
 import common.DrpcServiceInstance;
 
+import java.net.UnknownHostException;
 import java.util.Collection;
 
 public interface NamingService {
@@ -15,7 +16,7 @@ public interface NamingService {
    * @param info Can be service name\ version number\ group
    * @return Registration service list, could be empty
    */
-  Collection<DrpcServiceInstance> pullRegisteredService(SubscribeInfo info);
+  Collection<DrpcServiceInstance> pullRegisteredService(SubscribeInfo info) throws UnknownHostException;
 
   /**
    * Register for a service;

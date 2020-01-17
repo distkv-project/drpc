@@ -19,7 +19,7 @@ public class NamingServiceFactoryManager {
   private NamingServiceFactoryManager getInstance() {
     if (instance == null) {
       synchronized (NamingServiceFactoryManager.class) {
-        if(instance == null) {
+        if (instance == null) {
           instance = new NamingServiceFactoryManager();
         }
         return instance;

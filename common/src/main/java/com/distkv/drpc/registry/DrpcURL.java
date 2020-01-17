@@ -14,8 +14,8 @@ public class DrpcURL {
 
   /**
    *  DrpcURL format:
-   *    https ://127.0.0.1:8080/path?key1=value1&key2=value2
-   *  Protocol |  Hosts&Posts  |Path| Parameters(queryMap)
+   *    distkv ://127.0.0.1:8080/path?key1=value1&key2=value2
+   *  Protocol |   Hosts&Posts  |Path|  Parameters(queryMap)
    */
 
   private String protocol;
@@ -28,21 +28,21 @@ public class DrpcURL {
 
   public DrpcURL(String url) {
     // protocol
-    int schemaIndex = url.indexOf("://");
-    if (schemaIndex < 0) {
+    int protocolIndex = url.indexOf("://");
+    if (protocolIndex < 0) {
       throw new DrpcIllegalUrlException("Illegal url format: " + url);
     }
-    protocol = url.substring(0, schemaIndex);
+    protocol = url.substring(0, protocolIndex);
 
     // hostsPorts
-    int hostsPortsIndex = url.indexOf("/", schemaIndex + 3);
-    int pathIndex = url.indexOf("?", schemaIndex + 3);
+    int hostsPortsIndex = url.indexOf("/", protocolIndex + 3);
+    int pathIndex = url.indexOf("?", protocolIndex + 3);
     if (hostsPortsIndex > 0) {
-      this.hostsPorts = url.substring(schemaIndex + 3, hostsPortsIndex);
+      this.hostsPorts = url.substring(protocolIndex + 3, hostsPortsIndex);
     } else if (pathIndex > 0) {
-      this.hostsPorts = url.substring(schemaIndex + 3, pathIndex);
+      this.hostsPorts = url.substring(protocolIndex + 3, pathIndex);
     } else {
-      this.hostsPorts = url.substring(schemaIndex + 3);
+      this.hostsPorts = url.substring(protocolIndex + 3);
     }
 
     // path

@@ -2,12 +2,18 @@ package registry;
 
 import com.distkv.drpc.exception.DrpcRuntimeException;
 import common.DrpcServiceInstance;
+import io.netty.util.Timeout;
+import io.netty.util.Timer;
+import io.netty.util.TimerTask;
+import org.apache.commons.collections4.CollectionUtils;
 import utils.CheckNotNullUtill;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
 public class DistKvNamingService implements NamingService {
 
@@ -16,9 +22,9 @@ public class DistKvNamingService implements NamingService {
   private String host;
   // Default port is 80;
   private int port = 80;
-  private List<DrpcServiceInstance> instanceList = new ArrayList<>();
-//  private Timer namingServiceTimer;
-//  private int updateInterval;
+  private List<DrpcServiceInstance> lastInstances = new ArrayList<>();
+  private Timer namingServiceTimer;
+  private int updateInterval;
 
   public DistKvNamingService(DrpcURL url) {
     CheckNotNullUtill.checkNotNullUtill(url);
@@ -36,8 +42,16 @@ public class DistKvNamingService implements NamingService {
   }
 
   @Override
-  public Collection<DrpcServiceInstance> pullRegisteredService(SubscribeInfo info) {
-    return null;
+  public List<DrpcServiceInstance> pullRegisteredService(SubscribeInfo info)
+        throws UnknownHostException {
+    InetAddress[] inetAddresses;
+    inetAddresses = InetAddress.getAllByName(host);
+    List<DrpcServiceInstance> instances = new ArrayList<>();
+    for (InetAddress address : inetAddresses) {
+      DrpcServiceInstance instance = new DrpcServiceInstance(address.getHostAddress(), port);
+      instances.add(instance);
+    }
+    return instances;
   }
 
   @Override
@@ -52,7 +66,24 @@ public class DistKvNamingService implements NamingService {
 
   @Override
   public void subscribe(SubscribeInfo info, NotifyListener listener) {
-
+    namingServiceTimer.newTimeout(
+          new TimerTask() {
+            @Override
+            public void run(Timeout timeout) throws Exception {
+              try {
+                List<DrpcServiceInstance> currentInstances = pullRegisteredService(null);
+                Collection<DrpcServiceInstance> addList =
+                      CollectionUtils.subtract(currentInstances, lastInstances);
+                Collection<DrpcServiceInstance> removeList =
+                      CollectionUtils.subtract(lastInstances, currentInstances);
+                listener.notify(addList, removeList);
+                lastInstances = currentInstances;
+              } catch (Exception ex) {
+                //ignore
+              }
+              namingServiceTimer.newTimeout(this, updateInterval, TimeUnit.MILLISECONDS);
+            }
+          }, updateInterval, TimeUnit.MILLISECONDS);
   }
 
   @Override
@@ -63,5 +94,9 @@ public class DistKvNamingService implements NamingService {
   @Override
   public void destory() {
 
+  }
+
+  public String getHostPort() {
+    return this.hostPort;
   }
 }

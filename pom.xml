@@ -44,6 +44,23 @@
         <artifactId>slf4j-api</artifactId>
         <version>1.7.25</version>
       </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.36.Final</version>
+            <scope>compile</scope>
+        </dependency>
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-all</artifactId>
+        <version>4.1.36.Final</version>
+        <scope>compile</scope>
+      </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.1</version>
+        </dependency>
     </dependencies>
 
     <properties>
