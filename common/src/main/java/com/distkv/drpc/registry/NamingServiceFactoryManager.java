@@ -2,6 +2,8 @@ package registry;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.distkv.drpc.exception.DrpcRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,9 +11,7 @@ public class NamingServiceFactoryManager {
 
   private Logger logger = LoggerFactory.getLogger(NamingServiceFactoryManager.class);
 
-  /**
-   * FactoryManager thread consistence;
-   */
+  //FactoryManager thread consistence;
   private volatile NamingServiceFactoryManager instance;
 
   private Map<String, NamingServiceFactory> namingServiceFactoryMap;
@@ -30,12 +30,12 @@ public class NamingServiceFactoryManager {
 
   private NamingServiceFactoryManager() {
     this.namingServiceFactoryMap = new HashMap<>();
-    this.namingServiceFactoryMap.put("dst", new DstNamingServiceFactory());
+    this.namingServiceFactoryMap.put("dst", new DistKvNamingServiceFactory());
   }
 
   public void registerNamingServiceFactory(NamingServiceFactory factory) {
     if (namingServiceFactoryMap.get(factory.getName()) != null) {
-      throw new RuntimeException("NamingServiceFactory exists: " + factory.getName());
+      throw new DrpcRuntimeException("NamingServiceFactory exists: " + factory.getName());
     }
     this.namingServiceFactoryMap.put(factory.getName(), factory);
     logger.info("ServiceFactory has registered: " + factory.getName());
