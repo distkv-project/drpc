@@ -7,7 +7,7 @@ import java.util.Collection;
 public interface NamingService {
   /**
    * Subscribe and register may return results for this operation;
-   */ 
+   */
 
   /**
    * Pull eligible registered services;
