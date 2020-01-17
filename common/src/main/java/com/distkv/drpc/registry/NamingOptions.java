@@ -29,7 +29,7 @@ public class NamingOptions {
                        boolean ignoreFailOfNamingService) {
     this.group = group;
     this.vision = vision;
-    this.serviceId =serviceId;
+    this.serviceId = serviceId;
     this.parameters = parameters;
     this.ignoreFailOfNamingService = ignoreFailOfNamingService;
   }

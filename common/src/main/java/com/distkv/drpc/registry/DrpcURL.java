@@ -26,7 +26,7 @@ public class DrpcURL {
 
   private Map<String, Object> queryMap = new HashMap<>();
 
-  public DrpcURL (String url) {
+  public DrpcURL(String url) {
     // protocol
     int schemaIndex = url.indexOf("://");
     if (schemaIndex < 0) {
@@ -60,7 +60,7 @@ public class DrpcURL {
     if (pathIndex > 0) {
       String queries = url.substring(pathIndex + 1);
       String[] querySplits = queries.split("&");
-      for(String queryKV : querySplits) {
+      for (String queryKV : querySplits) {
         String[] kv = queryKV.split("=");
         queryMap.put(kv[0], kv[1]);
       }
@@ -71,8 +71,8 @@ public class DrpcURL {
     this.queryMap.put(key, value);
   }
 
-  public void addAllParameter(Map Parameters) {
-    this.queryMap.putAll(Parameters);
+  public void addAllParameter(Map parameters) {
+    this.queryMap.putAll(parameters);
   }
 
   public Object removeParameter(String key) {
