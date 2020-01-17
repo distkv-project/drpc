@@ -1,5 +1,10 @@
 package registry;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class RegisterInfo extends NamingOptions {
 
   private String host;
@@ -30,27 +35,4 @@ public class RegisterInfo extends NamingOptions {
     this.interfaceName = info.getInterfaceName();
   }
 
-  public String getHost() {
-    return host;
-  }
-
-  public void setHost(String host) {
-    this.host = host;
-  }
-
-  public int getPort() {
-    return port;
-  }
-
-  public void setPort(int port) {
-    this.port = port;
-  }
-
-  public String getInterfaceName() {
-    return interfaceName;
-  }
-
-  public void setInterfaceName(String interfaceName) {
-    this.interfaceName = interfaceName;
-  }
 }

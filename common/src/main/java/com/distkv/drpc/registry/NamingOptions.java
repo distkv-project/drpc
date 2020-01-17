@@ -1,7 +1,11 @@
 package registry;
 
 import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class NamingOptions {
 
   private String group = "default";
@@ -36,30 +40,6 @@ public class NamingOptions {
     this.serviceId = op.getServiceId();
     this.parameters = op.getParameters();
     this.ignoreFailOfNamingService = op.isIgnoreFailOfNamingService();
-  }
-
-  public String getGroup() {
-    return group;
-  }
-
-  public void setGroup(String group) {
-    this.group = group;
-  }
-
-  public String getVision() {
-    return vision;
-  }
-
-  public void setVision(String vision) {
-    this.vision = vision;
-  }
-
-  public String getServiceId() {
-    return serviceId;
-  }
-
-  public void setServiceId(String serviceId) {
-    this.serviceId = serviceId;
   }
 
   public Map<String, String> getParameters() {

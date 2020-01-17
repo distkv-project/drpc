@@ -5,7 +5,11 @@ import exception.DrpcIllegalUrlException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class DrpcURL {
 
   /**
@@ -61,38 +65,6 @@ public class DrpcURL {
         queryMap.put(kv[0], kv[1]);
       }
     }
-  }
-
-  public String getProtocol() {
-    return protocol;
-  }
-
-  public void setProtocol(String protocol) {
-    this.protocol = protocol;
-  }
-
-  public String getHostsPorts() {
-    return hostsPorts;
-  }
-
-  public void setHostsPorts(String hostsPorts) {
-    this.hostsPorts = hostsPorts;
-  }
-
-  public String getPath() {
-    return path;
-  }
-
-  public void setPath(String path) {
-    this.path = path;
-  }
-
-  public Map<String, Object> getQueryMap() {
-    return queryMap;
-  }
-
-  public void setQueryMap(Map<String, Object> queryMap) {
-    this.queryMap = queryMap;
   }
 
   public void addParameter(String key, String value) {
