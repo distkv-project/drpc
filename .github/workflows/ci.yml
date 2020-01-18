@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        java: [8, 11, 14]
+        java: [8, 11]
         os: [ubuntu-18.04]
     steps:
       - uses: actions/checkout@v1
