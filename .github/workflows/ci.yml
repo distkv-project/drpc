@@ -23,8 +23,8 @@ jobs:
           java-version: ${{ matrix.java }}
       - name: 'Install & Java Test'
         run: bash ./mvnw clean install -DskipTests=false
-      - name: 'C++ Test'
-        run: bash ./cpp/build_and_test.sh
+#      - name: 'C++ Test'
+#        run: bash ./cpp/build_and_test.sh
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
