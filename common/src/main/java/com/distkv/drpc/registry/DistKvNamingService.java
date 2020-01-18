@@ -28,15 +28,15 @@ public class DistKvNamingService implements NamingService {
 
   public DistKvNamingService(DrpcURL url) {
     CheckNotNullUtill.checkNotNullUtill(url);
-    CheckNotNullUtill.checkStringEmptyOrNull(url.getHostsPorts);
-    if (url.getHostsPorts == null) {
+    CheckNotNullUtill.checkStringEmptyOrNull(url.getHostsPorts());
+    if (url.getHostsPorts() == null) {
       throw new DrpcRuntimeException("This DrpcURL does not have hosts&ports.");
     }
     this.url = url;
-    this.hostPort = url.getHostsPorts;
+    this.hostPort = url.getHostsPorts();
     String[] hostPort = this.hostPort.split(":");
     this.host = hostPort[0];
-    if (hostPort.length != 2) {
+    if (hostPort.length == 2) {
       this.port = Integer.valueOf(hostPort[1]);
     }
   }

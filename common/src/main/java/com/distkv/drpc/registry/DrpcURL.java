@@ -14,8 +14,8 @@ public class DrpcURL {
 
   /**
    *  DrpcURL format:
-   *    distkv ://127.0.0.1:8080/path?key1=value1&key2=value2
-   *  Protocol |   Hosts&Posts  |Path|  Parameters(queryMap)
+   *    distkv://127.0.0.1:8080/path?key1=value1&key2=value2
+   *  Protocol|   Hosts&Posts  |Path|  Parameters(queryMap)
    */
 
   private String protocol;

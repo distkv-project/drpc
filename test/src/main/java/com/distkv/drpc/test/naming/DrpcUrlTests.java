@@ -11,8 +11,8 @@ public class DrpcUrlTests {
     DrpcURL url = new DrpcURL(distkv);
     Assert.assertEquals(url.getProtocol(), "distkv");
     Assert.assertEquals(url.getHostsPorts(), "127.0.0.1:8080");
-    Assert.assertEquals(url.getPath(), null);
-    Assert.assertEquals(url.getQueryMap(), null);
+    Assert.assertEquals(url.getPath(), "/");
+    Assert.assertTrue(url.getQueryMap().isEmpty());
   }
 
   @Test
@@ -21,7 +21,7 @@ public class DrpcUrlTests {
     DrpcURL url = new DrpcURL(other);
     Assert.assertEquals(url.getProtocol(), "file");
     Assert.assertEquals(url.getHostsPorts(), "");
-    Assert.assertEquals(url.getPath(), "home/ubuntu/test.config");
+    Assert.assertEquals(url.getPath(), "/home/ubuntu/test.config");
     Assert.assertEquals(url.getStringParameter("key1", "NULL"), "value1");
   }
 
