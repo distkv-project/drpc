@@ -5,7 +5,11 @@ jdk:
   - openjdk8
   - openjdk11
   - openjdk14
-
+  
+addons:
+  apt:
+    packages:
+      - cmake
 cache:
   directories:
     - $HOME/.m2
@@ -14,7 +18,7 @@ install: true
 
 script:
   - travis_wait 30 ./mvnw clean install -DskipTests=false
-  #- bash ./cpp/build_and_test.sh
+  - bash ./cpp/build_and_test.sh
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
