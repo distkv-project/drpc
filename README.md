@@ -1,4 +1,4 @@
-# Drpc [![Build Status](https://travis-ci.com/dst-project/drpc.svg?branch=master)](https://travis-ci.com/dst-project/drpc)
+# Drpc [![Build Status](https://travis-ci.com/distkv-project/drpc.svg?branch=master)](https://travis-ci.com/distkv-project/drpc)
 The next generation RPC framework.
 
 ## Project Description
