@@ -3,7 +3,6 @@ package com.distkv.drpc.netty;
 import com.distkv.drpc.api.AbstractServer;
 import com.distkv.drpc.api.Handler;
 import com.distkv.drpc.codec.DrpcCodec;
-import com.distkv.drpc.codec.ProtoBufSerialization;
 import com.distkv.drpc.config.ServerConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -31,7 +30,7 @@ public class NettyServer extends AbstractServer {
 
 
   public NettyServer(ServerConfig serverConfig, List<Handler> handlers) {
-    super(serverConfig, new DrpcCodec(new ProtoBufSerialization()));
+    super(serverConfig, new DrpcCodec());
     handlers.forEach((handler) -> getRoutableHandler().registerHandler(handler));
     bossGroup = new NioEventLoopGroup(1);
     workerGroup = new NioEventLoopGroup();
