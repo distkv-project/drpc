@@ -1,11 +1,11 @@
-# Drpc
-[![Build Status](https://travis-ci.com/distkv-project/drpc.svg?branch=master)](https://travis-ci.com/distkv-project/drpc)
-[![codecov](https://codecov.io/gh/distkv-project/drpc/branch/master/graph/badge.svg)](https://codecov.io/gh/distkv-project/drpc)
-[![maven](https://img.shields.io/maven-central/v/com.distkv/drpc.svg)](https://search.maven.org/search?q=com.distkv)
+# Dousi
+[![Build Status](https://travis-ci.com/distkv-project/dousi.svg?branch=master)](https://travis-ci.com/distkv-project/dousi)
+[![codecov](https://codecov.io/gh/distkv-project/dousi/branch/master/graph/badge.svg)](https://codecov.io/gh/distkv-project/dousi)
+[![maven](https://img.shields.io/maven-central/v/com.distkv/dousi.svg)](https://search.maven.org/search?q=com.distkv)
 
 The next generation RPC framework.
 ## Project Description
-`Drpc` is a high performance RPC framework, which aims to help users build their networking communications easily.
+`Dousi` is a high performance RPC framework, which aims to help users build their networking communications easily.
 The biggest feature to distinguish with other RPC frameworks is it supports multiple languages server.
 
 ## Awesome Features
@@ -22,11 +22,11 @@ mvn clean install -DskipTests
 ```
 ### 2. Run Server Example
 ```bash
-Server example: ./example/src/main/java/com/distkv/drpc/pb/ExampleServer.java
+Server example: ./example/src/main/java/com/distkv/dousi/pb/ExampleServer.java
 ```
 ### 3. Run Client Example
 ```bash
-Client example: ./example/src/main/java/com/distkv/drpc/pb/ExampleServer.java
+Client example: ./example/src/main/java/com/distkv/dousi/pb/ExampleServer.java
 ```
 ## Examples
 ### 1. Server Example
@@ -124,4 +124,4 @@ public class ExampleClient {
 TODO
 
 ## Getting Involved
-Thank you for your attention to the `Drpc` project. If you have any questions, you can create a new issue in our Issues list. And we welcome you to participate in our project. If you want to make some contributions, you can refer the file [CONTRIBUTING.md](https://github.com/dst-project/drpc/blob/master/CONTRIBUTING.md).
+Thank you for your attention to the `Dousi` project. If you have any questions, you can create a new issue in our Issues list. And we welcome you to participate in our project. If you want to make some contributions, you can refer the file [CONTRIBUTING.md](https://github.com/dst-project/dousi/blob/master/CONTRIBUTING.md).
