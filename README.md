@@ -1,6 +1,6 @@
 # Dousi
-[![Build Status](https://travis-ci.com/distkv-project/dousi.svg?branch=master)](https://travis-ci.com/distkv-project/dousi)
-[![codecov](https://codecov.io/gh/distkv-project/dousi/branch/master/graph/badge.svg)](https://codecov.io/gh/distkv-project/dousi)
+[![Build Status](https://travis-ci.com/jovany-wang/dousi.svg?branch=master)](https://travis-ci.com/jovany-wang/dousi)
+[![codecov](https://codecov.io/gh/jovany-wang/dousi/branch/master/graph/badge.svg)](https://codecov.io/gh/jovany-wang/dousi)
 [![maven](https://img.shields.io/maven-central/v/com.distkv/dousi.svg)](https://search.maven.org/search?q=com.distkv)
 
 The next generation RPC framework.
