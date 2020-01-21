@@ -75,7 +75,7 @@
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>org.dousi.dousi.test.benchmark.Benchmark</mainClass>
+              <mainClass>org.dousi.test.benchmark.Benchmark</mainClass>
             </manifest>
           </archive>
         </configuration>
