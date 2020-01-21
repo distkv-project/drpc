@@ -4,8 +4,8 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.distkv</groupId>
-  <artifactId>drpc</artifactId>
+  <groupId>org.dousi</groupId>
+  <artifactId>dousi</artifactId>
   <packaging>pom</packaging>
   <version>0.1.0-SNAPSHOT</version>
 
@@ -58,7 +58,7 @@
             </goals>
             <configuration>
               <includes>
-                <include>org/distkv/**</include>
+                <include>org/dousi/**</include>
               </includes>
             </configuration>
           </execution>
