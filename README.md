@@ -1,10 +1,11 @@
 # Dousi
-[![Build Status](https://travis-ci.com/distkv-project/dousi.svg?branch=master)](https://travis-ci.com/distkv-project/dousi)
-[![codecov](https://codecov.io/gh/distkv-project/dousi/branch/master/graph/badge.svg)](https://codecov.io/gh/distkv-project/dousi)
+[![Build Status](https://travis-ci.com/jovany-wang/dousi.svg?branch=master)](https://travis-ci.com/jovany-wang/dousi)
+[![codecov](https://codecov.io/gh/jovany-wang/dousi/branch/master/graph/badge.svg)](https://codecov.io/gh/djovany-wang/dousi)
 [![maven](https://img.shields.io/maven-central/v/com.distkv/dousi.svg)](https://search.maven.org/search?q=com.distkv)
 
 The next generation RPC framework.
 ## Project Description
+`Dousi` is a high performance RPC framework, which aims to help users build their networking communications easily.
 `Dousi` is a high performance RPC framework, which aims to help users build their networking communications easily.
 The biggest feature to distinguish with other RPC frameworks is it supports multiple languages server.
 
