@@ -1,10 +1,10 @@
 package org.dousi.pb;
 
-import com.distkv.drpc.Proxy;
-import com.distkv.drpc.api.Client;
+import org.dousi.Proxy;
+import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
-import com.distkv.drpc.netty.NettyClient;
-import com.distkv.drpc.pb.generated.StringProtocol;
+import org.dousi.netty.NettyClient;
+import org.dousi.pb.generated.StringProtocol;
 
 import java.util.concurrent.CompletableFuture;
 

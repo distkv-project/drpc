@@ -17,13 +17,13 @@ public class ReflectUtilsTest {
 
   @Test
   public void testForName() throws ClassNotFoundException {
-    Class<?> reflectUtils = ReflectUtils.forName("com.distkv.drpc.utils.ReflectUtils");
+    Class<?> reflectUtils = ReflectUtils.forName("org.dousi.utils.ReflectUtils");
     Assert.assertEquals(reflectUtils, ReflectUtils.class);
   }
 
   @Test(expectedExceptions = ClassNotFoundException.class)
   public void testForNameException() throws ClassNotFoundException {
-    ReflectUtils.forName("com.distkv.drpc.utils.XXXXX");
+    ReflectUtils.forName("org.dousi.drpc.utils.XXXXX");
   }
 
   @Test

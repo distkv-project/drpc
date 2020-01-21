@@ -1,4 +1,4 @@
-package org.dousi.dousi.utils;
+package org.dousi.utils;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;

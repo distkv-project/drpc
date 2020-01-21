@@ -1,4 +1,4 @@
-package org.dousi.dousi.utils;
+package org.dousi.utils;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;

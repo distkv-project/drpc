@@ -1,6 +1,6 @@
 package org.dousi.test.common;
 
-import com.distkv.drpc.test.generated.BenchmarkProtocol;
+import org.dousi.test.generated.BenchmarkProtocol;
 import com.google.protobuf.ByteString;
 import java.util.concurrent.CompletableFuture;
 

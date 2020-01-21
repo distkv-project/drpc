@@ -1,6 +1,6 @@
 package org.dousi.test.common;
 
-import com.distkv.drpc.test.generated.EchoProtocol;
+import org.dousi.test.generated.EchoProtocol;
 import java.util.concurrent.CompletableFuture;
 
 public class IServiceImpl implements IService {

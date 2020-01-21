@@ -7,7 +7,7 @@ import static io.netty.handler.codec.rtsp.RtspResponseStatuses.INTERNAL_SERVER_E
 import org.dousi.test.common.BenchmarkIService;
 import org.dousi.test.common.DymmyData;
 import org.dousi.test.common.MD5Utils;
-import com.distkv.drpc.test.generated.BenchmarkProtocol;
+import org.dousi.test.generated.BenchmarkProtocol;
 import com.google.protobuf.ByteString;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;

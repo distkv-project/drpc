@@ -1,7 +1,7 @@
 package org.dousi;
 
-import com.distkv.drpc.api.Handler;
-import com.distkv.drpc.api.Request;
+import org.dousi.api.Handler;
+import org.dousi.api.Request;
 
 
 public class HandlerDelegate implements Handler {

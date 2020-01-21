@@ -1,6 +1,6 @@
 package org.dousi.pb;
 
-import com.distkv.drpc.DrpcServer;
+import org.dousi.DrpcServer;
 import org.dousi.config.ServerConfig;
 
 public class ExampleServer {

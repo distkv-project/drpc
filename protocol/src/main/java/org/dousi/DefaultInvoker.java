@@ -1,8 +1,8 @@
 package org.dousi;
 
-import com.distkv.drpc.api.Client;
-import com.distkv.drpc.api.Request;
-import com.distkv.drpc.api.Response;
+import org.dousi.api.Client;
+import org.dousi.api.Request;
+import org.dousi.api.Response;
 
 
 public class DefaultInvoker<T> implements Invoker<T> {

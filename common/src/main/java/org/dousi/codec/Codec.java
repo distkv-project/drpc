@@ -1,6 +1,6 @@
-package org.dousi.dousi.codec;
+package org.dousi.codec;
 
-import org.dousi.dousi.exception.CodecException;
+import org.dousi.exception.CodecException;
 
 
 public interface Codec {

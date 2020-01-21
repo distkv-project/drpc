@@ -1,4 +1,4 @@
-package org.dousi.dousi.common;
+package org.dousi.common;
 
 
 public class Void {

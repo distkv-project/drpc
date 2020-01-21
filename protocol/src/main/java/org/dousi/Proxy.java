@@ -1,7 +1,7 @@
 package org.dousi;
 
 import org.dousi.proxy.ProxyFactory;
-import com.distkv.drpc.api.Client;
+import org.dousi.api.Client;
 
 public class Proxy<T> {
 

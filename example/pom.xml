@@ -38,7 +38,7 @@
               <includeStdTypes>true</includeStdTypes>
               <outputDirectory>src/main/java</outputDirectory>
               <inputDirectories>
-                <include>src/main/java/com/distkv/dousi/pb/protobuffer</include>
+                <include>src/main/java/org/dousi/pb/protobuffer</include>
               </inputDirectories>
             </configuration>
           </execution>

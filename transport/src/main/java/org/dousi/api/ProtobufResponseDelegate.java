@@ -1,8 +1,8 @@
 package org.dousi.api;
 
 import org.dousi.exception.DrpcException;
-import com.distkv.drpc.codec.generated.DrpcProtocol;
-import com.distkv.drpc.codec.generated.DrpcProtocol.DrpcStatus;
+import org.dousi.codec.generated.DrpcProtocol;
+import org.dousi.codec.generated.DrpcProtocol.DrpcStatus;
 import com.google.protobuf.Any;
 import com.google.protobuf.Any.Builder;
 import com.google.protobuf.Message;

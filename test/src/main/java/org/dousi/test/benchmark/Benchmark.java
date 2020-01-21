@@ -2,12 +2,12 @@ package org.dousi.test.benchmark;
 
 import org.dousi.test.common.BenchmarkIService;
 import org.dousi.test.common.BenchmarkIServiceImpl;
-import com.distkv.drpc.DrpcServer;
-import com.distkv.drpc.Proxy;
-import com.distkv.drpc.api.Client;
+import org.dousi.DrpcServer;
+import org.dousi.Proxy;
+import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
 import org.dousi.config.ServerConfig;
-import com.distkv.drpc.netty.NettyClient;
+import org.dousi.netty.NettyClient;
 
 public class Benchmark {
 

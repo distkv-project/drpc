@@ -1,15 +1,14 @@
 package org.dousi.test;
 
-
-import com.distkv.drpc.DrpcServer;
-import com.distkv.drpc.Proxy;
-import com.distkv.drpc.api.Client;
+import org.dousi.DrpcServer;
+import org.dousi.Proxy;
+import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
 import org.dousi.config.ServerConfig;
-import com.distkv.drpc.netty.NettyClient;
+import org.dousi.netty.NettyClient;
 import org.dousi.test.common.IService;
 import org.dousi.test.common.IServiceImpl;
-import com.distkv.drpc.test.generated.EchoProtocol;
+import org.dousi.test.generated.EchoProtocol;
 import java.util.concurrent.ExecutionException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;

@@ -1,4 +1,4 @@
-package org.dousi.dousi.common;
+package org.dousi.common;
 
 import java.util.Objects;
 

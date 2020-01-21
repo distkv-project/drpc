@@ -1,6 +1,6 @@
 package org.dousi.api;
 
-import com.distkv.drpc.codec.generated.DrpcProtocol;
+import org.dousi.codec.generated.DrpcProtocol;
 import com.google.protobuf.Any;
 import com.google.protobuf.Any.Builder;
 import com.google.protobuf.Message;

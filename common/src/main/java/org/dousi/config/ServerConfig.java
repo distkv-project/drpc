@@ -1,7 +1,7 @@
-package org.dousi.dousi.config;
+package org.dousi.config;
 
-import org.dousi.dousi.common.DrpcAddress;
-import org.dousi.dousi.utils.NetUtils;
+import org.dousi.common.DrpcAddress;
+import org.dousi.utils.NetUtils;
 import lombok.Builder;
 
 @Builder

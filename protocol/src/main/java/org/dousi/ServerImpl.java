@@ -1,9 +1,9 @@
 package org.dousi;
 
-import com.distkv.drpc.api.DefaultResponse;
-import com.distkv.drpc.api.Request;
-import com.distkv.drpc.api.Response;
-import com.distkv.drpc.codec.generated.DrpcProtocol.DrpcStatus;
+import org.dousi.api.DefaultResponse;
+import org.dousi.api.Request;
+import org.dousi.api.Response;
+import org.dousi.codec.generated.DrpcProtocol.DrpcStatus;
 import org.dousi.common.Void;
 import org.dousi.exception.DrpcException;
 import org.dousi.utils.ReflectUtils;

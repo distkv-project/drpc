@@ -1,10 +1,10 @@
 package org.dousi.proxy;
 
 import org.dousi.Invoker;
-import com.distkv.drpc.api.AsyncResponse;
-import com.distkv.drpc.api.ProtobufRequestDelegate;
-import com.distkv.drpc.api.Request;
-import com.distkv.drpc.api.Response;
+import org.dousi.api.AsyncResponse;
+import org.dousi.api.ProtobufRequestDelegate;
+import org.dousi.api.Request;
+import org.dousi.api.Response;
 import org.dousi.exception.DrpcException;
 import org.dousi.utils.RequestIdGenerator;
 import com.google.protobuf.Any;

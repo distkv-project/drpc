@@ -1,4 +1,4 @@
-package org.dousi.dousi.utils;
+package org.dousi.utils;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

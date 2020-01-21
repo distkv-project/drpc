@@ -1,6 +1,6 @@
 package org.dousi.pb;
 
-import com.distkv.drpc.pb.generated.StringProtocol;
+import org.dousi.pb.generated.StringProtocol;
 import java.util.concurrent.CompletableFuture;
 
 public interface ExampleService {

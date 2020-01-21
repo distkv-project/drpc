@@ -1,4 +1,4 @@
-package org.dousi.dousi.exception;
+package org.dousi.exception;
 
 
 public class CodecException extends RuntimeException {

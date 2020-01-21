@@ -1,6 +1,6 @@
-package org.dousi.dousi.config;
+package org.dousi.config;
 
-import org.dousi.dousi.exception.DrpcIllegalAddressException;
+import org.dousi.exception.DrpcIllegalAddressException;
 import lombok.Builder;
 
 @Builder

@@ -3,7 +3,7 @@ package org.dousi.codec;
 import org.dousi.api.DefaultResponse;
 import org.dousi.api.ProtobufRequestDelegate;
 import org.dousi.api.ProtobufResponseDelegate;
-import com.distkv.drpc.codec.generated.DrpcProtocol;
+import org.dousi.codec.generated.DrpcProtocol;
 import org.dousi.exception.CodecException;
 
 public class DrpcCodec implements Codec {

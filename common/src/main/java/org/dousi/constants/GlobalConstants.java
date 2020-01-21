@@ -1,4 +1,4 @@
-package org.dousi.dousi.constants;
+package org.dousi.constants;
 
 
 public interface GlobalConstants {
