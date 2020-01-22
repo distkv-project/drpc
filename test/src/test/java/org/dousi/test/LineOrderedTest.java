@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 
 public class LineOrderedTest {
 
-  private DousiServer drpcServer;
+  private DousiServer dousiServer;
 
   private Client client;
 
@@ -27,9 +27,9 @@ public class LineOrderedTest {
         .sequential(true)
         .build();
 
-    drpcServer = new DousiServer(serverConfig);
-    drpcServer.registerService(IService.class, new IServiceImpl());
-    drpcServer.run();
+    dousiServer = new DousiServer(serverConfig);
+    dousiServer.registerService(IService.class, new IServiceImpl());
+    dousiServer.run();
 
     ClientConfig clientConfig = ClientConfig.builder()
         .address("127.0.0.1:8080")

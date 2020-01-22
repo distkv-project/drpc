@@ -2,7 +2,7 @@ package org.dousi.api;
 
 import org.dousi.exception.DousiException;
 import org.dousi.codec.generated.DousiProtocol;
-import org.dousi.codec.generated.DousiProtocol.DrpcStatus;
+import org.dousi.codec.generated.DousiProtocol.DousiStatus;
 import com.google.protobuf.Any;
 import com.google.protobuf.Any.Builder;
 import com.google.protobuf.Message;
@@ -75,8 +75,8 @@ public class ProtobufResponseDelegate implements Response {
 
   @Override
   public void setStatus(Enum status) {
-    if (status instanceof DrpcStatus) {
-      builder.setStatus((DrpcStatus) status);
+    if (status instanceof DousiStatus) {
+      builder.setStatus((DousiStatus) status);
     }
   }
 
@@ -92,7 +92,7 @@ public class ProtobufResponseDelegate implements Response {
     if (delegatedResponse == null) {
       return false;
     }
-    return delegatedResponse.getStatus() != DrpcStatus.OK;
+    return delegatedResponse.getStatus() != DousiStatus.OK;
   }
 
   public DousiProtocol.Response getDelegatedResponse() {

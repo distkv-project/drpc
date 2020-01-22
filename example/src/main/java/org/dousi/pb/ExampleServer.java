@@ -10,8 +10,8 @@ public class ExampleServer {
         .port(8080)
         .build();
 
-    DousiServer drpcServer = new DousiServer(serverConfig);
-    drpcServer.registerService(ExampleService.class, new ExampleServiceImpl());
-    drpcServer.run();
+    DousiServer dousiServer = new DousiServer(serverConfig);
+    dousiServer.registerService(ExampleService.class, new ExampleServiceImpl());
+    dousiServer.run();
   }
 }

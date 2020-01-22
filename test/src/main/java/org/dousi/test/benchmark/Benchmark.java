@@ -17,9 +17,9 @@ public class Benchmark {
         .port(25500)
         .build();
 
-    DousiServer drpcServer = new DousiServer(serverConfig);
-    drpcServer.registerService(BenchmarkIService.class, new BenchmarkIServiceImpl());
-    drpcServer.run();
+    DousiServer dousiServer = new DousiServer(serverConfig);
+    dousiServer.registerService(BenchmarkIService.class, new BenchmarkIServiceImpl());
+    dousiServer.run();
 
     ClientConfig clientConfig = ClientConfig.builder()
         .address("127.0.0.1:25500")

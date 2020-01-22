@@ -16,14 +16,14 @@ message Request {
 
 message Response {
     int64 requestId = 1;
-    DrpcStatus status = 2;
+    DousiStatus status = 2;
     oneof returnValue {
         google.protobuf.Any result = 3;
         string errorMessage = 4;
     };
 };
-
-enum DrpcStatus {
+s
+enum DousiStatus {
     OK = 0; // OK;
     OUTER_ERROR = 1; // Outer error;
     INNER_ERROR = 2; // Inner error;

@@ -17,7 +17,7 @@ public class ClientConfigTest {
   }
 
   @Test(expectedExceptions = DousiIllegalAddressException.class)
-  public void testGetServerPortDrpcIllegalAddressException() {
+  public void testGetServerPortDousiIllegalAddressException() {
     ClientConfig clientConfig = ClientConfig.builder()
         .address("list://127.0.0.1:8080:8081")
         .timeout(1000)
@@ -45,7 +45,7 @@ public class ClientConfigTest {
   }
 
   @Test(expectedExceptions = DousiIllegalAddressException.class)
-  public void testGetServerIpDrpcIllegalAddressException() {
+  public void testGetServerIpDousiIllegalAddressException() {
     ClientConfig clientConfig = ClientConfig.builder()
         .address("list://127.0.0.1:8080:8081")
         .timeout(1000)

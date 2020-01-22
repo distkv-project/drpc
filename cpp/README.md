@@ -1,1 +1,1 @@
-# C++ client of drpc
+# C++ client of Dousi

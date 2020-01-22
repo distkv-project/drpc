@@ -3,7 +3,7 @@ package org.dousi;
 import org.dousi.api.DefaultResponse;
 import org.dousi.api.Request;
 import org.dousi.api.Response;
-import org.dousi.codec.generated.DousiProtocol.DrpcStatus;
+import org.dousi.codec.generated.DousiProtocol.DousiStatus;
 import org.dousi.common.Void;
 import org.dousi.exception.DousiException;
 import org.dousi.utils.ReflectUtils;
@@ -58,7 +58,7 @@ public class ServerImpl<T> implements Invoker<T> {
     String methodName = request.getMethodName();
     Method method = methodMap.get(methodName);
     if (method == null) {
-      response.setStatus(DrpcStatus.OUTER_ERROR);
+      response.setStatus(DousiStatus.OUTER_ERROR);
       response.setThrowable(new DousiException("ServerImpl: can't find method: " + methodName));
       return response;
     }
@@ -70,13 +70,13 @@ public class ServerImpl<T> implements Invoker<T> {
       } else {
         response.setValue(value);
       }
-      response.setStatus(DrpcStatus.OK);
+      response.setStatus(DousiStatus.OK);
     } catch (Exception e) {
-      response.setStatus(DrpcStatus.INNER_ERROR);
+      response.setStatus(DousiStatus.INNER_ERROR);
       response.setThrowable(
           new DousiException("ServerImpl: exception when invoke method: " + methodName, e));
     } catch (Error e) {
-      response.setStatus(DrpcStatus.INNER_ERROR);
+      response.setStatus(DousiStatus.INNER_ERROR);
       response
           .setThrowable(
               new DousiException("ServerImpl: error when invoke method: " + methodName, e));
