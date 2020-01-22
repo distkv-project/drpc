@@ -31,8 +31,8 @@ Client example: ./example/src/main/java/com/distkv/dousi/pb/ExampleServer.java
 ## Examples
 ### 1. Server Example
 ```java
-import com.distkv.drpc.DrpcServer;
-import com.distkv.drpc.config.ServerConfig;
+import org.dousi.DousiServer;
+import org.dousi.config.ServerConfig;
 
 public class ExampleServer {
 
@@ -41,19 +41,19 @@ public class ExampleServer {
         .port(8080)
         .build();
 
-    DrpcServer drpcServer = new DrpcServer(serverConfig);
-    drpcServer.registerService(ExampleService.class, new ExampleServiceImpl());
-    drpcServer.run();
+    DousiServer dousiServer = new DousiServer(serverConfig);
+    dousiServer.registerService(ExampleService.class, new ExampleServiceImpl());
+    dousiServer.run();
   }
 }
 ```
 ### 2. Client Example
 ```java
-import com.distkv.drpc.Proxy;
-import com.distkv.drpc.api.Client;
-import com.distkv.drpc.config.ClientConfig;
-import com.distkv.drpc.netty.NettyClient;
-import com.distkv.drpc.pb.generated.StringProtocol;
+import org.dousi.Proxy;
+import org.dousi.api.Client;
+import org.dousi.config.ClientConfig;
+import org.dousi.netty.NettyClient;
+import org.dousi.pb.generated.StringProtocol;
 
 import java.util.concurrent.CompletableFuture;
 

@@ -5,7 +5,7 @@ import org.dousi.api.AsyncResponse;
 import org.dousi.api.ProtobufRequestDelegate;
 import org.dousi.api.Request;
 import org.dousi.api.Response;
-import org.dousi.exception.DrpcException;
+import org.dousi.exception.DousiException;
 import org.dousi.utils.RequestIdGenerator;
 import com.google.protobuf.Any;
 import com.google.protobuf.Message;
@@ -33,7 +33,7 @@ public class ProxyHandler<T> implements InvocationHandler {
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
     if (isLocalMethod(method)) {
-      throw new DrpcException("Can not invoke local method: " + method.getName());
+      throw new DousiException("Can not invoke local method: " + method.getName());
     }
 
     Request request = new ProtobufRequestDelegate();

@@ -8,9 +8,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
- * The class that represents a drpc server.
+ * The class that represents a dousi server.
  */
-public class DrpcServer {
+public class DousiServer {
 
   /**
    * The service handlers.
@@ -21,7 +21,7 @@ public class DrpcServer {
 
   private ServerConfig serverConfig;
 
-  public DrpcServer(ServerConfig serverConfig) {
+  public DousiServer(ServerConfig serverConfig) {
     this.serverConfig = serverConfig;
   }
 

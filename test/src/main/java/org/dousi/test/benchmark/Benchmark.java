@@ -2,7 +2,7 @@ package org.dousi.test.benchmark;
 
 import org.dousi.test.common.BenchmarkIService;
 import org.dousi.test.common.BenchmarkIServiceImpl;
-import org.dousi.DrpcServer;
+import org.dousi.DousiServer;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
@@ -17,9 +17,9 @@ public class Benchmark {
         .port(25500)
         .build();
 
-    DrpcServer drpcServer = new DrpcServer(serverConfig);
-    drpcServer.registerService(BenchmarkIService.class, new BenchmarkIServiceImpl());
-    drpcServer.run();
+    DousiServer dousiServer = new DousiServer(serverConfig);
+    dousiServer.registerService(BenchmarkIService.class, new BenchmarkIServiceImpl());
+    dousiServer.run();
 
     ClientConfig clientConfig = ClientConfig.builder()
         .address("127.0.0.1:25500")

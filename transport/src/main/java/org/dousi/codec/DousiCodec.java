@@ -3,17 +3,17 @@ package org.dousi.codec;
 import org.dousi.api.DefaultResponse;
 import org.dousi.api.ProtobufRequestDelegate;
 import org.dousi.api.ProtobufResponseDelegate;
-import org.dousi.codec.generated.DrpcProtocol;
-import org.dousi.exception.CodecException;
+import org.dousi.codec.generated.DousiProtocol;
+import org.dousi.exception.DousiCodecException;
 
-public class DrpcCodec implements Codec {
+public class DousiCodec implements Codec {
 
-  public DrpcCodec() {
+  public DousiCodec() {
 
   }
 
   @Override
-  public byte[] encode(Object message) throws CodecException {
+  public byte[] encode(Object message) throws DousiCodecException {
     if (message instanceof ProtobufRequestDelegate) {
       ProtobufRequestDelegate request = (ProtobufRequestDelegate) message;
       return request.getDelegatedRequest().toByteArray();
@@ -39,19 +39,19 @@ public class DrpcCodec implements Codec {
   }
 
   @Override
-  public Object decode(byte[] data, DataTypeEnum dataTypeEnum) throws CodecException {
+  public Object decode(byte[] data, DataTypeEnum dataTypeEnum) throws DousiCodecException {
     try {
       if (DataTypeEnum.REQUEST == dataTypeEnum) {
-        DrpcProtocol.Request request = DrpcProtocol.Request.parseFrom(data);
+        DousiProtocol.Request request = DousiProtocol.Request.parseFrom(data);
         return new ProtobufRequestDelegate(request);
       }
       if (DataTypeEnum.RESPONSE == dataTypeEnum) {
-        DrpcProtocol.Response response = DrpcProtocol.Response.parseFrom(data);
+        DousiProtocol.Response response = DousiProtocol.Response.parseFrom(data);
         return new ProtobufResponseDelegate(response);
       }
-      throw new CodecException("Illegal DataTypeEnum: " + dataTypeEnum);
+      throw new DousiCodecException("Illegal DataTypeEnum: " + dataTypeEnum);
     } catch (Exception e) {
-      throw new CodecException("Decode error", e);
+      throw new DousiCodecException("Decode error", e);
     }
   }
 }

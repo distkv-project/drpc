@@ -4,11 +4,11 @@ import org.dousi.api.AbstractClient;
 import org.dousi.api.DefaultAsyncResponse;
 import org.dousi.api.Request;
 import org.dousi.codec.Codec;
-import org.dousi.codec.DrpcCodec;
-import org.dousi.exception.CodecException;
-import org.dousi.exception.DrpcException;
-import org.dousi.exception.DrpcRuntimeException;
-import org.dousi.exception.TransportException;
+import org.dousi.codec.DousiCodec;
+import org.dousi.exception.DousiCodecException;
+import org.dousi.exception.DousiException;
+import org.dousi.exception.DousiRuntimeException;
+import org.dousi.exception.DousiTransportException;
 import org.dousi.api.AsyncResponse;
 import org.dousi.api.Response;
 import org.dousi.config.ClientConfig;
@@ -38,7 +38,7 @@ public class NettyClient extends AbstractClient {
   private NioEventLoopGroup nioEventLoopGroup;
 
   public NettyClient(ClientConfig clientConfig) {
-    super(clientConfig, new DrpcCodec());
+    super(clientConfig, new DousiCodec());
     nioEventLoopGroup = new NioEventLoopGroup(GlobalConstants.THREAD_NUMBER + 1);
   }
 
@@ -69,7 +69,7 @@ public class NettyClient extends AbstractClient {
                 byteBuf.release();
                 Object object = getCodec().decode(data, Codec.DataTypeEnum.RESPONSE);
                 if (!(object instanceof Response)) {
-                  throw new DrpcException(
+                  throw new DousiException(
                       "NettyChannelHandler: unsupported message type when encode: " + object
                           .getClass());
                 }
@@ -93,7 +93,7 @@ public class NettyClient extends AbstractClient {
       future = bootstrap.connect(getConfig().getServerIp(), getConfig().getServerPort()).sync();
     } catch (InterruptedException i) {
       close();
-      throw new TransportException("NettyClient: connect().sync() interrupted", i);
+      throw new DousiTransportException("NettyClient: connect().sync() interrupted", i);
     }
 
     clientChannel = future.channel();
@@ -123,13 +123,13 @@ public class NettyClient extends AbstractClient {
       if (clientChannel.isActive()) {
         clientChannel.writeAndFlush(byteBuf).sync();
       } else {
-        throw new DrpcException("ClientChannel closed");
+        throw new DousiException("ClientChannel closed");
       }
       return response;
     } catch (InterruptedException e) {
       logger.error("NettyClient: response.getValue interrupted!");
-      throw new DrpcRuntimeException("NettyClient: response.getValue interrupted!");
-    } catch (CodecException | IllegalArgumentException e) {
+      throw new DousiRuntimeException("NettyClient: response.getValue interrupted!");
+    } catch (DousiCodecException | IllegalArgumentException e) {
       response.setThrowable(e);
       return response;
     }

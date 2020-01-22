@@ -1,6 +1,6 @@
 package org.dousi.config;
 
-import org.dousi.common.DrpcAddress;
+import org.dousi.common.DousiAddress;
 import org.dousi.utils.NetUtils;
 import lombok.Builder;
 
@@ -41,9 +41,9 @@ public class ServerConfig {
     return enableIOThreadOnly;
   }
 
-  public DrpcAddress getDrpcAddress() {
+  public DousiAddress getAddress() {
     String serverIp = NetUtils.getLocalAddress().getHostAddress();
-    return new DrpcAddress(serverIp, port);
+    return new DousiAddress(serverIp, port);
   }
 
 }

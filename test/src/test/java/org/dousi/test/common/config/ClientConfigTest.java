@@ -1,7 +1,7 @@
 package org.dousi.test.common.config;
 
 import org.dousi.config.ClientConfig;
-import org.dousi.exception.DrpcIllegalAddressException;
+import org.dousi.exception.DousiIllegalAddressException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -16,8 +16,8 @@ public class ClientConfigTest {
     Assert.assertEquals(8080, clientConfig.getServerPort());
   }
 
-  @Test(expectedExceptions = DrpcIllegalAddressException.class)
-  public void testGetServerPortDrpcIllegalAddressException() {
+  @Test(expectedExceptions = DousiIllegalAddressException.class)
+  public void testGetServerPortDousiIllegalAddressException() {
     ClientConfig clientConfig = ClientConfig.builder()
         .address("list://127.0.0.1:8080:8081")
         .timeout(1000)
@@ -26,7 +26,7 @@ public class ClientConfigTest {
 
   }
 
-  @Test(expectedExceptions = DrpcIllegalAddressException.class)
+  @Test(expectedExceptions = DousiIllegalAddressException.class)
   public void testGetServerPortNumberFormatException() {
     ClientConfig clientConfig = ClientConfig.builder()
         .address("list://127.0.0.1:abcd")
@@ -44,8 +44,8 @@ public class ClientConfigTest {
     Assert.assertEquals("127.0.0.1", clientConfig.getServerIp());
   }
 
-  @Test(expectedExceptions = DrpcIllegalAddressException.class)
-  public void testGetServerIpDrpcIllegalAddressException() {
+  @Test(expectedExceptions = DousiIllegalAddressException.class)
+  public void testGetServerIpDousiIllegalAddressException() {
     ClientConfig clientConfig = ClientConfig.builder()
         .address("list://127.0.0.1:8080:8081")
         .timeout(1000)

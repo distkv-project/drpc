@@ -1,23 +1,23 @@
 package org.dousi.api;
 
-import org.dousi.exception.DrpcException;
-import org.dousi.codec.generated.DrpcProtocol;
-import org.dousi.codec.generated.DrpcProtocol.DrpcStatus;
+import org.dousi.exception.DousiException;
+import org.dousi.codec.generated.DousiProtocol;
+import org.dousi.codec.generated.DousiProtocol.DousiStatus;
 import com.google.protobuf.Any;
 import com.google.protobuf.Any.Builder;
 import com.google.protobuf.Message;
 
 public class ProtobufResponseDelegate implements Response {
 
-  private DrpcProtocol.Response.Builder builder;
-  private DrpcProtocol.Response delegatedResponse;
+  private DousiProtocol.Response.Builder builder;
+  private DousiProtocol.Response delegatedResponse;
   private Object value;
 
   public ProtobufResponseDelegate() {
-    builder = DrpcProtocol.Response.newBuilder();
+    builder = DousiProtocol.Response.newBuilder();
   }
 
-  public ProtobufResponseDelegate(DrpcProtocol.Response delegatedResponse) {
+  public ProtobufResponseDelegate(DousiProtocol.Response delegatedResponse) {
     this.delegatedResponse = delegatedResponse;
   }
 
@@ -47,7 +47,7 @@ public class ProtobufResponseDelegate implements Response {
 
   @Override
   public Throwable getThrowable() {
-    return new DrpcException(delegatedResponse.getErrorMessage());
+    return new DousiException(delegatedResponse.getErrorMessage());
   }
 
   @Override
@@ -75,8 +75,8 @@ public class ProtobufResponseDelegate implements Response {
 
   @Override
   public void setStatus(Enum status) {
-    if (status instanceof DrpcStatus) {
-      builder.setStatus((DrpcStatus) status);
+    if (status instanceof DousiStatus) {
+      builder.setStatus((DousiStatus) status);
     }
   }
 
@@ -92,10 +92,10 @@ public class ProtobufResponseDelegate implements Response {
     if (delegatedResponse == null) {
       return false;
     }
-    return delegatedResponse.getStatus() != DrpcStatus.OK;
+    return delegatedResponse.getStatus() != DousiStatus.OK;
   }
 
-  public DrpcProtocol.Response getDelegatedResponse() {
+  public DousiProtocol.Response getDelegatedResponse() {
     return delegatedResponse;
   }
 }

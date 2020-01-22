@@ -23,7 +23,7 @@ public class ReflectUtilsTest {
 
   @Test(expectedExceptions = ClassNotFoundException.class)
   public void testForNameException() throws ClassNotFoundException {
-    ReflectUtils.forName("org.dousi.drpc.utils.XXXXX");
+    ReflectUtils.forName("org.dousi.dousi.utils.XXXXX");
   }
 
   @Test

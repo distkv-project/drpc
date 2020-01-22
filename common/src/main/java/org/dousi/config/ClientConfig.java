@@ -1,6 +1,6 @@
 package org.dousi.config;
 
-import org.dousi.exception.DrpcIllegalAddressException;
+import org.dousi.exception.DousiIllegalAddressException;
 import lombok.Builder;
 
 @Builder
@@ -16,13 +16,13 @@ public class ClientConfig {
     }
     String[] ipPort = address.split(":");
     if (ipPort.length != 2) {
-      throw new DrpcIllegalAddressException(
+      throw new DousiIllegalAddressException(
           "Multi ':' found in address, except one. Address: " + address);
     }
     try {
       return Integer.valueOf(ipPort[1]);
     } catch (NumberFormatException e) {
-      throw new DrpcIllegalAddressException("Port is not Integer Type, Address: " + address, e);
+      throw new DousiIllegalAddressException("Port is not Integer Type, Address: " + address, e);
     }
   }
 
@@ -32,7 +32,7 @@ public class ClientConfig {
     }
     String[] ipPort = address.split(":");
     if (ipPort.length != 2) {
-      throw new DrpcIllegalAddressException(
+      throw new DousiIllegalAddressException(
           "Multi ':' found in address, except one. Address: " + address);
     }
     return ipPort[0];

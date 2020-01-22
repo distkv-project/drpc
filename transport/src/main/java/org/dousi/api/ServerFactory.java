@@ -1,7 +1,7 @@
 package org.dousi.api;
 
-import org.dousi.common.DrpcAddress;
-import org.dousi.exception.TransportException;
+import org.dousi.common.DousiAddress;
+import org.dousi.exception.DousiTransportException;
 import org.dousi.config.ServerConfig;
 
 import java.util.List;
@@ -10,18 +10,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class ServerFactory {
 
-  private Map<DrpcAddress, Server> activeServer = new ConcurrentHashMap<>();
+  private Map<DousiAddress, Server> activeServer = new ConcurrentHashMap<>();
 
 
   public Server createServer(ServerConfig serverConfig, List<Handler> handlers) {
-    DrpcAddress serverAddress = serverConfig.getDrpcAddress();
+    DousiAddress serverAddress = serverConfig.getAddress();
     Server server;
     if (activeServer.containsKey(serverAddress)) {
       server = activeServer.get(serverAddress);
       if (server.isOpen()) {
         RoutableHandler routableHandler = server.getRoutableHandler();
         if (routableHandler == null) {
-          throw new TransportException("Server's routableHandler can't be null");
+          throw new DousiTransportException("Server's routableHandler can't be null");
         }
 
         handlers.forEach((handler) -> {
