@@ -4,7 +4,7 @@ project(dousi_cpp_client)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
-set(dousi_CPP_CLIENT_SRC src/dousi_client.cc)
+set(DOUSI_CPP_CLIENT_SRC src/dousi_client.cc)
 
 include(ExternalProject)
 include(GtestExternalProject)
