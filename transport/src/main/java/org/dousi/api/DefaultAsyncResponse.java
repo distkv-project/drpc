@@ -5,7 +5,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import org.dousi.exception.DrpcException;
+import org.dousi.exception.DousiException;
 
 
 public class DefaultAsyncResponse extends CompletableFuture<Response> implements AsyncResponse {
@@ -44,7 +44,7 @@ public class DefaultAsyncResponse extends CompletableFuture<Response> implements
       }
     } catch (Exception e) {
       // This should not happen
-      throw new DrpcException(e);
+      throw new DousiException(e);
     }
   }
 
@@ -65,7 +65,7 @@ public class DefaultAsyncResponse extends CompletableFuture<Response> implements
       }
     } catch (Exception e) {
       // This should not happen
-      throw new DrpcException(e);
+      throw new DousiException(e);
     }
   }
 
@@ -110,7 +110,7 @@ public class DefaultAsyncResponse extends CompletableFuture<Response> implements
 
   private void checkDone() {
     if (!isDone()) {
-      throw new DrpcException("Must check 'isDone()' first");
+      throw new DousiException("Must check 'isDone()' first");
     }
   }
 
@@ -123,7 +123,7 @@ public class DefaultAsyncResponse extends CompletableFuture<Response> implements
       return get();
     } catch (Exception e) {
       // This should not happen
-      throw new DrpcException(e);
+      throw new DousiException(e);
     }
   }
 

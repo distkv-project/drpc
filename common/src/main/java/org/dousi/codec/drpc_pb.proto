@@ -5,7 +5,7 @@ package org.dousi.codec;
 import "google/protobuf/any.proto";
 
 option java_package = "org.dousi.codec.generated";
-option java_outer_classname="DrpcProtocol";
+option java_outer_classname="DousiProtocol";
 
 message Request {
     int64 requestId = 1;

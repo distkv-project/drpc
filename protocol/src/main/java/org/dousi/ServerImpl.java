@@ -3,9 +3,9 @@ package org.dousi;
 import org.dousi.api.DefaultResponse;
 import org.dousi.api.Request;
 import org.dousi.api.Response;
-import org.dousi.codec.generated.DrpcProtocol.DrpcStatus;
+import org.dousi.codec.generated.DousiProtocol.DrpcStatus;
 import org.dousi.common.Void;
-import org.dousi.exception.DrpcException;
+import org.dousi.exception.DousiException;
 import org.dousi.utils.ReflectUtils;
 import com.google.protobuf.Any;
 import com.google.protobuf.Message;
@@ -29,7 +29,7 @@ public class ServerImpl<T> implements Invoker<T> {
    */
   public ServerImpl(T ref, Class<T> interfaceClazz) {
     if (!interfaceClazz.isInterface()) {
-      throw new DrpcException("ServerImpl: interfaceClazz is not a interface!");
+      throw new DousiException("ServerImpl: interfaceClazz is not a interface!");
     }
     this.ref = ref;
     this.interfaceClazz = interfaceClazz;
@@ -39,7 +39,7 @@ public class ServerImpl<T> implements Invoker<T> {
       String methodName = method.getName();
       methodMap.putIfAbsent(methodDesc, method);
       if (methodMap.containsKey(methodName)) {
-        throw new DrpcException(
+        throw new DousiException(
             "Duplicated method name: " + method.getDeclaringClass() + "#" + method
                 + ". Method name excepted unique.");
       }
@@ -59,7 +59,7 @@ public class ServerImpl<T> implements Invoker<T> {
     Method method = methodMap.get(methodName);
     if (method == null) {
       response.setStatus(DrpcStatus.OUTER_ERROR);
-      response.setThrowable(new DrpcException("ServerImpl: can't find method: " + methodName));
+      response.setThrowable(new DousiException("ServerImpl: can't find method: " + methodName));
       return response;
     }
     try {
@@ -74,12 +74,12 @@ public class ServerImpl<T> implements Invoker<T> {
     } catch (Exception e) {
       response.setStatus(DrpcStatus.INNER_ERROR);
       response.setThrowable(
-          new DrpcException("ServerImpl: exception when invoke method: " + methodName, e));
+          new DousiException("ServerImpl: exception when invoke method: " + methodName, e));
     } catch (Error e) {
       response.setStatus(DrpcStatus.INNER_ERROR);
       response
           .setThrowable(
-              new DrpcException("ServerImpl: error when invoke method: " + methodName, e));
+              new DousiException("ServerImpl: error when invoke method: " + methodName, e));
     }
     response.build();
     return response;

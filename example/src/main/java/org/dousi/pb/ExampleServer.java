@@ -1,6 +1,6 @@
 package org.dousi.pb;
 
-import org.dousi.DrpcServer;
+import org.dousi.DousiServer;
 import org.dousi.config.ServerConfig;
 
 public class ExampleServer {
@@ -10,7 +10,7 @@ public class ExampleServer {
         .port(8080)
         .build();
 
-    DrpcServer drpcServer = new DrpcServer(serverConfig);
+    DousiServer drpcServer = new DousiServer(serverConfig);
     drpcServer.registerService(ExampleService.class, new ExampleServiceImpl());
     drpcServer.run();
   }

@@ -2,7 +2,7 @@ package org.dousi.netty;
 
 import org.dousi.api.AbstractServer;
 import org.dousi.api.Handler;
-import org.dousi.codec.DrpcCodec;
+import org.dousi.codec.DousiCodec;
 import org.dousi.config.ServerConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -31,7 +31,7 @@ public class NettyServer extends AbstractServer {
 
 
   public NettyServer(ServerConfig serverConfig, List<Handler> handlers) {
-    super(serverConfig, new DrpcCodec());
+    super(serverConfig, new DousiCodec());
     handlers.forEach((handler) -> getRoutableHandler().registerHandler(handler));
     bossGroup = new NioEventLoopGroup(1);
     workerGroup = new NioEventLoopGroup();

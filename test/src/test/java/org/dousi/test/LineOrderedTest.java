@@ -1,6 +1,6 @@
 package org.dousi.test;
 
-import org.dousi.DrpcServer;
+import org.dousi.DousiServer;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 
 public class LineOrderedTest {
 
-  private DrpcServer drpcServer;
+  private DousiServer drpcServer;
 
   private Client client;
 
@@ -27,7 +27,7 @@ public class LineOrderedTest {
         .sequential(true)
         .build();
 
-    drpcServer = new DrpcServer(serverConfig);
+    drpcServer = new DousiServer(serverConfig);
     drpcServer.registerService(IService.class, new IServiceImpl());
     drpcServer.run();
 

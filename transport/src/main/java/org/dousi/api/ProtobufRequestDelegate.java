@@ -1,20 +1,20 @@
 package org.dousi.api;
 
-import org.dousi.codec.generated.DrpcProtocol;
+import org.dousi.codec.generated.DousiProtocol;
 import com.google.protobuf.Any;
 import com.google.protobuf.Any.Builder;
 import com.google.protobuf.Message;
 
 public class ProtobufRequestDelegate implements Request {
 
-  private DrpcProtocol.Request.Builder builder;
-  private DrpcProtocol.Request delegatedRequest;
+  private DousiProtocol.Request.Builder builder;
+  private DousiProtocol.Request delegatedRequest;
 
   public ProtobufRequestDelegate() {
-    builder = DrpcProtocol.Request.newBuilder();
+    builder = DousiProtocol.Request.newBuilder();
   }
 
-  public ProtobufRequestDelegate(DrpcProtocol.Request delegatedRequest) {
+  public ProtobufRequestDelegate(DousiProtocol.Request delegatedRequest) {
     this.delegatedRequest = delegatedRequest;
   }
 
@@ -90,7 +90,7 @@ public class ProtobufRequestDelegate implements Request {
     }
   }
 
-  public DrpcProtocol.Request getDelegatedRequest() {
+  public DousiProtocol.Request getDelegatedRequest() {
     return delegatedRequest;
   }
 }

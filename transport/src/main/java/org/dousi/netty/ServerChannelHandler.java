@@ -3,7 +3,7 @@ package org.dousi.netty;
 import org.dousi.api.Request;
 import org.dousi.codec.Codec;
 import org.dousi.common.Void;
-import org.dousi.exception.DrpcException;
+import org.dousi.exception.DousiException;
 import org.dousi.api.Handler;
 import org.dousi.api.Response;
 import io.netty.buffer.ByteBuf;
@@ -31,7 +31,7 @@ public class ServerChannelHandler extends ChannelDuplexHandler {
     byteBuf.release();
     Object object = nettyServer.getCodec().decode(data, Codec.DataTypeEnum.REQUEST);
     if (!(object instanceof Request)) {
-      throw new DrpcException(
+      throw new DousiException(
           "ServerChannelHandler: unsupported message type when decode: " + object.getClass());
     }
     if (nettyServer.getExecutor() != null) {
