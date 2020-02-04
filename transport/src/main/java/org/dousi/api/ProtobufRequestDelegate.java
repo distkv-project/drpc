@@ -90,6 +90,16 @@ public class ProtobufRequestDelegate implements Request {
     }
   }
 
+  @Override
+  public void setSessionID(String sessionID) {
+    builder.setSessionId(sessionID);
+  }
+
+  @Override
+  public String getSessionID() {
+    return delegatedRequest.getSessionId();
+  }
+
   public DousiProtocol.Request getDelegatedRequest() {
     return delegatedRequest;
   }

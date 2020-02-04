@@ -88,6 +88,16 @@ public class ProtobufResponseDelegate implements Response {
   }
 
   @Override
+  public void setSessionID(String sessionID) {
+    builder.setSessionId(sessionID);
+  }
+
+  @Override
+  public String getSessionID() {
+    return delegatedResponse.getSessionId();
+  }
+
+  @Override
   public boolean isError() {
     if (delegatedResponse == null) {
       return false;

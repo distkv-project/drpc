@@ -22,4 +22,7 @@ public interface Response {
 
   void build();
 
+  void setSessionID(String sessionID);
+
+  String getSessionID();
 }

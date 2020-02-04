@@ -41,6 +41,7 @@ public class ProxyHandler<T> implements InvocationHandler {
     request.setInterfaceName(method.getDeclaringClass().getName());
     request.setMethodName(method.getName());
     request.setArgsValue(args);
+    request.setSessionID("whhh");
     request.build();
 
     Class<?> returnType = method.getReturnType();

@@ -4,6 +4,8 @@ public class DefaultResponse implements Response {
 
   private long requestId;
 
+  private String sessionID;
+
   private Enum<?> status;
 
   private Object value;
@@ -60,6 +62,16 @@ public class DefaultResponse implements Response {
   @Override
   public void build() {
     // do nothing;
+  }
+
+  @Override
+  public void setSessionID(String sessionID) {
+    this.sessionID = sessionID;
+  }
+
+  @Override
+  public String getSessionID() {
+    return sessionID;
   }
 
   @Override
