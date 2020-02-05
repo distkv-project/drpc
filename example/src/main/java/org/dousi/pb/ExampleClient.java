@@ -1,10 +1,12 @@
 package org.dousi.pb;
 
+import org.dousi.DousiSession;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
 import org.dousi.netty.NettyClient;
 import org.dousi.pb.generated.StringProtocol;
+import org.dousi.utils.StringUtils;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -17,6 +19,7 @@ public class ExampleClient {
 
     Client client = new NettyClient(clientConfig);
     client.open();
+
     Proxy<ExampleService> proxy = new Proxy<>();
     proxy.setInterfaceClass(ExampleService.class);
     ExampleService service = proxy.getService(client);
@@ -51,6 +54,29 @@ public class ExampleClient {
         System.out.println(putResponse.getStatus());
       }
     });
+
+
+    //session (keep order)
+    String randomStr = StringUtils.getRandomString(16);
+    DousiSession session = DousiSession.createDousiSession(randomStr);
+    ExampleService sessionService = proxy.getService(client,session);
+
+    //async (keep order in server)
+    CompletableFuture sessionFuture1 = sessionService.get(getRequest);
+    sessionFuture1.whenComplete((r, t) -> {
+      if (t == null) {
+        System.out.println(getResponse.getValue());
+      }
+    });
+    CompletableFuture sessionFuture2 = sessionService.put(putRequest);
+    sessionFuture2.whenComplete((r, t) -> {
+      if (t == null) {
+        System.out.println(putResponse.getStatus());
+      }
+    });
+
+    sessionFuture1.get();
+    sessionFuture2.get();
 
     client.close();
   }
