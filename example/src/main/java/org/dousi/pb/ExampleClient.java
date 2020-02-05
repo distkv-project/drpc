@@ -59,7 +59,7 @@ public class ExampleClient {
     //session (keep order)
     String randomStr = StringUtils.getRandomString(16);
     DousiSession session = DousiSession.createDousiSession(randomStr);
-    ExampleService sessionService = proxy.getService(client,session);
+    ExampleService sessionService = proxy.getService(client, session);
 
     //async (keep order in server)
     CompletableFuture sessionFuture1 = sessionService.get(getRequest);

@@ -2,7 +2,6 @@ package org.dousi;
 
 import org.dousi.proxy.ProxyFactory;
 import org.dousi.api.Client;
-import org.dousi.utils.StringUtils;
 
 public class Proxy<T> {
 
