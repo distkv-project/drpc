@@ -7,45 +7,46 @@ import java.util.Collection;
 
 public interface NamingService {
   /**
-   * Subscribe and register may return results for this operation;
+   * Subscribe and publish may return results for this operation;
    */
 
   /**
    * Pull eligible registered services;
    *
-   * @param info Can be service name\ version number\ group
-   * @return Registration service list, could be empty
+   * @param serviceName Name of the published service, can be empty;
+   * @return Registration service list, could be empty;
    */
-  Collection<DrpcServiceInstance> pullRegisteredService(SubscribeInfo info) throws UnknownHostException;
+  Collection<DrpcServiceInstance> pull(String serviceName) throws UnknownHostException;
 
   /**
    * Register for a service;
    *
-   * @param info Can be service name\ version number\ group
+   * @param address Server address;
+   * @param interfaceName Name of the published interface, can't be empty;
    */
-  void register(RegisterInfo info);
+  void publish(String interfaceName, String address);
 
   /**
    * Unregister for a service;
    *
-   * @param info Can be service name\ version number\ group
+   * @param interfaceName Name of the published interface, can't be empty;
    */
-  void unregister(RegisterInfo info);
+  void unPublish(String interfaceName, String address);
 
   /**
    * Subscribe to a registered service;
    *
-   * @param info Can be service name\ version number\ group
+   * @param serviceName Can be service name\ version number\ group
    * @param listener Service change listener
    */
-  void subscribe(SubscribeInfo info, NotifyListener listener);
+  void subscribe(String serviceName, NotifyListener listener);
 
   /**
    * Unsebscribe a service;
    *
-   * @param info Can be service name\ version number\ group
+   * @param serviceName Can be service name\ version number\ group
    */
-  void unsubscribe(SubscribeInfo info);
+  void unsubscribe(String serviceName);
 
   void destory();
 }

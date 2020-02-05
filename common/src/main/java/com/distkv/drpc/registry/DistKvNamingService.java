@@ -42,10 +42,9 @@ public class DistKvNamingService implements NamingService {
   }
 
   @Override
-  public List<DrpcServiceInstance> pullRegisteredService(SubscribeInfo info)
+  public List<DrpcServiceInstance> pull(String serviceName)
         throws UnknownHostException {
-    InetAddress[] inetAddresses;
-    inetAddresses = InetAddress.getAllByName(host);
+    InetAddress[] inetAddresses = InetAddress.getAllByName(host);
     List<DrpcServiceInstance> instances = new ArrayList<>();
     for (InetAddress address : inetAddresses) {
       DrpcServiceInstance instance = new DrpcServiceInstance(address.getHostAddress(), port);
@@ -55,23 +54,23 @@ public class DistKvNamingService implements NamingService {
   }
 
   @Override
-  public void register(RegisterInfo info) {
+  public void publish(String address, String interfaceName) {
 
   }
 
   @Override
-  public void unregister(RegisterInfo info) {
+  public void unPublish(String address, String interfaceName) {
 
   }
 
   @Override
-  public void subscribe(SubscribeInfo info, NotifyListener listener) {
+  public void subscribe(String serviceName, NotifyListener listener) {
     namingServiceTimer.newTimeout(
           new TimerTask() {
             @Override
             public void run(Timeout timeout) throws Exception {
               try {
-                List<DrpcServiceInstance> currentInstances = pullRegisteredService(null);
+                List<DrpcServiceInstance> currentInstances = pull(null);
                 Collection<DrpcServiceInstance> addList =
                       CollectionUtils.subtract(currentInstances, lastInstances);
                 Collection<DrpcServiceInstance> removeList =
@@ -87,7 +86,7 @@ public class DistKvNamingService implements NamingService {
   }
 
   @Override
-  public void unsubscribe(SubscribeInfo info) {
+  public void unsubscribe(String serviceName) {
 
   }
 

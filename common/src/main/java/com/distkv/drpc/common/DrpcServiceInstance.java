@@ -10,6 +10,12 @@ public class DrpcServiceInstance extends DrpcAddress {
     super();
   }
 
+  public DrpcServiceInstance(DrpcAddress address) {
+    super();
+    this.setIp(address.getIp());
+    this.setPort(address.getPort());
+  }
+
   public DrpcServiceInstance(String ip, int port) {
     super(ip, port);
   }
@@ -20,6 +26,11 @@ public class DrpcServiceInstance extends DrpcAddress {
 
   public void setTag(String tag) {
     this.tag = tag;
+  }
+
+  @Override
+  public String toString() {
+    return this.tag + "/" + this.getIp() + ":" + this.getPort();
   }
 
 }
