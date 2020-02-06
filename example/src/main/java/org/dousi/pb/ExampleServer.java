@@ -8,7 +8,6 @@ public class ExampleServer {
   public static void main(String[] args) {
     ServerConfig serverConfig = ServerConfig.builder()
         .port(8080)
-        .enableIOThreadOnly(false)
         .build();
 
     DousiServer dousiServer = new DousiServer(serverConfig);

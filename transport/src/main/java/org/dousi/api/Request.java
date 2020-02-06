@@ -20,7 +20,7 @@ public interface Request {
 
   void build();
 
-  void setSessionID(String sessionID);
+  void setSessionID(byte[] sessionId);
 
-  String getSessionID();
+  byte[] getSessionID();
 }

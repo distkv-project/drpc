@@ -11,17 +11,16 @@ message Request {
     int64 requestId = 1;
     string interfaceName = 2;
     string methodName = 3;
-    string sessionId = 4;
+    bytes sessionId = 4;
     repeated google.protobuf.Any args = 5;
 };
 
 message Response {
     int64 requestId = 1;
     DousiStatus status = 2;
-    string sessionId = 3;
     oneof returnValue {
-        google.protobuf.Any result = 4;
-        string errorMessage = 5;
+        google.protobuf.Any result = 3;
+        string errorMessage = 4;
     };
 };
 

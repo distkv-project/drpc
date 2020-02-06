@@ -132,15 +132,6 @@ public class DefaultAsyncResponse extends CompletableFuture<Response> implements
     response.build();
   }
 
-  @Override
-  public void setSessionID(String sessionID) {
-    response.setSessionID(sessionID);
-  }
-
-  @Override
-  public String getSessionID() {
-    return response.getSessionID();
-  }
 
   @Override
   public boolean isError() {

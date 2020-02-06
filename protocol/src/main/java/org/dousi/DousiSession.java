@@ -1,18 +1,26 @@
 package org.dousi;
 
+import org.dousi.utils.StringUtils;
+
 public class DousiSession {
 
-  private String sessionID;
+  private byte[] sessionId;
 
-  public static DousiSession createDousiSession(String sessionID) {
-    return new DousiSession(sessionID);
+  public static DousiSession createSession(String sessionId) {
+    byte[] byteStr = sessionId.getBytes();
+    return new DousiSession(byteStr);
   }
 
-  private DousiSession(String sessionID) {
-    this.sessionID = sessionID;
+  private DousiSession(byte[] sessionId) {
+    this.sessionId = sessionId;
   }
 
-  public String getSessionID() {
-    return sessionID;
+  public byte[] getSessionID() {
+    return sessionId;
+  }
+
+  public static DousiSession fromRandom() {
+    String randomStr = StringUtils.getRandomString(16);
+    return new DousiSession(randomStr.getBytes());
   }
 }

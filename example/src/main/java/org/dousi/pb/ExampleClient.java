@@ -6,7 +6,6 @@ import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
 import org.dousi.netty.NettyClient;
 import org.dousi.pb.generated.StringProtocol;
-import org.dousi.utils.StringUtils;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -57,8 +56,7 @@ public class ExampleClient {
 
 
     //session (keep order)
-    String randomStr = StringUtils.getRandomString(16);
-    DousiSession session = DousiSession.createDousiSession(randomStr);
+    DousiSession session = DousiSession.fromRandom();
     ExampleService sessionService = proxy.getService(client, session);
 
     //async (keep order in server)

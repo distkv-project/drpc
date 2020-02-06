@@ -21,8 +21,4 @@ public interface Response {
   boolean isError();
 
   void build();
-
-  void setSessionID(String sessionID);
-
-  String getSessionID();
 }

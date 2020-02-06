@@ -34,7 +34,7 @@ public class ServerChannelHandler extends ChannelDuplexHandler {
       throw new DousiException(
           "ServerChannelHandler: unsupported message type when decode: " + object.getClass());
     }
-    String sessionId = ((Request)object).getSessionID();
+    byte[] sessionId = ((Request)object).getSessionID();
     if (nettyServer.getExecutor() != null) {
       if (sessionId.hashCode() != 0) {
         nettyServer.getExecutor().submit(sessionId.hashCode(), () -> processRequest(ctx, (Request) object));
@@ -49,7 +49,6 @@ public class ServerChannelHandler extends ChannelDuplexHandler {
   private void processRequest(ChannelHandlerContext ctx, Request request) {
     Response response = (Response) handler.handle(request);
     response.setRequestId(request.getRequestId());
-    response.setSessionID(request.getSessionID());
     if (response.getThrowable() != null) {
       sendResponse(ctx, response);
       return;
