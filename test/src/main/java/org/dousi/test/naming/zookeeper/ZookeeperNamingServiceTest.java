@@ -3,11 +3,15 @@ package org.dousi.test.naming.zookeeper;
 import org.apache.curator.test.TestingServer;
 import org.dousi.common.DousiServiceInstance;
 import org.dousi.registry.DousiURL;
+import org.dousi.registry.NotifyListener;
+import org.dousi.registry.SubscribeInfo;
 import org.dousi.registry.zookeeper.ZookeeperNamingService;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ZookeeperNamingServiceTest {
@@ -43,8 +47,65 @@ public class ZookeeperNamingServiceTest {
   }
 
   @Test
-  public void testSubscribeUnSubscribe() {
+  public void testSubscribeUnSubscribe() throws Exception {
+    setup();
+    final List<DousiServiceInstance> add = new ArrayList<>();
+    final List<DousiServiceInstance> remove = new ArrayList<>();
+    namingService.subscribe(testService.class.getName(), new NotifyListener() {
+      @Override
+      public void notify(Collection<DousiServiceInstance> addList, Collection<DousiServiceInstance> removeList) {
+        System.out.println("New subscribe time: " + System.currentTimeMillis());
+        System.out.println("AddList size: " + addList.size());
+        for (DousiServiceInstance instance : addList) {
+          System.out.println(instance.toString());
+        }
+        add.addAll(addList);
 
+        System.out.println("RemoveList size: "+ removeList.size());
+        for (DousiServiceInstance instance : removeList) {
+          System.out.println(instance.toString());
+        }
+        remove.addAll(removeList);
+      }
+    });
+
+    namingService.publish(testService.class.getName(), "127.0.0.1:8012");
+    System.out.println("Publish time: " + System.currentTimeMillis());
+    Thread.sleep(1000);
+    Assert.assertEquals(add.size(), 1);
+    Assert.assertEquals(remove.size(), 0);
+    Assert.assertEquals(add.get(0).getAddress(), "127.0.0.1:8012");
+    add.clear();
+    remove.clear();
+
+    namingService.unPublish(testService.class.getName(), "127.0.0.1:8012");
+    System.out.println("UnPublish time: " + System.currentTimeMillis());
+    Thread.sleep(1000);
+    Assert.assertEquals(add.size(), 0);
+    Assert.assertEquals(remove.size(), 1);
+    Assert.assertEquals(remove.get(0).getAddress(), "127.0.0.1:8012");
+    add.clear();
+    remove.clear();
+
+    namingService.unsubscribe(testService.class.getName());
+
+    namingService.publish(testService.class.getName(), "127.0.0.1:8012");
+    System.out.println("Publish time: " + System.currentTimeMillis());
+    Thread.sleep(1000);
+    Assert.assertEquals(add.size(), 0);
+    Assert.assertEquals(remove.size(), 0);
+    add.clear();
+    remove.clear();
+
+    namingService.unPublish(testService.class.getName(), "127.0.0.1:8012");
+    System.out.println("UnPublish time: " + System.currentTimeMillis());
+    Thread.sleep(1000);
+    Assert.assertEquals(add.size(), 0);
+    Assert.assertEquals(remove.size(), 0);
+    add.clear();
+    remove.clear();
+
+    tearDown();
   }
 
 }

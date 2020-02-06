@@ -5,13 +5,19 @@ import io.netty.util.Timeout;
 import io.netty.util.Timer;
 import io.netty.util.TimerTask;
 import io.netty.util.internal.ConcurrentSet;
+import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.recipes.cache.ChildData;
+import org.apache.curator.framework.recipes.cache.PathChildrenCache;
+import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
+import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
 import org.apache.curator.retry.ExponentialBackoffRetry;
+import org.apache.log4j.Logger;
+import org.apache.log4j.spi.LoggerFactory;
 import org.apache.zookeeper.CreateMode;
-import org.dousi.common.DousiAddress;
 import org.dousi.common.DousiServiceInstance;
 import org.dousi.registry.DousiConstants;
 import org.dousi.registry.DousiURL;
@@ -19,9 +25,11 @@ import org.dousi.registry.NamingService;
 import org.dousi.registry.NotifyListener;
 import org.dousi.utils.CustomThreadFactory;
 
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class ZookeeperNamingService implements NamingService {
+
   protected DousiURL url;
   protected CuratorFramework client;
   private int retryInterval;
@@ -43,10 +52,11 @@ public class ZookeeperNamingService implements NamingService {
   /// <serviceName, NotifyListener>
   protected ConcurrentMap<String, NotifyListener> failedSubscribe =
         new ConcurrentHashMap<>();
+  protected ConcurrentMap<String, PathChildrenCache> subscribeCache =
+        new ConcurrentHashMap<>();
+  /// <serviceName>
   protected ConcurrentSet<String> failedUnsubscribe =
         new ConcurrentSet<>();
-  protected ConcurrentMap<String, NotifyListener> subscribeCache =
-        new ConcurrentHashMap<>();
 
   public ZookeeperNamingService(DousiURL url) {
     this.url = url;
@@ -113,8 +123,7 @@ public class ZookeeperNamingService implements NamingService {
         String childPath = parentPath + "/" + child;
         try {
           String childData = new String(client.getData().forPath(childPath));
-          DousiAddress address = new DousiAddress(childData.toString());
-          instanceList.add(new DousiServiceInstance(address));
+          instanceList.add(new DousiServiceInstance(childData));
         } catch (Exception getDataFailed) {
           log.warn("Get child data failed, path: {}, ex: ", childPath, getDataFailed);
         }
@@ -169,17 +178,64 @@ public class ZookeeperNamingService implements NamingService {
 
   @Override
   public void subscribe(String serviceName, NotifyListener listener) {
-
+    String servicePath = getParentPath(serviceName);
+    PathChildrenCache cache = new PathChildrenCache(client, servicePath, true);
+    cache.getListenable().addListener(new PathChildrenCacheListener() {
+      @Override
+      public void childEvent(CuratorFramework client, PathChildrenCacheEvent event) throws Exception {
+        ChildData data = event.getData();
+        switch (event.getType()) {
+          case CHILD_ADDED: {
+            DousiServiceInstance instance = new DousiServiceInstance(new String(data.getData()));
+            listener.notify(Collections.singletonList(instance),
+                  Collections.<DousiServiceInstance>emptyList());
+            break;
+          }
+          case CHILD_REMOVED: {
+            DousiServiceInstance instance = new DousiServiceInstance(new String(data.getData()));
+            listener.notify(Collections.<DousiServiceInstance>emptyList(),
+                  Collections.singletonList(instance));
+            break;
+          }
+          case CHILD_UPDATED: break;
+          default: break;
+        }
+      }
+    });
+    try {
+      cache.start(PathChildrenCache.StartMode.BUILD_INITIAL_CACHE);
+      failedSubscribe.remove(serviceName, listener);
+      subscribeCache.putIfAbsent(serviceName, cache);
+      log.info("Subscribe success from {}", url);
+      System.out.println("Log: Subscribe success from " + url);
+    } catch (Exception e) {
+      log.warn("Subscribe failed from {}", url);
+      System.out.println("Log: Subscribe failed from " + url);
+      failedSubscribe.putIfAbsent(serviceName, listener);
+    }
   }
 
   @Override
   public void unsubscribe(String serviceName) {
-
+    PathChildrenCache cache = subscribeCache.get(serviceName);
+    try {
+      if (cache != null) {
+        cache.close();
+      }
+      log.info("Unsubscribe success from {}", url);
+      System.out.println("Log: Unsubscribe success from " + url);
+    } catch (IOException e) {
+      log.warn("Unsubscribe failed from {}", url);
+      System.out.println("Log: Unsubscribe failed from " + url);
+      failedUnsubscribe.add(serviceName);
+    }
+    failedUnsubscribe.remove(serviceName);
   }
 
   @Override
   public void destory() {
-
+    client.close();
+    timer.stop();
   }
 
   private String getParentPath(String interfaceName) {

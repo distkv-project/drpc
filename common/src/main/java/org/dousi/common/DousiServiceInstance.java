@@ -8,10 +8,8 @@ public class DousiServiceInstance extends DousiAddress {
     super();
   }
 
-  public DousiServiceInstance(DousiAddress address) {
-    super();
-    this.setIp(address.getIp());
-    this.setPort(address.getPort());
+  public DousiServiceInstance(String address) {
+    super(address);
   }
 
   public DousiServiceInstance(String ip, int port) {
