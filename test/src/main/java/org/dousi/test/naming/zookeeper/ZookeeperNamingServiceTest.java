@@ -4,7 +4,6 @@ import org.apache.curator.test.TestingServer;
 import org.dousi.common.DousiServiceInstance;
 import org.dousi.registry.DousiURL;
 import org.dousi.registry.NotifyListener;
-import org.dousi.registry.SubscribeInfo;
 import org.dousi.registry.zookeeper.ZookeeperNamingService;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -36,12 +35,12 @@ public class ZookeeperNamingServiceTest {
           (List<DousiServiceInstance>) namingService.pull(null);
     Assert.assertTrue(instances.isEmpty());
 
-    namingService.publish(testService.class.getName(),"127.0.0.1:8012");
-    instances = (List<DousiServiceInstance>) namingService.pull(testService.class.getName());
+    namingService.publish(TestService.class.getName(),"127.0.0.1:8012");
+    instances = (List<DousiServiceInstance>) namingService.pull(TestService.class.getName());
     Assert.assertEquals(instances.size(), 1);
     Assert.assertEquals(instances.get(0).getAddress(), "127.0.0.1:8012");
-    namingService.unPublish(testService.class.getName(), "127.0.0.1:8012");
-    instances = (List<DousiServiceInstance>) namingService.pull(testService.class.getName());
+    namingService.unPublish(TestService.class.getName(), "127.0.0.1:8012");
+    instances = (List<DousiServiceInstance>) namingService.pull(TestService.class.getName());
     Assert.assertEquals(instances.size(), 0);
     tearDown();
   }
@@ -51,7 +50,7 @@ public class ZookeeperNamingServiceTest {
     setup();
     final List<DousiServiceInstance> add = new ArrayList<>();
     final List<DousiServiceInstance> remove = new ArrayList<>();
-    namingService.subscribe(testService.class.getName(), new NotifyListener() {
+    namingService.subscribe(TestService.class.getName(), new NotifyListener() {
       @Override
       public void notify(Collection<DousiServiceInstance> addList, Collection<DousiServiceInstance> removeList) {
         System.out.println("New subscribe time: " + System.currentTimeMillis());
@@ -61,7 +60,7 @@ public class ZookeeperNamingServiceTest {
         }
         add.addAll(addList);
 
-        System.out.println("RemoveList size: "+ removeList.size());
+        System.out.println("RemoveList size: " + removeList.size());
         for (DousiServiceInstance instance : removeList) {
           System.out.println(instance.toString());
         }
@@ -69,7 +68,7 @@ public class ZookeeperNamingServiceTest {
       }
     });
 
-    namingService.publish(testService.class.getName(), "127.0.0.1:8012");
+    namingService.publish(TestService.class.getName(), "127.0.0.1:8012");
     System.out.println("Publish time: " + System.currentTimeMillis());
     Thread.sleep(1000);
     Assert.assertEquals(add.size(), 1);
@@ -78,7 +77,7 @@ public class ZookeeperNamingServiceTest {
     add.clear();
     remove.clear();
 
-    namingService.unPublish(testService.class.getName(), "127.0.0.1:8012");
+    namingService.unPublish(TestService.class.getName(), "127.0.0.1:8012");
     System.out.println("UnPublish time: " + System.currentTimeMillis());
     Thread.sleep(1000);
     Assert.assertEquals(add.size(), 0);
@@ -87,9 +86,9 @@ public class ZookeeperNamingServiceTest {
     add.clear();
     remove.clear();
 
-    namingService.unsubscribe(testService.class.getName());
+    namingService.unsubscribe(TestService.class.getName());
 
-    namingService.publish(testService.class.getName(), "127.0.0.1:8012");
+    namingService.publish(TestService.class.getName(), "127.0.0.1:8012");
     System.out.println("Publish time: " + System.currentTimeMillis());
     Thread.sleep(1000);
     Assert.assertEquals(add.size(), 0);
@@ -97,7 +96,7 @@ public class ZookeeperNamingServiceTest {
     add.clear();
     remove.clear();
 
-    namingService.unPublish(testService.class.getName(), "127.0.0.1:8012");
+    namingService.unPublish(TestService.class.getName(), "127.0.0.1:8012");
     System.out.println("UnPublish time: " + System.currentTimeMillis());
     Thread.sleep(1000);
     Assert.assertEquals(add.size(), 0);

@@ -1,5 +1,5 @@
 package org.dousi.test.naming.zookeeper;
 
-public interface testService {
+public interface TestService {
   String test(String call);
 }
