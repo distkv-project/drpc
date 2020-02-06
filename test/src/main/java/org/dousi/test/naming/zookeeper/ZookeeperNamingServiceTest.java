@@ -26,19 +26,25 @@ public class ZookeeperNamingServiceTest {
   }
 
   @Test
-  public void testPublishAndPull() throws Exception {
+  public void testPublishUnPublishAndPull() throws Exception {
     setup();
-//    System.out.println(zkServer.getConnectString());
     List<DousiServiceInstance> instances =
           (List<DousiServiceInstance>) namingService.pull(null);
     Assert.assertTrue(instances.isEmpty());
 
     namingService.publish(testService.class.getName(),"127.0.0.1:8012");
     instances = (List<DousiServiceInstance>) namingService.pull(testService.class.getName());
-    System.out.println(instances.size());
-    for (DousiServiceInstance instance : instances) {
-      System.out.println(instance.toString());
-    }
+    Assert.assertEquals(instances.size(), 1);
+    Assert.assertEquals(instances.get(0).getAddress(), "127.0.0.1:8012");
+    namingService.unPublish(testService.class.getName(), "127.0.0.1:8012");
+    instances = (List<DousiServiceInstance>) namingService.pull(testService.class.getName());
+    Assert.assertEquals(instances.size(), 0);
+    tearDown();
+  }
+
+  @Test
+  public void testSubscribeUnSubscribe() {
+
   }
 
 }

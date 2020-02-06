@@ -131,7 +131,6 @@ public class ZookeeperNamingService implements NamingService {
   public void publish(String interfaceName, String address) {
     String parentPath = getParentPath(interfaceName);
     String path = getPath(interfaceName, address);
-    System.out.println(parentPath + "\n" + path);
     try {
       if (client.checkExists().forPath(parentPath) == null) {
         client.create().withMode(CreateMode.PERSISTENT).forPath(parentPath);
@@ -142,8 +141,6 @@ public class ZookeeperNamingService implements NamingService {
           client.delete().forPath(path);
         } catch (Exception delete) {
           log.warn("Zookeeper delete node {} failed, default ignore.", path);
-          System.out.println("Zookeeper delete node " + path +
-                " failed, default ignore.");
         }
       }
       client.create().withMode(CreateMode.EPHEMERAL).forPath(path, address.getBytes());
@@ -151,7 +148,6 @@ public class ZookeeperNamingService implements NamingService {
       System.out.println("Publish success: " + path);
     } catch (Exception e) {
       log.warn("Publish failed: {}", path);
-      System.out.println("Publish failed: " + path);
       failedPublish.putIfAbsent(interfaceName, address);
       return;
     }
@@ -159,11 +155,12 @@ public class ZookeeperNamingService implements NamingService {
   }
 
   @Override
-  public void unPublish(String address, String interfaceName) {
+  public void unPublish(String interfaceName, String address) {
     String path = getPath(interfaceName, address);
     try {
       client.delete().guaranteed().forPath(path);
       log.info("UnPublish success: {}", path);
+      System.out.println("UnPublish success: " + path);
     } catch (Exception e) {
       log.warn("UnPublish failed: {}", path);
       failedUnpublish.putIfAbsent(interfaceName, address);

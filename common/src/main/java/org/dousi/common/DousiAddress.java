@@ -44,4 +44,8 @@ public class DousiAddress {
     }
     return Objects.equals(port, other.port);
   }
+
+  public String getAddress() {
+    return this.ip + ":" + this.port;
+  }
 }

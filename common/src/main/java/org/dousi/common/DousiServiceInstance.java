@@ -28,7 +28,7 @@ public class DousiServiceInstance extends DousiAddress {
 
   @Override
   public String toString() {
-    return this.tag + "/" + this.getIp() + ":" + this.getPort();
+    return this.tag + ":" + this.getIp() + ":" + this.getPort();
   }
 
 }
