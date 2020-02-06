@@ -12,7 +12,7 @@ public class ServerConfig {
   private int workerThreadNum;
 
   @Builder.Default
-  private boolean enableIOThreadOnly = true;
+  private boolean enableIOThreadOnly = false;
 
   /**
    * If every request from the same TCP should be executed by order, set this option true.
