@@ -1,6 +1,8 @@
 package org.dousi.test.common;
 
-import com.distkv.drpc.test.generated.BenchmarkProtocol;
+
+import org.dousi.test.generated.BenchmarkProtocol;
+
 import java.util.concurrent.CompletableFuture;
 
 public interface BenchmarkIService {

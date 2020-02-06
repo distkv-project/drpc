@@ -4,7 +4,6 @@ import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import static io.netty.handler.codec.rtsp.RtspResponseStatuses.INTERNAL_SERVER_ERROR;
 
-import com.distkv.drpc.test.generated.BenchmarkProtocol;
 import org.dousi.test.common.BenchmarkIService;
 import org.dousi.test.common.DymmyData;
 import org.dousi.test.common.MD5Utils;
@@ -18,6 +17,7 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.util.CharsetUtil;
+import org.dousi.test.generated.BenchmarkProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
