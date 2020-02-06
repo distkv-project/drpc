@@ -1,6 +1,5 @@
 package org.dousi.test;
 
-import com.distkv.drpc.test.generated.EchoProtocol;
 import org.dousi.DousiServer;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
@@ -10,6 +9,8 @@ import org.dousi.netty.NettyClient;
 import org.dousi.test.common.IService;
 import org.dousi.test.common.IServiceImpl;
 import java.util.concurrent.ExecutionException;
+
+import org.dousi.test.generated.EchoProtocol;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
