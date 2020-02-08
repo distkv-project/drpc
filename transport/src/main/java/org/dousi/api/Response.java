@@ -21,5 +21,4 @@ public interface Response {
   boolean isError();
 
   void build();
-
 }

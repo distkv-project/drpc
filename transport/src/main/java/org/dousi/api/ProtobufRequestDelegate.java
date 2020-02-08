@@ -1,5 +1,6 @@
 package org.dousi.api;
 
+import com.google.protobuf.ByteString;
 import org.dousi.codec.generated.DousiProtocol;
 import com.google.protobuf.Any;
 import com.google.protobuf.Any.Builder;
@@ -88,6 +89,17 @@ public class ProtobufRequestDelegate implements Request {
     if (delegatedRequest == null) {
       delegatedRequest = builder.build();
     }
+  }
+
+  @Override
+  public void setSessionID(byte[] sessionId) {
+    ByteString bs = ByteString.copyFrom(sessionId);
+    builder.setSessionId(bs);
+  }
+
+  @Override
+  public byte[] getSessionID() {
+    return delegatedRequest.getSessionId().toByteArray();
   }
 
   public DousiProtocol.Request getDelegatedRequest() {

@@ -11,7 +11,8 @@ message Request {
     int64 requestId = 1;
     string interfaceName = 2;
     string methodName = 3;
-    repeated google.protobuf.Any args = 4;
+    bytes sessionId = 4;
+    repeated google.protobuf.Any args = 5;
 };
 
 message Response {

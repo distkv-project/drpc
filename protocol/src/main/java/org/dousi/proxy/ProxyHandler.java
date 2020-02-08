@@ -24,9 +24,12 @@ public class ProxyHandler<T> implements InvocationHandler {
 
   private Class<T> interfaceClazz;
 
-  public ProxyHandler(Class<T> clazz, Invoker invoker) {
+  private byte[] sessionId;
+
+  public ProxyHandler(Class<T> clazz, Invoker invoker, byte[] sessionId) {
     interfaceClazz = clazz;
     this.invoker = invoker;
+    this.sessionId = sessionId;
   }
 
   @Override
@@ -41,6 +44,10 @@ public class ProxyHandler<T> implements InvocationHandler {
     request.setInterfaceName(method.getDeclaringClass().getName());
     request.setMethodName(method.getName());
     request.setArgsValue(args);
+    // Do not keep order when sessionID is null
+    if (sessionId != null) {
+      request.setSessionID(sessionId);
+    }
     request.build();
 
     Class<?> returnType = method.getReturnType();
