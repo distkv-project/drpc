@@ -2,8 +2,8 @@ package org.dousi.proxy;
 
 import java.lang.reflect.Proxy;
 
-import org.dousi.DousiSession;
 import org.dousi.Invoker;
+import org.dousi.session.DousiSession;
 
 
 public class ProxyFactory<T> {

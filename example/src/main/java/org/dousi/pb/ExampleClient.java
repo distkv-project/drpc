@@ -1,6 +1,6 @@
 package org.dousi.pb;
 
-import org.dousi.DousiSession;
+import org.dousi.session.DousiSession;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
@@ -56,7 +56,7 @@ public class ExampleClient {
 
 
     //session (keep order)
-    DousiSession session = DousiSession.fromRandom();
+    DousiSession session = DousiSession.createSession();
     ExampleService sessionService = proxy.getService(client, session);
 
     //async (keep order in server)
