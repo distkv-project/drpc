@@ -1,6 +1,7 @@
 package org.dousi.test;
 
 import org.dousi.DousiServer;
+import org.dousi.DousiSession;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
@@ -43,7 +44,8 @@ public class LineOrderedTest {
   public void testOrder() {
     Proxy<IService> proxy = new Proxy<>();
     proxy.setInterfaceClass(IService.class);
-    IService service = proxy.getService(client);
+    DousiSession session = DousiSession.fromRandom();
+    IService service = proxy.getService(client,session);
     for (int i = 0; i < 10000; i++) {
       EchoProtocol.PutRequest putRequest = EchoProtocol.PutRequest
           .newBuilder()
