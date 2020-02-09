@@ -19,4 +19,8 @@ public interface Request {
   void setArgsValue(Object[] argsValue);
 
   void build();
+
+  void setSessionID(byte[] sessionId);
+
+  byte[] getSessionID();
 }

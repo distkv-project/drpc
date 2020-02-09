@@ -132,6 +132,7 @@ public class DefaultAsyncResponse extends CompletableFuture<Response> implements
     response.build();
   }
 
+
   @Override
   public boolean isError() {
     return response.isError();
