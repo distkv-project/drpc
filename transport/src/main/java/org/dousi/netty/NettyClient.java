@@ -94,6 +94,8 @@ public class NettyClient extends AbstractClient {
     } catch (InterruptedException i) {
       close();
       throw new DousiTransportException("NettyClient: connect().sync() interrupted", i);
+    } catch (Exception connectedFailed) {
+      throw new DousiException("Connected failed. ", connectedFailed);
     }
 
     clientChannel = future.channel();
