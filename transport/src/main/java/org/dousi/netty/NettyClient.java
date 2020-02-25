@@ -5,10 +5,7 @@ import org.dousi.api.DefaultAsyncResponse;
 import org.dousi.api.Request;
 import org.dousi.codec.Codec;
 import org.dousi.codec.DousiCodec;
-import org.dousi.exception.DousiCodecException;
-import org.dousi.exception.DousiException;
-import org.dousi.exception.DousiRuntimeException;
-import org.dousi.exception.DousiTransportException;
+import org.dousi.exception.*;
 import org.dousi.api.AsyncResponse;
 import org.dousi.api.Response;
 import org.dousi.config.ClientConfig;
@@ -95,7 +92,7 @@ public class NettyClient extends AbstractClient {
       close();
       throw new DousiTransportException("NettyClient: connect().sync() interrupted", i);
     } catch (Exception connectedFailed) {
-      throw new DousiException("Connected failed. ", connectedFailed);
+      throw new DousiConnectionRefusedException("Connected failed. ", connectedFailed);
     }
 
     clientChannel = future.channel();
