@@ -4,7 +4,7 @@ import org.dousi.session.DousiSession;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
-import org.dousi.netty.NettyClient;
+import org.dousi.netty.DousiClient;
 import org.dousi.pb.generated.StringProtocol;
 
 import java.util.concurrent.CompletableFuture;
@@ -16,7 +16,7 @@ public class ExampleClient {
         .address("127.0.0.1:8080")
         .build();
 
-    Client client = new NettyClient(clientConfig);
+    Client client = new DousiClient(clientConfig);
     client.open();
 
     Proxy<ExampleService> proxy = new Proxy<>();
