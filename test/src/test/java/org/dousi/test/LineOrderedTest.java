@@ -5,7 +5,7 @@ import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
 import org.dousi.config.ServerConfig;
-import org.dousi.netty.NettyClient;
+import org.dousi.netty.DousiClient;
 import org.dousi.session.DousiSession;
 import org.dousi.test.common.IService;
 import org.dousi.test.common.IServiceImpl;
@@ -36,7 +36,7 @@ public class LineOrderedTest {
         .address("127.0.0.1:8080")
         .build();
 
-    client = new NettyClient(clientConfig);
+    client = new DousiClient(clientConfig);
     client.open();
   }
 

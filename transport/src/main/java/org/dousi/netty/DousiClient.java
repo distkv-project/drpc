@@ -31,14 +31,14 @@ import org.dousi.exception.DousiCodecException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NettyClient extends AbstractClient {
+public class DousiClient extends AbstractClient {
 
-  private static Logger logger = LoggerFactory.getLogger(NettyClient.class);
+  private static Logger logger = LoggerFactory.getLogger(DousiClient.class);
 
   private io.netty.channel.Channel clientChannel;
   private NioEventLoopGroup nioEventLoopGroup;
 
-  public NettyClient(ClientConfig clientConfig) {
+  public DousiClient(ClientConfig clientConfig) {
     super(clientConfig, new DousiCodec());
     nioEventLoopGroup = new NioEventLoopGroup(GlobalConstants.THREAD_NUMBER + 1);
   }
