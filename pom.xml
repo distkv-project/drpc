@@ -124,4 +124,76 @@
       </plugin>
     </plugins>
   </build>
+
+  <name>dousi</name>
+  <description>A high performance RPC framework with multiple-languages server.</description>
+  <url>https://dousi.org</url>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>Qing Wang</name>
+      <email>kingchin1218@gmail.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git@github.com:jovany-wang/dousi.git</connection>
+    <developerConnection>scm:git@github.com:jovany-wang/dousi.git</developerConnection>
+    <url>scm:git@github.com:jovany-wang/dousi.git</url>
+  </scm>
+
+  <profiles>
+  <profile>
+    <id>release</id>
+    <build>
+        <!-- Source -->
+      <pluginManagement>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>2.2.1</version>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <!--                                <goals>-->
+                <!--                                    <goal>jar-no-fork</goal>-->
+                <!--                                </goals>-->
+              </execution>
+            </executions>
+          </plugin>
+          <!-- GPG -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.5</version>
+            <executions>
+              <execution>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </pluginManagement>
+    </build>
+    <distributionManagement>
+      <snapshotRepository>
+        <id>community_mvn_central</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      </snapshotRepository>
+      <repository>
+        <id>community_mvn_central</id>
+        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      </repository>
+    </distributionManagement>
+  </profile>
+  </profiles>
+
 </project>
