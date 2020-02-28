@@ -5,10 +5,6 @@ import org.dousi.api.DefaultAsyncResponse;
 import org.dousi.api.Request;
 import org.dousi.codec.Codec;
 import org.dousi.codec.DousiCodec;
-import org.dousi.exception.DousiCodecException;
-import org.dousi.exception.DousiException;
-import org.dousi.exception.DousiRuntimeException;
-import org.dousi.exception.DousiTransportException;
 import org.dousi.api.AsyncResponse;
 import org.dousi.api.Response;
 import org.dousi.config.ClientConfig;
@@ -27,17 +23,22 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
+import org.dousi.exception.DousiConnectionRefusedException;
+import org.dousi.exception.DousiException;
+import org.dousi.exception.DousiRuntimeException;
+import org.dousi.exception.DousiTransportException;
+import org.dousi.exception.DousiCodecException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NettyClient extends AbstractClient {
+public class DousiClient extends AbstractClient {
 
-  private static Logger logger = LoggerFactory.getLogger(NettyClient.class);
+  private static Logger logger = LoggerFactory.getLogger(DousiClient.class);
 
   private io.netty.channel.Channel clientChannel;
   private NioEventLoopGroup nioEventLoopGroup;
 
-  public NettyClient(ClientConfig clientConfig) {
+  public DousiClient(ClientConfig clientConfig) {
     super(clientConfig, new DousiCodec());
     nioEventLoopGroup = new NioEventLoopGroup(GlobalConstants.THREAD_NUMBER + 1);
   }
@@ -94,6 +95,8 @@ public class NettyClient extends AbstractClient {
     } catch (InterruptedException i) {
       close();
       throw new DousiTransportException("NettyClient: connect().sync() interrupted", i);
+    } catch (Exception connectedFailed) {
+      throw new DousiConnectionRefusedException("Connected failed. ", connectedFailed);
     }
 
     clientChannel = future.channel();

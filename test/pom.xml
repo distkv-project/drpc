@@ -32,42 +32,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>com.github.os72</groupId>
-        <artifactId>protoc-jar-maven-plugin</artifactId>
-        <version>3.11.1</version>
-        <executions>
-          <execution>
-            <id>generate-sources</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <protocVersion>3.5.1</protocVersion>
-              <addSources>none</addSources>
-              <includeStdTypes>true</includeStdTypes>
-              <inputDirectories>
-                <include>src/main/resources/proto</include>
-                <include>src/test/resources/proto</include>
-              </inputDirectories>
-              <outputTargets>
-                <outputTarget>
-                  <type>java</type>
-                  <addSources>none</addSources>
-                  <outputDirectory>src/test/java</outputDirectory>
-                </outputTarget>
-                <outputTarget>
-                  <type>java</type>
-                  <addSources>none</addSources>
-                  <outputDirectory>src/main/java</outputDirectory>
-                </outputTarget>
-              </outputTargets>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptorRefs>
@@ -89,6 +53,12 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.xolstice.maven.plugins</groupId>
+        <artifactId>protobuf-maven-plugin</artifactId>
+      </plugin>
+
     </plugins>
   </build>
 </project>

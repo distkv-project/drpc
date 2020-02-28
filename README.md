@@ -110,10 +110,10 @@ public class ExampleClient {
 #### Done
 - ~~Asynchronous services in server~~
 - ~~Order preserving in one client context~~
+- ~~Session concept for Order preserving~~
 
 #### Doing
 - Go client and C++ client
-- Session concept for Order preserving
 - Dynamic registration for service
 
 #### Planned and TBD

@@ -1,9 +1,5 @@
 package org.dousi.netty;
 
-import org.dousi.api.AbstractServer;
-import org.dousi.api.Handler;
-import org.dousi.codec.DousiCodec;
-import org.dousi.config.ServerConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelFuture;
@@ -15,15 +11,15 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
-import java.util.List;
+import org.dousi.api.AbstractServer;
+import org.dousi.api.Handler;
+import org.dousi.codec.DousiCodec;
+import org.dousi.config.ServerConfig;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
 
 
 public class NettyServer extends AbstractServer {
-
-  private static Logger logger = LoggerFactory.getLogger(NettyServer.class);
 
   private io.netty.channel.Channel serverChannel;
   private NioEventLoopGroup bossGroup;
@@ -54,12 +50,9 @@ public class NettyServer extends AbstractServer {
     serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);
     serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
     serverBootstrap.childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
-    try {
-      ChannelFuture f = serverBootstrap.bind(getConfig().getPort()).sync();
-      serverChannel = f.channel();
-    } catch (Exception e) {
-      logger.error("NettyServer bind error", e);
-    }
+
+    ChannelFuture f = serverBootstrap.bind(getConfig().getPort()).syncUninterruptibly();
+    serverChannel = f.channel();
   }
 
   @Override

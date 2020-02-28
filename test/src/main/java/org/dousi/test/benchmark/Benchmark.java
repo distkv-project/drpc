@@ -7,7 +7,7 @@ import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
 import org.dousi.config.ServerConfig;
-import org.dousi.netty.NettyClient;
+import org.dousi.netty.DousiClient;
 
 public class Benchmark {
 
@@ -24,7 +24,7 @@ public class Benchmark {
     ClientConfig clientConfig = ClientConfig.builder()
         .address("127.0.0.1:25500")
         .build();
-    Client client = new NettyClient(clientConfig);
+    Client client = new DousiClient(clientConfig);
     client.open();
 
     Proxy<BenchmarkIService> proxy = new Proxy<>();

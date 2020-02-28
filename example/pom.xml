@@ -22,27 +22,8 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>com.github.os72</groupId>
-        <artifactId>protoc-jar-maven-plugin</artifactId>
-        <version>3.11.1</version>
-        <executions>
-          <execution>
-            <id>generate-sources</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <protocVersion>3.5.1</protocVersion>
-              <addSources>none</addSources>
-              <includeStdTypes>true</includeStdTypes>
-              <outputDirectory>src/main/java</outputDirectory>
-              <inputDirectories>
-                <include>src/main/java/org/dousi/pb/protobuffer</include>
-              </inputDirectories>
-            </configuration>
-          </execution>
-        </executions>
+        <groupId>org.xolstice.maven.plugins</groupId>
+        <artifactId>protobuf-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
