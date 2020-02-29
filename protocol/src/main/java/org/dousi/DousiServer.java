@@ -35,7 +35,7 @@ public class DousiServer {
    * Register the service into this exporter.
    *
    * @param interfaceClass The interface that we want to export.
-   * @param serviceObject  The object that this service implementation.
+   * @param serviceObject The object that this service implementation.
    */
   public <T> void registerService(Class<T> interfaceClass, T serviceObject) {
     serviceHandlers.add(new HandlerDelegate(new ServerImpl<T>(serviceObject, interfaceClass)));
@@ -43,7 +43,7 @@ public class DousiServer {
 
   public void run() {
     if (server != null) {
-      logger.info("server is running");
+      logger.debug("server is running");
     }
     server = NettyTransportFactory.getInstance().createServer(serverConfig, serviceHandlers);
     server.open();
