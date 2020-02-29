@@ -4,6 +4,9 @@ import org.dousi.api.Handler;
 import org.dousi.api.Server;
 import org.dousi.config.ServerConfig;
 import org.dousi.netty.NettyTransportFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
@@ -12,6 +15,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class DousiServer {
 
+  private static Logger logger = LoggerFactory.getLogger(DousiServer.class);
+
+  private Server server;
   /**
    * The service handlers.
    * Note that CopyOnWriteArrayList might not be efficient too much when writing,
@@ -29,14 +35,23 @@ public class DousiServer {
    * Register the service into this exporter.
    *
    * @param interfaceClass The interface that we want to export.
-   * @param serviceObject The object that this service implementation.
+   * @param serviceObject  The object that this service implementation.
    */
   public <T> void registerService(Class<T> interfaceClass, T serviceObject) {
     serviceHandlers.add(new HandlerDelegate(new ServerImpl<T>(serviceObject, interfaceClass)));
   }
 
   public void run() {
-    Server server = NettyTransportFactory.getInstance().createServer(serverConfig, serviceHandlers);
+    if (server != null) {
+      logger.info("server is running");
+    }
+    server = NettyTransportFactory.getInstance().createServer(serverConfig, serviceHandlers);
     server.open();
+  }
+
+  public void stop() {
+    if (server != null) {
+      server.close();
+    }
   }
 }
