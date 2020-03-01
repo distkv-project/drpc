@@ -22,18 +22,23 @@ ASSERT_EQ(i, i);
 }
 }
 
-//TEST_F(DemoTest, test_handy) {
-//  EventBase base;
-//  Signal::signal(SIGINT, [&]{ base.exit(); });
+TEST_F(DemoTest, test_handy) {
+  EventBase base;
+  Signal::signal(SIGINT, [&]{ base.exit(); });
+
+  TcpConnPtr con = TcpConn::createConnection(&base, "127.0.0.1", 8080, 3000);
+  con->setReconnectInterval(3000);
+
 //  TcpServerPtr svr = TcpServer::startServer(&base, "", 2099);
 //  exitif(svr == NULL, "start tcp server failed");
 //  svr->onConnRead([](const TcpConnPtr& con) {
 //    con->send(con->getInput());
 //  });
-//  base.loop();
-//}
+  base.loop();
+}
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
+
   return RUN_ALL_TESTS();
 }

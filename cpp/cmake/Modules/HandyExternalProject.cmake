@@ -7,8 +7,8 @@
 #  - HANDY_SHARED_LIB
 #  - HANDY_INCLUDE_DIR
 
-set(HANDY_VERSION "0.1.1")
-set(DOWNLOAD_URL "https://github.com/jovany-wang/handy/archive/${HANDY_VERSION}.tar.gz")
+set(HANDY_VERSION "0.2.0")
+set(DOWNLOAD_URL "https://github.com/yedf/handy/archive/${HANDY_VERSION}.tar.gz")
 set(URL_MD5 5d78cd32168a0a38a805f17b558f8ac5)
 
 set(HANDY_HOME ${CMAKE_CURRENT_BINARY_DIR}/external/handy-install)

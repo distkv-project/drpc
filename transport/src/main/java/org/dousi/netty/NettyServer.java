@@ -15,11 +15,15 @@ import org.dousi.api.AbstractServer;
 import org.dousi.api.Handler;
 import org.dousi.codec.DousiCodec;
 import org.dousi.config.ServerConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 
 public class NettyServer extends AbstractServer {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(NettyServer.class);
 
   private io.netty.channel.Channel serverChannel;
   private NioEventLoopGroup bossGroup;
@@ -41,6 +45,7 @@ public class NettyServer extends AbstractServer {
         .childHandler(new ChannelInitializer<SocketChannel>() {
           @Override
           protected void initChannel(SocketChannel ch) {
+            LOGGER.info("new channel coming in...");
             ChannelPipeline pipeline = ch.pipeline();
             pipeline.addLast("decoder", new ProtobufVarint32FrameDecoder());
             pipeline.addLast("encoder", new ProtobufVarint32LengthFieldPrepender());
