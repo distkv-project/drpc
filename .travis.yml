@@ -26,7 +26,8 @@ install: true
 script:
   - travis_wait 30 ./mvnw clean install -DskipTests=false
   - bash ./cpp/build_and_test.sh
-  - bash ./test/script/benchmark/benchmark.sh
+  - cd test/script/benchmark
+  - bash ./benchmark.sh
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
