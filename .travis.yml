@@ -14,11 +14,19 @@ cache:
   directories:
     - $HOME/.m2
 
+before_install:
+  - git clone https://github.com/wg/wrk.git
+  - cd wrk
+  - make
+  - sudo ln -s ./wrk /usr/local/bin
+  - cd ..
+
 install: true
 
 script:
   - travis_wait 30 ./mvnw clean install -DskipTests=false
   - bash ./cpp/build_and_test.sh
+  - bash ./test/script/benchmark/benchmark.sh
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
