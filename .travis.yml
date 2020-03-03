@@ -18,7 +18,8 @@ before_install:
   - git clone https://github.com/wg/wrk.git
   - cd wrk
   - make
-  - sudo ln -s ./wrk /usr/local/bin
+  - wrk -v
+  - sudo cp ./wrk /usr/local/bin
   - cd ..
 
 install: true
