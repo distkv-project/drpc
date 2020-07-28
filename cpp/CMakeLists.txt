@@ -8,11 +8,9 @@ set(DOUSI_CPP_CLIENT_SRC src/dousi_client.cc)
 
 include(ExternalProject)
 include(GtestExternalProject)
-
+include(BoostExternalProject)
 include_directories(SYSTEM ${GTEST_INCLUDE_DIR})
-include_directories(SYSTEM /Users/wangqing28/wangqing/open-source/dousi/build/boost_1_73_0)
-# add_library(dousi_client ${DOUSI_CPP_CLIENT_SRC})
-# add_library(dousi_client_shared SHARED ${DOUSI_CPP_CLIENT_SRC})
+include_directories(SYSTEM ${BOOST_INCLUDE_DIR})
 
 
 # demo_test
