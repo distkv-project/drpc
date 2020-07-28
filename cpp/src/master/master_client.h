@@ -2,6 +2,7 @@
 #define _DOUSI_MASTER_MASTER_CLIENT_H_
 
 #include "endpoint.h"
+#include "common/logging.h"
 
 #include <iostream>
 
@@ -32,9 +33,9 @@ public:
           [this, body_size](boost::system::error_code error_code, size_t) {
         if (error_code) {
           socket_.close();
-          std::cout << "Failed to write header to server with error code:" << error_code << std::endl;
+          DOUSI_LOG(INFO) << "Failed to write header to server with error code:" << error_code;
         } else {
-          std::cout << "Succeeded to write header to server, header=" << body_size << std::endl;
+          DOUSI_LOG(DEBUG) << "Succeeded to write header to server, header=" << body_size;
         }
       });
     });
@@ -48,9 +49,9 @@ public:
           [this](boost::system::error_code error_code, size_t /*length*/) {
             if (error_code) {
               socket_.close();
-              std::cout << "Failed to write message to server with error code:" << error_code << std::endl;
+              DOUSI_LOG(INFO) << "Failed to write message to server with error code:" << error_code;
             } else {
-              std::cout << "Succeeded to write message to server." << std::endl;
+              DOUSI_LOG(DEBUG) << "Succeeded to write message to server.";
             }
           });
     });
@@ -61,10 +62,10 @@ private:
     boost::asio::async_connect(socket_, endpoints,
         [](boost::system::error_code error_code, const asio_tcp::endpoint &) {
       if (error_code) {
-        std::cout << "Failed to connect to server with error code:" << error_code << std::endl;
+        DOUSI_LOG(INFO) << "Failed to connect to server with error code:" << error_code;
         return ;
       }
-      std::cout << "Succeeded to connect message to server." << std::endl;
+      DOUSI_LOG(DEBUG) << "Succeeded to connect message to server.";
     });
   }
 

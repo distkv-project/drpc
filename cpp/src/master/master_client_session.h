@@ -2,6 +2,7 @@
 #define _DOUSI_MASTER_CLIENT_SESSION_H_
 
 #include "endpoint.h"
+#include "common/logging.h"
 
 #include <msgpack.hpp>
 
@@ -37,7 +38,7 @@ private:
         [this, body_size_ptr, self](boost::system::error_code error_code, size_t length) {
       // ASSERT(length == HEADER_SIZE);
       if (error_code) {
-        std::cout << "Failed to receive header with error code: " << error_code << std::endl;
+        DOUSI_LOG(INFO) << "Failed to receive header with error code: " << error_code;
         return;
       }
       DoReadBody(*body_size_ptr);
@@ -51,7 +52,7 @@ private:
     boost::asio::async_read(socket_, boost::asio::buffer(buffer_ptr.get(), body_size),
         [buffer_ptr, this, self](boost::system::error_code error_code, size_t length) {
       if (error_code) {
-        std::cout << "Failed to receive body with error code: " << error_code << std::endl;
+        DOUSI_LOG(INFO) << "Failed to receive body with error code: " << error_code;
         return;
       }
       // Decode immediately in this thread. This is not allowed in production.
@@ -61,10 +62,9 @@ private:
       msgpack::object deserialized = object_handle.get();
       msgpack::type::tuple<std::string, std::string> service_name_and_addr = deserialized.as<
           msgpack::type::tuple<std::string, std::string>>();
-      std::cout << "Succeeded to receive body : "
+      DOUSI_LOG(DEBUG) << "Succeeded to receive body : "
         << "service_name='" << service_name_and_addr.get<0>()
-        << "', service_addr=" <<  service_name_and_addr.get<1>()
-        << std::endl;
+        << "', service_addr=" <<  service_name_and_addr.get<1>();
       DoReadHeader();
     });
   }
