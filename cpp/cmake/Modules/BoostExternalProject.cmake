@@ -9,7 +9,7 @@
 
 set(BOOST_VERSION "1.73.0")
 set(DOWNLOAD_URL "https://wq-boost.oss-cn-beijing.aliyuncs.com/boost_1_73_0.tar.gz")
-set(URL_MD5 9995e192e68528793755692917f9eb6422f3052a53c5e13ba278a228af6c7acf)
+set(BOOST_URL_MD5 4036cd27ef7548b8d29c30ea10956196)
 
 if(CMAKE_BUILD_TYPE)
     string(TOUPPER ${CMAKE_BUILD_TYPE} UPPERCASE_BUILD_TYPE)
