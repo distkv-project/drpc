@@ -15,7 +15,7 @@ namespace dousi {
 */
 class Endpoint {
 public:
-  Endpoint() = delete ;
+  Endpoint() = delete;
 
   Endpoint(std::string host, int16_t port) : host_(std::move(host)), port_(port) {}
 
