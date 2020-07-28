@@ -2,6 +2,7 @@
 #define _DOUSI_MASTER_H_
 
 #include "endpoint.h"
+#include "master_client_session.h"
 
 #include <unordered_map>
 #include <string>

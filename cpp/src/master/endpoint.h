@@ -24,7 +24,14 @@ public:
 
   Endpoint(std::string host, int16_t port) : host_(std::move(host)), port_(port) {}
 
+  // TODO(qwang): std::move
+
   virtual ~Endpoint() = default;
+
+  asio_tcp::resolver::results_type Resolve(boost::asio::io_context &io_context) const {
+    asio_tcp::resolver resolver(io_context);
+    return resolver.resolve(GetHost(), std::to_string(GetPort()));
+  }
 
   asio_tcp::endpoint GetTcpEndpoint() const {
     return {asio_tcp::v4(), static_cast<unsigned short >(port_)};

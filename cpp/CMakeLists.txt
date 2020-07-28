@@ -10,14 +10,21 @@ INCLUDE(ExternalProject)
 INCLUDE(GtestExternalProject)
 INCLUDE(BoostExternalProject)
 INCLUDE(GflagsExternalProject)
+INCLUDE(MsgpackExternalProject)
 INCLUDE_DIRECTORIES(SYSTEM ${GTEST_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(SYSTEM ${BOOST_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(SYSTEM ${GFLAGS_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(SYSTEM ${MSGPACK_INCLUDE_DIR})
 LINK_DIRECTORIES(${BOOST_STATIC_LIB_DIR})
 
 # master_main binary
 ADD_EXECUTABLE(master_main src/master/master_main.cc)
-ADD_DEPENDENCIES(master_main boost_ep gflags_ep)
+ADD_DEPENDENCIES(master_main boost_ep gflags_ep msgpack_ep)
+TARGET_LINK_LIBRARIES(master_main ${GFLAGS_STATIC_LIB} pthread)
+
+# master client binary
+ADD_EXECUTABLE(master_client src/master/master_client_main.cc)
+ADD_DEPENDENCIES(master_main boost_ep msgpack_ep)
 TARGET_LINK_LIBRARIES(master_main ${GFLAGS_STATIC_LIB} pthread)
 
 # demo_test
