@@ -11,7 +11,6 @@ namespace master {
 class MasterClient {
 public:
 
-//  MasterClient(boost::asio::io_context &io_context, const asio_tcp::resolver::results_type &endpoints)
   MasterClient(boost::asio::io_context &io_context, Endpoint endpoint)
     : io_context_(io_context), socket_(io_context) {
     DoConnect(endpoint.Resolve(io_context_));

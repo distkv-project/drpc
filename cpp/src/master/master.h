@@ -8,6 +8,7 @@
 #include <string>
 #include <iostream>
 #include <memory>
+#include <vector>
 
 #include <boost/asio.hpp>
 
@@ -40,7 +41,10 @@ private:
   void DoAccept() {
     acceptor_.async_accept([this](boost::system::error_code error_code, asio_tcp::socket socket) {
       if (!error_code) {
-        // no error.
+        std::cout << "Succeed to accepted a connection." << std::endl;
+        auto client_session = std::make_shared<MasterClientSession>(std::move(socket));
+        sessions_.push_back(client_session);
+        client_session->Start();
       }
       DoAccept();
     });
@@ -57,6 +61,9 @@ private:
 
   // The map that maps service name to its endpoint.
   std::unordered_map<std::string, Endpoint> endpoints_;
+
+  // client sessions. Maybe this should be refined as a hashmap with its unique ID.
+  std::vector<std::shared_ptr<MasterClientSession>> sessions_;
 };
 
 } // namespace master
