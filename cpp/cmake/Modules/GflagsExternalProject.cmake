@@ -20,7 +20,7 @@ ExternalProject_Add(gflags_ep
         URL ${DOWNLOAD_URL}
         URL_MD5 ${GFLAGS_URL_MD5}
         BUILD_IN_SOURCE 1
-        CONFIGURE_COMMAND bash -c "mkdir bld && cd bld && cmake .."
+        CONFIGURE_COMMAND bash -c "mkdir bld && cd bld && ${CMAKE_COMMAND} .."
         BUILD_COMMAND bash -c "cd bld && make"
         INSTALL_COMMAND "")
 

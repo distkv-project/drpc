@@ -6,6 +6,9 @@
 #include <unordered_map>
 #include <string>
 #include <iostream>
+#include <memory>
+
+#include <boost/asio.hpp>
 
 namespace dousi {
 namespace master {
@@ -21,16 +24,35 @@ class Master {
 public:
   Master() = delete;
 
-  Master(std::string listening_host, int16_t listening_port)
-    : listening_endpoint_(std::move(listening_host), listening_port) {}
+  Master(boost::asio::io_context &io_context, std::string listening_host, int16_t listening_port)
+    : listening_endpoint_(std::move(listening_host), listening_port),
+    io_context_(io_context),
+    acceptor_(io_context, listening_endpoint_.GetTcpEndpoint()) {}
 
-  void loop() {
+  void Loop() {
+    DoAccept();
     std::cout << "Master is now listening on " << listening_endpoint_.ToString() << std::endl;
+    io_context_.run();
+  }
+
+private:
+  void DoAccept() {
+    acceptor_.async_accept([this](boost::system::error_code error_code, asio_tcp::socket socket) {
+      if (!error_code) {
+        // no error.
+      }
+      DoAccept();
+    });
+
   }
 
 private:
   // The endpoint master is listening on.
   Endpoint listening_endpoint_;
+
+  boost::asio::io_context &io_context_;
+
+  boost::asio::ip::tcp::acceptor acceptor_;
 
   // The map that maps service name to its endpoint.
   std::unordered_map<std::string, Endpoint> endpoints_;

@@ -4,6 +4,8 @@
 #include <string>
 #include <utility>
 
+#include <boost/asio.hpp>
+
 namespace dousi {
 
 /**
@@ -13,6 +15,9 @@ namespace dousi {
  * `host` indicates the location of a node and `port` indicate the networking
  * port that we can lookup a concrete networking service by it.
 */
+
+using asio_tcp = boost::asio::ip::tcp;
+
 class Endpoint {
 public:
   Endpoint() = delete;
@@ -20,6 +25,10 @@ public:
   Endpoint(std::string host, int16_t port) : host_(std::move(host)), port_(port) {}
 
   virtual ~Endpoint() = default;
+
+  asio_tcp::endpoint GetTcpEndpoint() const {
+    return {asio_tcp::v4(), static_cast<unsigned short >(port_)};
+  }
 
   std::string GetHost() const {return host_;}
 

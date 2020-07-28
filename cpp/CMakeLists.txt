@@ -17,7 +17,7 @@ LINK_DIRECTORIES(${BOOST_STATIC_LIB_DIR})
 
 # master_main binary
 ADD_EXECUTABLE(master_main src/master/master_main.cc)
-ADD_DEPENDENCIES(master_main boost_ep)
+ADD_DEPENDENCIES(master_main boost_ep gflags_ep)
 TARGET_LINK_LIBRARIES(master_main ${GFLAGS_STATIC_LIB} pthread)
 
 # demo_test
