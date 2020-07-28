@@ -3,6 +3,7 @@
 
 #include "endpoint.h"
 #include "master_client_session.h"
+#include "common/logging.h"
 
 #include <unordered_map>
 #include <string>
@@ -33,7 +34,7 @@ public:
 
   void Loop() {
     DoAccept();
-    std::cout << "MasterServer is now listening on " << listening_endpoint_.ToString() << std::endl;
+    DOUSI_LOG(INFO) << "MasterServer is now listening on " << listening_endpoint_.ToString();
     io_context_.run();
   }
 
@@ -43,7 +44,7 @@ private:
   void DoAccept() {
     acceptor_.async_accept([this](boost::system::error_code error_code, asio_tcp::socket socket) {
       if (!error_code) {
-        std::cout << "Succeed to accepted a connection." << std::endl;
+        DOUSI_LOG(INFO) << "Succeed to accepted a connection.";
         auto client_session = std::make_shared<MasterClientSession>(std::move(socket));
         sessions_.push_back(client_session);
         client_session->Start();
