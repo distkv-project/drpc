@@ -12,5 +12,3 @@
 (3) `cd boost_1_73_0 && sh bootstrap.sh`      # Prepare
 (4) `./b2 --with-system --with-thread --with-date_time --with-regex --with-serialization stage`  # Compile and install
 (5) Now the library thread, date_time regex anf serialization were installed.
-
-

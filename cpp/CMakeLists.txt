@@ -6,12 +6,12 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
 set(DOUSI_CPP_CLIENT_SRC src/dousi_client.cc)
 
-include(ExternalProject)
-include(GtestExternalProject)
-include(BoostExternalProject)
-include_directories(SYSTEM ${GTEST_INCLUDE_DIR})
-include_directories(SYSTEM ${BOOST_INCLUDE_DIR})
-
+INCLUDE(ExternalProject)
+INCLUDE(GtestExternalProject)
+INCLUDE(BoostExternalProject)
+INCLUDE_DIRECTORIES(SYSTEM ${GTEST_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(SYSTEM ${BOOST_INCLUDE_DIR})
+LINK_DIRECTORIES(${BOOST_STATIC_LIB_DIR})
 
 # demo_test
 add_executable(demo_test src/tests/demo_test.cc)
