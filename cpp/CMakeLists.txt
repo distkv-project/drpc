@@ -13,7 +13,12 @@ INCLUDE_DIRECTORIES(SYSTEM ${GTEST_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(SYSTEM ${BOOST_INCLUDE_DIR})
 LINK_DIRECTORIES(${BOOST_STATIC_LIB_DIR})
 
+# master binary
+ADD_EXECUTABLE(master_main src/master/master_main.cc)
+ADD_DEPENDENCIES(master_main boost_ep)
+TARGET_LINK_LIBRARIES(master_main pthread)
+
 # demo_test
-add_executable(demo_test src/tests/demo_test.cc)
-add_dependencies(demo_test googletest_ep boost_ep)
-target_link_libraries(demo_test ${GTEST_STATIC_LIB} ${GTEST_MAIN_STATIC_LIB} ${GMOCK_MAIN_STATIC_LIB} pthread)
+ADD_EXECUTABLE(demo_test src/tests/demo_test.cc)
+ADD_DEPENDENCIES(demo_test googletest_ep boost_ep)
+TARGET_LINK_LIBRARIES(demo_test ${GTEST_STATIC_LIB} ${GTEST_MAIN_STATIC_LIB} ${GMOCK_MAIN_STATIC_LIB} pthread)
