@@ -15,5 +15,5 @@ include_directories(SYSTEM ${BOOST_INCLUDE_DIR})
 
 # demo_test
 add_executable(demo_test src/tests/demo_test.cc)
-add_dependencies(demo_test googletest_ep)
+add_dependencies(demo_test googletest_ep boost_ep)
 target_link_libraries(demo_test ${GTEST_STATIC_LIB} ${GTEST_MAIN_STATIC_LIB} ${GMOCK_MAIN_STATIC_LIB} pthread)

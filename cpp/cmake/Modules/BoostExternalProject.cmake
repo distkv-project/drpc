@@ -23,11 +23,11 @@ ExternalProject_Add(boost_ep
         PREFIX external/boost
         URL ${DOWNLOAD_URL}
         URL_MD5 ${BOOST_URL_MD5}
-        BUILD_IN_SOURCE 1
-        BUILD_BYPRODUCTS ${BOOST_STATIC_LIB}
-        CONFIGURE_COMMAND ""
-        BUILD_COMMAND bash -c "make"
-        INSTALL_COMMAND "")
+#        BUILD_IN_SOURCE 1
+#        BUILD_BYPRODUCTS ${BOOST_STATIC_LIB}
+        CONFIGURE_COMMAND "sh bootstrap.sh")
+#        BUILD_COMMAND bash -c "make"
+#        INSTALL_COMMAND "")
 
 set(BOOST_CURRENT_DIR ${CMAKE_CURRENT_BINARY_DIR}/external/boost/src/boost_ep)
 
