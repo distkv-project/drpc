@@ -16,26 +16,28 @@ namespace dousi {
 namespace master {
 
 /**
- * The master is a standalone component that provides the service discovery for
+ * The master server is a standalone component that provides the service discovery for
  * the Dousi servers and clients.
  *
  * A Dousi server provided by user should be registered into master, so that the
  * client which wants to use this service can find the service location from master.
  */
-class Master {
+class MasterServer {
 public:
-  Master() = delete;
+  MasterServer() = delete;
 
-  Master(boost::asio::io_context &io_context, std::string listening_host, int16_t listening_port)
+  MasterServer(boost::asio::io_context &io_context, std::string listening_host, int16_t listening_port)
     : listening_endpoint_(std::move(listening_host), listening_port),
     io_context_(io_context),
     acceptor_(io_context, listening_endpoint_.GetTcpEndpoint()) {}
 
   void Loop() {
     DoAccept();
-    std::cout << "Master is now listening on " << listening_endpoint_.ToString() << std::endl;
+    std::cout << "MasterServer is now listening on " << listening_endpoint_.ToString() << std::endl;
     io_context_.run();
   }
+
+  // TODO(qwang): Add `DoDisconnect()` to handle master_client disconnect from this server gracefully.
 
 private:
   void DoAccept() {

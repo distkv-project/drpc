@@ -17,6 +17,30 @@ public:
   }
 
   void Write(const std::string &str) {
+    // write header.
+    DoWriteHeader(static_cast<uint32_t>(str.size()));
+    // write body.
+    DoWriteBody(str);
+  }
+
+  void DoWriteHeader(uint32_t body_size) {
+    boost::asio::post(io_context_, [this, body_size]() {
+      char header[sizeof(body_size)];
+      memcpy(header, &body_size, sizeof(body_size));
+
+      boost::asio::async_write(socket_, boost::asio::buffer(header, sizeof(body_size)),
+          [this, body_size](boost::system::error_code error_code, size_t) {
+        if (error_code) {
+          socket_.close();
+          std::cout << "Failed to write header to server with error code:" << error_code << std::endl;
+        } else {
+          std::cout << "Succeeded to write header to server, header=" << body_size << std::endl;
+        }
+      });
+    });
+  }
+
+  void DoWriteBody(const std::string &str) {
     // Copy str by value here.
     boost::asio::post(io_context_, [this, str]() {
       boost::asio::async_write(
@@ -47,7 +71,6 @@ private:
 private:
   boost::asio::io_context &io_context_;
   asio_tcp::socket socket_;
-
 };
 
 } // namespace master

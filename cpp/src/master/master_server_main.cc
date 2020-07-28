@@ -1,4 +1,4 @@
-#include "master.h"
+#include "master_server.h"
 
 #include <iostream>
 #include <gflags/gflags.h>
@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
   gflags::ShutDownCommandLineFlags();
 
   boost::asio::io_context io_context;
-  master::Master master(io_context, host, port);
+  master::MasterServer master(io_context, host, port);
   master.Loop();
 
   return 0;

@@ -9,7 +9,7 @@
 int main(int argc, char *argv[]) {
 
   const std::string service_name = "adder";
-  const std::string service_addr = "10.8.8.12:12201";
+  const std::string service_addr = "10.8.8.12:12202";
   msgpack::type::tuple<std::string, std::string> message(service_name, service_addr);
 
   // Any class that implements `write(const char *, size_t)` can be a buffer.
