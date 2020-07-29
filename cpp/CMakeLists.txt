@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.11)
-project(dousi_cpp_client)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.11)
+PROJECT(dousi_cpp)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules")
