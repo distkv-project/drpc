@@ -4,6 +4,8 @@
 #include "common/endpoint.h"
 #include "common/logging.h"
 
+#include "master_server.h"
+
 #include <msgpack.hpp>
 
 #include <utility>
@@ -15,8 +17,12 @@ namespace master {
 
 class MasterClientSession : public std::enable_shared_from_this<MasterClientSession> {
 public:
-  explicit MasterClientSession(asio_tcp::socket socket) : socket_(std::move(socket)) {}
+  MasterClientSession(MasterServer &master_server, asio_tcp::socket socket)
+    : master_server_(master_server), socket_(std::move(socket)) {}
 
+  virtual ~MasterClientSession() {
+    socket_.close();
+  }
 
   void Start() {
     DoReadHeader();
@@ -62,6 +68,8 @@ private:
       msgpack::object deserialized = object_handle.get();
       msgpack::type::tuple<std::string, std::string> service_name_and_addr = deserialized.as<
           msgpack::type::tuple<std::string, std::string>>();
+      master_server_.AddServiceRegistration(
+          service_name_and_addr.get<0>(), service_name_and_addr.get<1>());
       DOUSI_LOG(DEBUG) << "Succeeded to receive body : "
         << "service_name='" << service_name_and_addr.get<0>()
         << "', service_addr=" <<  service_name_and_addr.get<1>();
@@ -70,6 +78,8 @@ private:
   }
 
 private:
+  // The reference to the corresponding master server.
+  MasterServer &master_server_;
   // The socket handle for the client that connected to this master server.
   asio_tcp::socket socket_;
 };

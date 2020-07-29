@@ -39,6 +39,12 @@ ADD_EXECUTABLE(master_client_main src/master/master_client_main.cc)
 ADD_DEPENDENCIES(master_client_main master_client boost_ep msgpack_ep)
 TARGET_LINK_LIBRARIES(master_client_main master_client ${GFLAGS_STATIC_LIB} pthread)
 
+# master_test
+ADD_EXECUTABLE(master_test src/master/master_test.cc)
+ADD_DEPENDENCIES(master_test googletest_ep master_server master_client)
+TARGET_LINK_LIBRARIES(master_test master_server master_client
+        ${GTEST_STATIC_LIB} ${GTEST_MAIN_STATIC_LIB} ${GMOCK_MAIN_STATIC_LIB} pthread)
+
 # demo_test
 ADD_EXECUTABLE(demo_test src/tests/demo_test.cc)
 ADD_DEPENDENCIES(demo_test googletest_ep boost_ep)

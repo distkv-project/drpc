@@ -19,6 +19,10 @@ public:
     DoConnect(master_server_endpoint.Resolve(io_context_));
   }
 
+  virtual ~MasterClient() {
+    socket_.close();
+  }
+
   /**
    * Register a Dousi RPC service to the master server.
    *

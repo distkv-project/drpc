@@ -23,8 +23,8 @@ int main(int argc, char *argv[]) {
   gflags::ShutDownCommandLineFlags();
 
   boost::asio::io_context io_context;
-  master::MasterServer master(io_context, host, port);
-  master.Loop();
+  master::MasterServer master_server(io_context, host, port);
+  io_context.run();
 
   return 0;
 }
