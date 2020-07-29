@@ -1,46 +1,83 @@
 #include "master_client.h"
+#include "constants.h"
 
 namespace dousi {
 namespace master {
 
+/** The protocol from MasterClient to MasterServer is:
+ *
+ *    +--------------------------------------+
+ *    |  type  |   header  |      body       |
+ *    +--------------------------------------+
+ *     1 byte   4 bytes         N bytes
+ *
+ *  The first 1 byte is a flag to indicate the type of this message, and it
+ *  contains 2types now:
+ *   - 0x00 indicates `RegisterService` type.
+ *   - 0x01 indicates `FetchService` type.
+ *
+ *  The following 4 bytes is the header of this message, it is an unsigned int
+ *  in 4 bytes, indicating the length of this message's body in bytes.
+ *
+ *  And the following N bytes are the body part. Body is a serialized byte array
+ *  with a tuple in msgpack. Its 1st element indicates the service name and the
+ *  2nd element indicates the service address.
+ */
 void MasterClient::RegisterService(const std::string &service_name,
     const std::string &service_address) {
-  /** The protocol from MasterClient to MasterServer is:
-   *
-   *    +-----------------------------+
-   *    |   header  |      body       |
-   *    +-----------------------------+
-   *      4 bytes         N bytes
-   *
-   *  The first 4 bytes is the header of this message, it is an unsigned int
-   *  in 4 bytes, indicating the length of this message's body in bytes.
-   *
-   *  Body is a serialized byte array with a tuple in msgpack. Its 1st element
-   *  indicates the service name and the 2nd element indicates the service
-   *  address.
-   */
   msgpack::type::tuple<std::string, std::string> message(service_name, service_address);
   // Any class that implements `write(const char *, size_t)` can be a buffer.
   std::stringstream buffer;
   msgpack::pack(buffer, message);
   buffer.seekg(0);
   auto str_to_be_sent = buffer.str();
-  DoWriteHeader(static_cast<uint32_t>(str_to_be_sent.size()));
-  DoWriteBody(str_to_be_sent);
+  const auto buffer_size = str_to_be_sent.size();
+  // TODO(qwang): It's better to pack the type-header-body as a byte array to avoid these callbacks.
+  // Now these callbacks are necessary because we should make sure the order of writeing type,
+  // header and body. We should do these as sequence like:
+  // {
+  //   DoWriteType(type);
+  //   DoWriteHeader(buffer_size);
+  //   DoWriteBody(buffer);
+  // }
+  DoWriteType(
+      ProtocolConstants::MESSAGE_TYPE_REGISTER_SERVICE,
+      /*done_callback=*/[this, str_to_be_sent, buffer_size]() {
+        DoWriteHeader(static_cast<uint32_t>(buffer_size), /*done_callback=*/[str_to_be_sent, this]() {
+          DoWriteBody(str_to_be_sent);
+        });
+      });
 }
 
-void MasterClient::DoWriteHeader(uint32_t body_size) {
-  boost::asio::post(io_context_, [this, body_size]() {
+void MasterClient::DoWriteType(uint8_t type, const std::function<void()> &done_callback) {
+  boost::asio::post(io_context_, [type, done_callback, this]() {
+    boost::asio::async_write(socket_,
+        boost::asio::buffer(reinterpret_cast<const char *>(&type), 1),
+        [this, type, done_callback](boost::system::error_code error_code, size_t) {
+      if (error_code) {
+        socket_.close();
+        DOUSI_LOG(INFO) << "Failed to write type to server with error code:" << error_code;
+      } else {
+        DOUSI_LOG(DEBUG) << "Succeeded to write type to server, type=" << type;
+        done_callback();
+      }
+    });
+  });
+}
+
+void MasterClient::DoWriteHeader(uint32_t body_size, const std::function<void()> &done_callback) {
+  boost::asio::post(io_context_, [this, done_callback, body_size]() {
     char header[sizeof(body_size)];
     memcpy(header, &body_size, sizeof(body_size));
 
     boost::asio::async_write(socket_, boost::asio::buffer(header, sizeof(body_size)),
-        [this, body_size](boost::system::error_code error_code, size_t) {
+        [this, done_callback, body_size](boost::system::error_code error_code, size_t) {
       if (error_code) {
         socket_.close();
         DOUSI_LOG(INFO) << "Failed to write header to server with error code:" << error_code;
       } else {
         DOUSI_LOG(DEBUG) << "Succeeded to write header to server, header=" << body_size;
+        done_callback();
       }
     });
   });
@@ -71,6 +108,11 @@ void MasterClient::DoConnect(const asio_tcp::resolver::results_type &endpoints) 
     }
     DOUSI_LOG(DEBUG) << "Succeeded to connect message to server.";
   });
+}
+
+void MasterClient::FetchService(const std::string &service_name,
+    const std::function<void(bool ok, const std::string &address)> &callback) {
+
 }
 
 } // namespace master

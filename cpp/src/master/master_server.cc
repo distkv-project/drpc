@@ -14,6 +14,7 @@ void MasterServer::DoAccept() {
       client_session->Start();
     }
     DoAccept();
+    DOUSI_LOG(INFO) << "---------------***";
   });
 }
 
