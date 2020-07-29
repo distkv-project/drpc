@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
   // TODO(qwang): This should be refactored as RAII.
   gflags::ParseCommandLineFlags(&argc, &argv, true);
   const std::string host = FLAGS_host;
-  const auto port = static_cast<int16_t>(FLAGS_port);
+  const auto port = static_cast<uint16_t>(FLAGS_port);
   gflags::ShutDownCommandLineFlags();
 
   boost::asio::io_context io_context;

@@ -28,7 +28,7 @@ class MasterServer {
 public:
   MasterServer() = delete;
 
-  MasterServer(boost::asio::io_context &io_context, std::string listening_host, int16_t listening_port)
+  MasterServer(boost::asio::io_context &io_context, std::string listening_host, uint16_t listening_port)
     : listening_endpoint_(std::move(listening_host), listening_port),
     io_context_(io_context),
     acceptor_(io_context, listening_endpoint_.GetTcpEndpoint()) {

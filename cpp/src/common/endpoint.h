@@ -22,9 +22,11 @@ class Endpoint {
 public:
   Endpoint() = delete;
 
-  Endpoint(std::string host, int16_t port) : host_(std::move(host)), port_(port) {}
+  Endpoint(std::string host, uint16_t port) : host_(std::move(host)), port_(port) {}
 
-  // TODO(qwang): std::move
+  Endpoint(const Endpoint &other) noexcept : host_(other.host_), port_(other.port_) {}
+
+  Endpoint(Endpoint &&other) noexcept : host_(std::move(other.host_)), port_(other.port_) {}
 
   virtual ~Endpoint() = default;
 
@@ -39,7 +41,7 @@ public:
 
   std::string GetHost() const {return host_;}
 
-  int16_t GetPort() const {return port_;}
+  uint16_t GetPort() const {return port_;}
 
   std::string ToString() const {
     return host_ + ":" + std::to_string(port_);
@@ -49,7 +51,7 @@ private:
   // The host of this endpoint locates on.
   std::string host_;
   // The port of this endpoint.
-  int16_t port_;
+  uint16_t port_;
 };
 
 } // namespace dousi
