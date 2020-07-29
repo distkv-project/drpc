@@ -18,15 +18,26 @@ INCLUDE_DIRECTORIES(SYSTEM ${GFLAGS_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(SYSTEM ${MSGPACK_INCLUDE_DIR})
 LINK_DIRECTORIES(${BOOST_STATIC_LIB_DIR})
 
-# master_main binary
+# master_server_static_library
+ADD_LIBRARY(master_server src/master/master_server.cc)
+ADD_DEPENDENCIES(master_server boost_ep gflags_ep msgpack_ep)
+TARGET_LINK_LIBRARIES(master_server pthread)
+
+# master_client_static_library
+ADD_LIBRARY(master_client src/master/master_client.cc)
+ADD_DEPENDENCIES(master_client boost_ep msgpack_ep)
+TARGET_LINK_LIBRARIES(master_client pthread)
+
+
+# master_server_main binary
 ADD_EXECUTABLE(master_server_main src/master/master_server_main.cc)
-ADD_DEPENDENCIES(master_server_main boost_ep gflags_ep msgpack_ep)
-TARGET_LINK_LIBRARIES(master_server_main ${GFLAGS_STATIC_LIB} pthread)
+ADD_DEPENDENCIES(master_server_main master_server boost_ep gflags_ep msgpack_ep)
+TARGET_LINK_LIBRARIES(master_server_main master_server ${GFLAGS_STATIC_LIB} pthread)
 
 # master client binary
 ADD_EXECUTABLE(master_client_main src/master/master_client_main.cc)
-ADD_DEPENDENCIES(master_client_main boost_ep msgpack_ep)
-TARGET_LINK_LIBRARIES(master_client_main ${GFLAGS_STATIC_LIB} pthread)
+ADD_DEPENDENCIES(master_client_main master_client boost_ep msgpack_ep)
+TARGET_LINK_LIBRARIES(master_client_main master_client ${GFLAGS_STATIC_LIB} pthread)
 
 # demo_test
 ADD_EXECUTABLE(demo_test src/tests/demo_test.cc)

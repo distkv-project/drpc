@@ -1,7 +1,7 @@
 #ifndef _DOUSI_MASTER_CLIENT_SESSION_H_
 #define _DOUSI_MASTER_CLIENT_SESSION_H_
 
-#include "endpoint.h"
+#include "common/endpoint.h"
 #include "common/logging.h"
 
 #include <msgpack.hpp>
