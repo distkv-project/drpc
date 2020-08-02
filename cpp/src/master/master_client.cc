@@ -32,21 +32,13 @@ void MasterClient::RegisterService(const std::string &service_name,
   buffer.seekg(0);
   auto str_to_be_sent = buffer.str();
   const auto buffer_size = str_to_be_sent.size();
-  // TODO(qwang): It's better to pack the type-header-body as a byte array to avoid these callbacks.
-  // Now these callbacks are necessary because we should make sure the order of writeing type,
-  // header and body. We should do these as sequence like:
-  // {
-  //   DoWriteType(type);
-  //   DoWriteHeader(buffer_size);
-  //   DoWriteBody(buffer);
-  // }
-  DoWriteType(
-      ProtocolConstants::MESSAGE_TYPE_REGISTER_SERVICE,
-      /*done_callback=*/[this, str_to_be_sent, buffer_size]() {
-        DoWriteHeader(static_cast<uint32_t>(buffer_size), /*done_callback=*/[str_to_be_sent, this]() {
-          DoWriteBody(str_to_be_sent);
-        });
-      });
+  // TODO(qwang): It's better to pack the type-header-body as a byte array.
+  // Now it's safe to invoke these 3 functions directly, because the io_service is
+  // in a single thread so that these writings should be invoked one by one instead
+  // of parallel.
+  DoWriteType(ProtocolConstants::MESSAGE_TYPE_REGISTER_SERVICE,  nullptr);
+  DoWriteHeader(static_cast<uint32_t>(buffer_size), nullptr);
+  DoWriteBody(str_to_be_sent);
 }
 
 void MasterClient::DoWriteType(uint8_t type, const std::function<void()> &done_callback) {
@@ -59,7 +51,9 @@ void MasterClient::DoWriteType(uint8_t type, const std::function<void()> &done_c
         DOUSI_LOG(INFO) << "Failed to write type to server with error code:" << error_code;
       } else {
         DOUSI_LOG(DEBUG) << "Succeeded to write type to server, type=" << type;
-        done_callback();
+        if (done_callback != nullptr) {
+          done_callback();
+        }
       }
     });
   });
@@ -69,7 +63,6 @@ void MasterClient::DoWriteHeader(uint32_t body_size, const std::function<void()>
   boost::asio::post(io_context_, [this, done_callback, body_size]() {
     char header[sizeof(body_size)];
     memcpy(header, &body_size, sizeof(body_size));
-
     boost::asio::async_write(socket_, boost::asio::buffer(header, sizeof(body_size)),
         [this, done_callback, body_size](boost::system::error_code error_code, size_t) {
       if (error_code) {
@@ -77,7 +70,9 @@ void MasterClient::DoWriteHeader(uint32_t body_size, const std::function<void()>
         DOUSI_LOG(INFO) << "Failed to write header to server with error code:" << error_code;
       } else {
         DOUSI_LOG(DEBUG) << "Succeeded to write header to server, header=" << body_size;
-        done_callback();
+        if (done_callback != nullptr) {
+          done_callback();
+        }
       }
     });
   });

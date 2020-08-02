@@ -38,7 +38,7 @@ TEST(MasterTest, BasicTest) {
   master_client2.RegisterService("adder3", "0.0.0.0:0000");
 
   // TODO(qwang): This should be a `Waitutil()`.
-  std::this_thread::sleep_for(std::chrono::seconds(10));
+  std::this_thread::sleep_for(std::chrono::seconds(2));
   auto endpoints = master_server.GetAllEndpoints();
 
   ASSERT_EQ(5, endpoints.size());
