@@ -19,7 +19,7 @@ INCLUDE_DIRECTORIES(SYSTEM ${MSGPACK_INCLUDE_DIR})
 LINK_DIRECTORIES(${BOOST_STATIC_LIB_DIR})
 
 # master_server_static_library
-ADD_LIBRARY(master_server src/master/master_server.cc)
+ADD_LIBRARY(master_server src/master/master_server.cc src/master/master_client_session.cc)
 ADD_DEPENDENCIES(master_server boost_ep gflags_ep msgpack_ep)
 TARGET_LINK_LIBRARIES(master_server pthread)
 
