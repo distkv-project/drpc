@@ -1,8 +1,8 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
-#include "master_server.h"
-#include "master_client.h"
+#include "master/server/master_server.h"
+#include "master/client/master_client.h"
 #include "common/endpoint.h"
 #include "common/logging.h"
 

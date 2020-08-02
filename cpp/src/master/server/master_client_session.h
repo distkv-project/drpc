@@ -4,7 +4,7 @@
 #include "common/endpoint.h"
 #include "common/logging.h"
 
-#include "constants.h"
+#include "master/constants.h"
 #include "master_server.h"
 
 #include <msgpack.hpp>

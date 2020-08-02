@@ -1,5 +1,5 @@
-#include "master_server.h"
-#include "master_client_session.h"
+#include "master/server/master_server.h"
+#include "master/server/master_client_session.h"
 
 
 namespace dousi {

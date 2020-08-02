@@ -1,5 +1,5 @@
-#include "master_client.h"
-#include "constants.h"
+#include "master/client/master_client.h"
+#include "master/constants.h"
 
 namespace dousi {
 namespace master {
