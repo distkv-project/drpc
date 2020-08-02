@@ -1,4 +1,4 @@
-#include "master_server.h"
+#include "master/server/master_server.h"
 
 #include <iostream>
 #include <gflags/gflags.h>
@@ -19,12 +19,12 @@ int main(int argc, char *argv[]) {
   // TODO(qwang): This should be refactored as RAII.
   gflags::ParseCommandLineFlags(&argc, &argv, true);
   const std::string host = FLAGS_host;
-  const auto port = static_cast<int16_t>(FLAGS_port);
+  const auto port = static_cast<uint16_t>(FLAGS_port);
   gflags::ShutDownCommandLineFlags();
 
   boost::asio::io_context io_context;
-  master::MasterServer master(io_context, host, port);
-  master.Loop();
+  master::MasterServer master_server(io_context, host, port);
+  io_context.run();
 
   return 0;
 }

@@ -14,9 +14,13 @@ namespace master {
 class MasterClient {
 public:
 
-  MasterClient(boost::asio::io_context &io_context, Endpoint master_server_endpoint)
+  MasterClient(boost::asio::io_context &io_context, const Endpoint &master_server_endpoint)
     : io_context_(io_context), socket_(io_context) {
     DoConnect(master_server_endpoint.Resolve(io_context_));
+  }
+
+  virtual ~MasterClient() {
+    socket_.close();
   }
 
   /**
@@ -28,8 +32,16 @@ public:
   void RegisterService(const std::string &service_name,
                        const std::string &service_address);
 
+  /**
+   * Get the service routing from master server.
+   */
+  void FetchService(const std::string &service_name,
+      const std::function<void(bool ok, const std::string &address)> &callback);
+
 private:
-  void DoWriteHeader(uint32_t body_size);
+  void DoWriteType(uint8_t type, const std::function<void()>& done_callback);
+
+  void DoWriteHeader(uint32_t body_size, const std::function<void()> &done_callback);
 
   void DoWriteBody(const std::string &str);
 
@@ -37,6 +49,7 @@ private:
 
 private:
   boost::asio::io_context &io_context_;
+
   asio_tcp::socket socket_;
 };
 

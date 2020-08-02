@@ -8,8 +8,17 @@
 #  - BOOST_INCLUDE_DIR
 
 set(BOOST_VERSION "1.73.0")
-set(DOWNLOAD_URL "https://wq-boost.oss-cn-beijing.aliyuncs.com/boost_1_73_0.tar.gz")
 set(BOOST_URL_MD5 4036cd27ef7548b8d29c30ea10956196)
+
+# This is used for speeding the boost downloading up in China.
+if ($ENV{DOUSI_BUILD_PROXY})
+    message("DOUSI_BUILD_PROXY is enabled, so we will download boost from Aliyun.")
+    set(DOWNLOAD_URL "https://wq-boost.oss-cn-beijing.aliyuncs.com/boost_1_73_0.tar.gz")
+else()
+    message("DOUSI_BUILD_PROXY is disabled, so we will download boost from dl.rog .")
+    set(DOWNLOAD_URL "https://dl.bintray.com/boostorg/release/1.73.0/source/boost_1_73_0.tar.gz")
+endif()
+
 
 if(CMAKE_BUILD_TYPE)
     string(TOUPPER ${CMAKE_BUILD_TYPE} UPPERCASE_BUILD_TYPE)

@@ -2,7 +2,6 @@
 #define _DOUSI_MASTER_H_
 
 #include "common/endpoint.h"
-#include "master_client_session.h"
 #include "common/logging.h"
 
 #include <unordered_map>
@@ -15,6 +14,8 @@
 
 namespace dousi {
 namespace master {
+  // Forward declarations for some cross-reference between `MasterClientSession` and `MasterServer`.
+  class MasterClientSession;
 
 /**
  * The master server is a standalone component that provides the service discovery for
@@ -27,16 +28,26 @@ class MasterServer {
 public:
   MasterServer() = delete;
 
-  MasterServer(boost::asio::io_context &io_context, std::string listening_host, int16_t listening_port)
+  MasterServer(boost::asio::io_context &io_context, std::string listening_host, uint16_t listening_port)
     : listening_endpoint_(std::move(listening_host), listening_port),
     io_context_(io_context),
-    acceptor_(io_context, listening_endpoint_.GetTcpEndpoint()) {}
-
-  void Loop() {
+    acceptor_(io_context, listening_endpoint_.GetTcpEndpoint()) {
     DoAccept();
     DOUSI_LOG(INFO) << "MasterServer is now listening on " << listening_endpoint_.ToString();
-    io_context_.run();
   }
+
+  virtual ~MasterServer() {
+    acceptor_.close();
+  }
+
+  // This method is used for test only. Once we enable the mock server in test,
+  // we should remove this method.
+  std::unordered_map<std::string, std::string> GetAllEndpoints() const {
+    return endpoints_;
+  }
+
+  // This method add the service name and service address as a endpoint.
+  void AddServiceRegistration(const std::string &service_name, const std::string &service_address);
 
   // TODO(qwang): Add `DoDisconnect()` to handle master_client disconnect from this server gracefully.
 
@@ -52,7 +63,8 @@ private:
   boost::asio::ip::tcp::acceptor acceptor_;
 
   // The map that maps service name to its endpoint.
-  std::unordered_map<std::string, Endpoint> endpoints_;
+  // TODO(qwang): Change the 2nd parameter's type to `Endpoint`.
+  std::unordered_map<std::string, std::string> endpoints_;
 
   // client sessions. Maybe this should be refined as a hashmap with its unique ID.
   std::vector<std::shared_ptr<MasterClientSession>> sessions_;
