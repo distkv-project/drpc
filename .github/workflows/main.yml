@@ -17,4 +17,7 @@ jobs:
       run: ./mvnw clean install -DskipTests=false
     - name: run test
       run: ./mvnw test
+    - name: hook
+      run: bash <(curl -s https://codecov.io/bash)
+           bash <(curl -s https://oapi.dingtalk.com/robot/send?access_token=4751a9833880fef766481c835b9f156deaaf77594d77b7b2c7a79bef3de924dc)
 
