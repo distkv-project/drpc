@@ -91,7 +91,6 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.1.1</version>
         <configuration>
-          <aggregate>true</aggregate>
           <encoding>${maven.doc.encoding}</encoding>
           <charset>${maven.doc.encoding}</charset>
           <docencoding>${maven.doc.encoding}</docencoding>
@@ -132,9 +131,6 @@
             <goals>
               <goal>jar</goal>
             </goals>
-            <configuration>
-              <additionalparam>-Xdoclint:none</additionalparam>
-            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -217,39 +213,39 @@
     </license>
   </licenses>
 
-  <profiles>
-  <profile>
-    <id>release</id>
-    <build>
-      <plugins>
-        <!-- GPG -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>1.5</version>
-          <executions>
-            <execution>
-              <id>sign-artifacts</id>
-              <phase>verify</phase>
-              <goals>
-                <goal>sign</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </build>
-    <distributionManagement>
-      <snapshotRepository>
-        <id>community_mvn_central</id>
-        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-      </snapshotRepository>
-      <repository>
-        <id>community_mvn_central</id>
-        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-      </repository>
-    </distributionManagement>
-  </profile>
-  </profiles>
+<!--  <profiles>-->
+<!--  <profile>-->
+<!--    <id>release</id>-->
+<!--    <build>-->
+<!--      <plugins>-->
+<!--        &lt;!&ndash; GPG &ndash;&gt;-->
+<!--        <plugin>-->
+<!--          <groupId>org.apache.maven.plugins</groupId>-->
+<!--          <artifactId>maven-gpg-plugin</artifactId>-->
+<!--          <version>1.5</version>-->
+<!--          <executions>-->
+<!--            <execution>-->
+<!--              <id>sign-artifacts</id>-->
+<!--              <phase>verify</phase>-->
+<!--              <goals>-->
+<!--                <goal>sign</goal>-->
+<!--              </goals>-->
+<!--            </execution>-->
+<!--          </executions>-->
+<!--        </plugin>-->
+<!--      </plugins>-->
+<!--    </build>-->
+<!--    <distributionManagement>-->
+<!--      <snapshotRepository>-->
+<!--        <id>community_mvn_central</id>-->
+<!--        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>-->
+<!--      </snapshotRepository>-->
+<!--      <repository>-->
+<!--        <id>community_mvn_central</id>-->
+<!--        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+<!--      </repository>-->
+<!--    </distributionManagement>-->
+<!--  </profile>-->
+<!--  </profiles>-->
 
 </project>
