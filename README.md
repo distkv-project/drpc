@@ -1,11 +1,8 @@
-# Dousi
-[![Build Status](https://travis-ci.com/jovany-wang/dousi.svg?branch=master)](https://travis-ci.com/jovany-wang/dousi)
-[![codecov](https://codecov.io/gh/jovany-wang/dousi/branch/master/graph/badge.svg)](https://codecov.io/gh/jovany-wang/dousi)
-[![maven](https://img.shields.io/maven-central/v/com.distkv/dousi.svg)](https://search.maven.org/search?q=com.distkv)
-
+# Drpc
+[![codecov](https://codecov.io/gh/distkv-project/drpc/branch/master/graph/badge.svg)](https://codecov.io/gh/dist/drpc)
 The next generation RPC framework.
 ## Project Description
-`Dousi` is a high performance RPC framework, which aims to help users build their networking communications easily.
+`Drpc` is a high performance RPC framework, which aims to help users build their networking communications easily.
 The biggest feature to distinguish with other RPC frameworks is it supports multiple languages server.
 
 ## Awesome Features
@@ -22,17 +19,17 @@ mvn clean install -DskipTests
 ```
 ### 2. Run Server Example
 ```bash
-Server example: ./example/src/main/java/com/distkv/dousi/pb/ExampleServer.java
+Server example: ./example/src/main/java/com/distkv/drpc/pb/ExampleServer.java
 ```
 ### 3. Run Client Example
 ```bash
-Client example: ./example/src/main/java/com/distkv/dousi/pb/ExampleServer.java
+Client example: ./example/src/main/java/com/distkv/drpc/pb/ExampleServer.java
 ```
 ## Examples
 ### 1. Server Example
 ```java
-import org.dousi.DousiServer;
-import org.dousi.config.ServerConfig;
+import org.drpc.DrpcServer;
+import org.drpc.config.ServerConfig;
 
 public class ExampleServer {
 
@@ -41,19 +38,19 @@ public class ExampleServer {
         .port(8080)
         .build();
 
-    DousiServer dousiServer = new DousiServer(serverConfig);
-    dousiServer.registerService(ExampleService.class, new ExampleServiceImpl());
-    dousiServer.run();
+    DrpcServer drpcServer = new DrpcServer(serverConfig);
+    drpcServer.registerService(ExampleService.class, new ExampleServiceImpl());
+    drpcServer.run();
   }
 }
 ```
 ### 2. Client Example
 ```java
-import org.dousi.Proxy;
-import org.dousi.api.Client;
-import org.dousi.config.ClientConfig;
-import org.dousi.netty.NettyClient;
-import org.dousi.pb.generated.StringProtocol;
+import org.drpc.Proxy;
+import org.drpc.api.Client;
+import org.drpc.config.ClientConfig;
+import org.drpc.netty.NettyClient;
+import org.drpc.pb.generated.StringProtocol;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -124,4 +121,4 @@ public class ExampleClient {
 TODO
 
 ## Getting Involved
-Thank you for your attention to the `Dousi` project. If you have any questions, you can create a new issue in our Issues list. And we welcome you to participate in our project. If you want to make some contributions, you can refer the file [CONTRIBUTING.md](https://github.com/dst-project/dousi/blob/master/CONTRIBUTING.md).
+Thank you for your attention to the `Drpc` project. If you have any questions, you can create a new issue in our Issues list. And we welcome you to participate in our project. If you want to make some contributions, you can refer the file [CONTRIBUTING.md](https://github.com/dst-project/drpc/blob/master/CONTRIBUTING.md).

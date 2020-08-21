@@ -12,16 +12,16 @@
 
 #include <boost/asio.hpp>
 
-namespace dousi {
+namespace drpc {
 namespace master {
   // Forward declarations for some cross-reference between `MasterClientSession` and `MasterServer`.
   class MasterClientSession;
 
 /**
  * The master server is a standalone component that provides the service discovery for
- * the Dousi servers and clients.
+ * the Drpc servers and clients.
  *
- * A Dousi server provided by user should be registered into master, so that the
+ * A Drpc server provided by user should be registered into master, so that the
  * client which wants to use this service can find the service location from master.
  */
 class MasterServer {
@@ -71,6 +71,6 @@ private:
 };
 
 } // namespace master
-} // namespace dousi
+} // namespace drpc
 
 #endif

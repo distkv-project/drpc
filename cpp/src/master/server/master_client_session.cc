@@ -1,6 +1,6 @@
 #include "master_client_session.h"
 
-namespace dousi {
+namespace drpc {
 namespace master {
 
 void MasterClientSession::DoReadType() {
@@ -67,4 +67,4 @@ void MasterClientSession::DoReadBody(uint8_t type, uint32_t body_size) {
 }
 
 } // namespace master
-} // namespace dousi
+} // namespace drpc

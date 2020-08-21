@@ -1,9 +1,9 @@
-# Native part of Dousi
+# Native part of Drpc
 
 ## What we provide here?
 (1) A method discovery service provided.  
-(2) Server JNI of Dousi RPC provided.  
-(3) Client JNI of Dousi RPC provided.  
+(2) Server JNI of Drpc RPC provided.  
+(3) Client JNI of Drpc RPC provided.  
 
 ## Setup dependencies
 ### Build Boost.asio

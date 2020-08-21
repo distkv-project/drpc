@@ -13,8 +13,8 @@
 #include <chrono>
 
 
-using namespace dousi;
-using namespace dousi::master;
+using namespace drpc;
+using namespace drpc::master;
 
 
 /**
@@ -24,9 +24,9 @@ using namespace dousi::master;
 TEST(MasterTest, BasicTest) {
   boost::asio::io_context io_context(16);
   MasterServer master_server(io_context, "0.0.0.0", 9999);
-  MasterClient master_client1(io_context, dousi::Endpoint("127.0.0.1", 9999));
-  MasterClient master_client2(io_context, dousi::Endpoint("127.0.0.1", 9999));
-  MasterClient master_client3(io_context, dousi::Endpoint("127.0.0.1", 9999));
+  MasterClient master_client1(io_context, drpc::Endpoint("127.0.0.1", 9999));
+  MasterClient master_client2(io_context, drpc::Endpoint("127.0.0.1", 9999));
+  MasterClient master_client3(io_context, drpc::Endpoint("127.0.0.1", 9999));
 
   // Run io_context in a separated thread to make sure we can do other assertions later.
   std::thread t([&io_context]() { io_context.run(); });

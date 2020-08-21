@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package org.dousi.test;
+package org.drpc.test;
 
-option java_package = "org.dousi.test.generated";
+option java_package = "org.drpc.test.generated";
 option java_outer_classname = "BenchmarkProtocol";
 
 message Request {

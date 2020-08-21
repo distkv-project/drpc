@@ -1,7 +1,7 @@
 #include "master/client/master_client.h"
 #include "master/constants.h"
 
-namespace dousi {
+namespace drpc {
 namespace master {
 
 /** The protocol from MasterClient to MasterServer is:
@@ -111,4 +111,4 @@ void MasterClient::FetchService(const std::string &service_name,
 }
 
 } // namespace master
-} // namespace dousi
+} // namespace drpc

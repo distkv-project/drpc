@@ -3,8 +3,8 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <artifactId>dousi</artifactId>
-    <groupId>org.dousi</groupId>
+    <artifactId>drpc</artifactId>
+    <groupId>org.drpc</groupId>
     <version>0.1.1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -13,18 +13,18 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.dousi</groupId>
-      <artifactId>dousi-common</artifactId>
+      <groupId>org.drpc</groupId>
+      <artifactId>drpc-common</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.dousi</groupId>
-      <artifactId>dousi-transport</artifactId>
+      <groupId>org.drpc</groupId>
+      <artifactId>drpc-transport</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.dousi</groupId>
-      <artifactId>dousi-protocol</artifactId>
+      <groupId>org.drpc</groupId>
+      <artifactId>drpc-protocol</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>
@@ -39,7 +39,7 @@
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>org.dousi.test.benchmark.Benchmark</mainClass>
+              <mainClass>org.drpc.test.benchmark.Benchmark</mainClass>
             </manifest>
           </archive>
         </configuration>

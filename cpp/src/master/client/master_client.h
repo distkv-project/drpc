@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-namespace dousi {
+namespace drpc {
 namespace master {
 
 class MasterClient {
@@ -24,7 +24,7 @@ public:
   }
 
   /**
-   * Register a Dousi RPC service to the master server.
+   * Register a Drpc RPC service to the master server.
    *
    * @param service_name The service name to be registered.
    * @param service_address The address of this service.
@@ -54,6 +54,6 @@ private:
 };
 
 } // namespace master
-} // namespace dousi
+} // namespace drpc
 
 #endif

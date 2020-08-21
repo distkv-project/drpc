@@ -8,7 +8,7 @@
 
 int main(int argc, char *argv[]) {
   boost::asio::io_context io_context;
-  dousi::master::MasterClient client(io_context, dousi::Endpoint("127.0.0.1", 9999));
+  drpc::master::MasterClient client(io_context, drpc::Endpoint("127.0.0.1", 9999));
 
   const std::string service_name = "adder";
   const std::string service_addr = "10.8.8.12:12202";

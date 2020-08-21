@@ -24,7 +24,7 @@ hs_err_pid*
 
 # Idea
 .idea/
-dousi.iml
+drpc.iml
 *.iml
 
 # macOS
@@ -32,9 +32,9 @@ dousi.iml
 
 # generated files
 **/generated/*
-example/src/main/java/org/dousi/pb/generated/*
-common/src/main/java/org/dousi/codec/generated/*
-test/src/test/java/org/dousi/test/codec/generated/*
+example/src/main/java/org/drpc/pb/generated/*
+common/src/main/java/org/drpc/codec/generated/*
+test/src/test/java/org/drpc/test/codec/generated/*
 
 # target files
 /*/target
@@ -47,6 +47,6 @@ cpp/build
 # javadoc
 */doc
 
-# dousi/build
+# drpc/build
 build
 

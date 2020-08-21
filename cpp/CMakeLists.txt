@@ -1,10 +1,10 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.11)
-PROJECT(dousi_cpp)
+PROJECT(drpc_cpp)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
-set(DOUSI_CPP_CLIENT_SRC src/dousi_client.cc)
+set(DOUSI_CPP_CLIENT_SRC src/drpc_client.cc)
 
 INCLUDE(ExternalProject)
 INCLUDE(GtestExternalProject)

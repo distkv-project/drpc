@@ -6,10 +6,10 @@
 
 #include <boost/asio.hpp>
 
-namespace dousi {
+namespace drpc {
 
 /**
-* A endpoint that can represents for a networking end point in Dousi RPC.
+* A endpoint that can represents for a networking end point in Drpc RPC.
  *
  * It is consists of 2 parts: host and port.
  * `host` indicates the location of a node and `port` indicate the networking
@@ -54,6 +54,6 @@ private:
   uint16_t port_;
 };
 
-} // namespace dousi
+} // namespace drpc
 
 #endif
