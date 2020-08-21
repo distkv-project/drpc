@@ -1,4 +1,5 @@
 # Drpc
+[![codecov](https://codecov.io/gh/distkv-project/drpc/branch/master/graph/badge.svg)](https://codecov.io/gh/dist/drpc)
 The next generation RPC framework.
 ## Project Description
 `Drpc` is a high performance RPC framework, which aims to help users build their networking communications easily.
