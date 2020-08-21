@@ -216,17 +216,6 @@
       <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
     </license>
   </licenses>
-  <developers>
-    <developer>
-      <name>Qing Wang</name>
-      <email>kingchin1218@gmail.com</email>
-    </developer>
-  </developers>
-  <scm>
-    <connection>scm:git@github.com:jovany-wang/drpc.git</connection>
-    <developerConnection>scm:git@github.com:jovany-wang/drpc.git</developerConnection>
-    <url>scm:git@github.com:jovany-wang/drpc.git</url>
-  </scm>
 
   <profiles>
   <profile>
