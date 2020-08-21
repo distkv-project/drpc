@@ -4,7 +4,7 @@
 #include <iostream>
 #include <boost/asio.hpp>
 
-namespace dousi {
+namespace drpc {
 
 enum LOG_LEVEL {
   DEBUG,
@@ -13,25 +13,25 @@ enum LOG_LEVEL {
   FATAL
 };
 
-class DousiLoggerInstance {
+class DrpcLoggerInstance {
 public:
 
-  explicit DousiLoggerInstance(LOG_LEVEL log_level): log_level_(log_level) { }
+  explicit DrpcLoggerInstance(LOG_LEVEL log_level): log_level_(log_level) { }
 
-  ~DousiLoggerInstance() { std::cout << std::endl; }
+  ~DrpcLoggerInstance() { std::cout << std::endl; }
 
-  DousiLoggerInstance &operator<<(const std::string &str) {
+  DrpcLoggerInstance &operator<<(const std::string &str) {
     std::cout << str;
     return *this;
   }
 
-  DousiLoggerInstance &operator<<(boost::system::error_code error_code) {
+  DrpcLoggerInstance &operator<<(boost::system::error_code error_code) {
     std::cout << error_code;
     return *this;
   }
 
   template<typename BasicType>
-  DousiLoggerInstance &operator<<(BasicType value) {
+  DrpcLoggerInstance &operator<<(BasicType value) {
     std::cout << value;
     return *this;
   }
@@ -40,13 +40,13 @@ private:
   LOG_LEVEL log_level_;
 };
 
-inline DousiLoggerInstance GetLoggerInstanceWithLevel(LOG_LEVEL log_level) {
-  return DousiLoggerInstance(log_level);
+inline DrpcLoggerInstance GetLoggerInstanceWithLevel(LOG_LEVEL log_level) {
+  return DrpcLoggerInstance(log_level);
 }
 
 #define DOUSI_LOG(LOG_LEVEL) GetLoggerInstanceWithLevel(LOG_LEVEL)
 
 
-} // namespace dousi
+} // namespace drpc
 
 #endif

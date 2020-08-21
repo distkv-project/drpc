@@ -2,7 +2,7 @@
 #include "master/server/master_client_session.h"
 
 
-namespace dousi {
+namespace drpc {
 namespace master {
 
 void MasterServer::DoAccept() {
@@ -22,4 +22,4 @@ void MasterServer::AddServiceRegistration(const std::string &service_name, const
 }
 
 } // namespace master
-} // namespace dousi
+} // namespace drpc

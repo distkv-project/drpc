@@ -1,11 +1,11 @@
 syntax="proto3";
 
-package org.dousi.codec;
+package org.drpc.codec;
 
 import "google/protobuf/any.proto";
 
-option java_package = "org.dousi.codec.generated";
-option java_outer_classname="DousiProtocol";
+option java_package = "org.drpc.codec.generated";
+option java_outer_classname="DrpcProtocol";
 
 message Request {
     int64 requestId = 1;
@@ -17,14 +17,14 @@ message Request {
 
 message Response {
     int64 requestId = 1;
-    DousiStatus status = 2;
+    DrpcStatus status = 2;
     oneof returnValue {
         google.protobuf.Any result = 3;
         string errorMessage = 4;
     };
 };
 
-enum DousiStatus {
+enum DrpcStatus {
     OK = 0; // OK;
     OUTER_ERROR = 1; // Outer error;
     INNER_ERROR = 2; // Inner error;

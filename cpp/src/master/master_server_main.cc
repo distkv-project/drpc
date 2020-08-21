@@ -3,7 +3,7 @@
 #include <iostream>
 #include <gflags/gflags.h>
 
-using namespace dousi;
+using namespace drpc;
 
 // TODO(qwang): These flags should be defined in a seprated header file.
 DEFINE_string(host,  "127.0.0.1",  "The host that master server listens on.");

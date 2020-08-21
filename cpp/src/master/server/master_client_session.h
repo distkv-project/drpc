@@ -13,7 +13,7 @@
 #include <memory>
 #include <iostream>
 
-namespace dousi {
+namespace drpc {
 namespace master {
 
 class MasterClientSession : public std::enable_shared_from_this<MasterClientSession> {
@@ -45,6 +45,6 @@ private:
 };
 
 }
-} // namespace dousi
+} // namespace drpc
 
 #endif

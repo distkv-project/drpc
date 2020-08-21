@@ -1,8 +1,8 @@
 syntax="proto3";
 
-package org.dousi.pb;
+package org.drpc.pb;
 
-option java_package="org.dousi.pb.generated";
+option java_package="org.drpc.pb.generated";
 option java_outer_classname="StringProtocol";
 option cc_generic_services = true;
 

@@ -1,7 +1,7 @@
 #ifndef _DOUSI_MASTER_PROTOCOL_DEF_H_
 #define _DOUSI_MASTER_PROTOCOL_DEF_H_
 
-namespace dousi {
+namespace drpc {
 namespace master {
 
 class ProtocolConstants {
@@ -12,6 +12,6 @@ public:
 };
 
 } // namespace master
-} // namespace dousi
+} // namespace drpc
 
 #endif

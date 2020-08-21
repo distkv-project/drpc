@@ -4,8 +4,8 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.dousi</groupId>
-  <artifactId>dousi</artifactId>
+  <groupId>org.drpc</groupId>
+  <artifactId>drpc</artifactId>
   <packaging>pom</packaging>
   <version>0.1.1-SNAPSHOT</version>
 
@@ -207,9 +207,9 @@
     </plugins>
   </build>
 
-  <name>dousi</name>
+  <name>drpc</name>
   <description>A high performance RPC framework with multiple-languages server.</description>
-  <url>https://dousi.org</url>
+  <url>https://drpc.org</url>
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -223,9 +223,9 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:git@github.com:jovany-wang/dousi.git</connection>
-    <developerConnection>scm:git@github.com:jovany-wang/dousi.git</developerConnection>
-    <url>scm:git@github.com:jovany-wang/dousi.git</url>
+    <connection>scm:git@github.com:jovany-wang/drpc.git</connection>
+    <developerConnection>scm:git@github.com:jovany-wang/drpc.git</developerConnection>
+    <url>scm:git@github.com:jovany-wang/drpc.git</url>
   </scm>
 
   <profiles>
