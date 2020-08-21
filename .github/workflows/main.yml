@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: build
-      run: cd cpp && ./build.sh
+      run: ./mvnw clean install -DskipTests=false
     - name: run test
-      run: ./cpp/build/master_test
+      run: ./mvnw test
 
