@@ -1,11 +1,11 @@
 package org.drpc.pb;
 
-import org.drpc.session.DrpcSession;
-import org.drpc.Proxy;
+import org.drpc.Stub;
 import org.drpc.api.Client;
 import org.drpc.config.ClientConfig;
 import org.drpc.netty.DrpcClient;
 import org.drpc.pb.generated.StringProtocol;
+import org.drpc.session.DrpcSession;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -19,9 +19,8 @@ public class ExampleClient {
     Client client = new DrpcClient(clientConfig);
     client.open();
 
-    Proxy<ExampleService> proxy = new Proxy<>();
-    proxy.setInterfaceClass(ExampleService.class);
-    ExampleService service = proxy.getService(client);
+    Stub<ExampleService> stub = new Stub<>(ExampleService.class);
+    ExampleService service = stub.getService(client);
 
     StringProtocol.PutRequest putRequest = StringProtocol.PutRequest.newBuilder()
         .setKey("dstPut")
@@ -57,7 +56,7 @@ public class ExampleClient {
 
     //session (keep order)
     DrpcSession session = DrpcSession.createSession();
-    ExampleService sessionService = proxy.getService(client, session);
+    ExampleService sessionService = stub.getService(client, session);
 
     //async (keep order in server)
     CompletableFuture sessionFuture1 = sessionService.get(getRequest);
