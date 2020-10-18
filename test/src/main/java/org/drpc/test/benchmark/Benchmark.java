@@ -1,13 +1,13 @@
 package org.drpc.test.benchmark;
 
-import org.drpc.test.common.BenchmarkIService;
-import org.drpc.test.common.BenchmarkIServiceImpl;
 import org.drpc.DrpcServer;
-import org.drpc.Proxy;
+import org.drpc.Stub;
 import org.drpc.api.Client;
 import org.drpc.config.ClientConfig;
 import org.drpc.config.ServerConfig;
 import org.drpc.netty.DrpcClient;
+import org.drpc.test.common.BenchmarkIService;
+import org.drpc.test.common.BenchmarkIServiceImpl;
 
 public class Benchmark {
 
@@ -27,9 +27,8 @@ public class Benchmark {
     Client client = new DrpcClient(clientConfig);
     client.open();
 
-    Proxy<BenchmarkIService> proxy = new Proxy<>();
-    proxy.setInterfaceClass(BenchmarkIService.class);
-    BenchmarkIService service = proxy.getService(client);
+    Stub<BenchmarkIService> stub = new Stub<>(BenchmarkIService.class);
+    BenchmarkIService service = stub.getService(client);
     BenchmarkGateway gateway = new BenchmarkGateway();
     gateway.start(service);
   }

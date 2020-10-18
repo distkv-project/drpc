@@ -1,7 +1,7 @@
 package org.drpc.test;
 
 import org.drpc.DrpcServer;
-import org.drpc.Proxy;
+import org.drpc.Stub;
 import org.drpc.api.Client;
 import org.drpc.config.ClientConfig;
 import org.drpc.config.ServerConfig;
@@ -10,10 +10,11 @@ import org.drpc.session.DrpcSession;
 import org.drpc.test.common.IService;
 import org.drpc.test.common.IServiceImpl;
 import org.drpc.test.generated.EchoProtocol;
-import java.util.concurrent.ExecutionException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import java.util.concurrent.ExecutionException;
 
 public class LineOrderedTest {
 
@@ -43,8 +44,7 @@ public class LineOrderedTest {
   @Test
   public void testOrder() {
     DrpcSession session = DrpcSession.createSession();
-    Proxy<IService> proxy = new Proxy<>();
-    proxy.setInterfaceClass(IService.class);
+    Stub<IService> proxy = new Stub<>(IService.class);
     IService service = proxy.getService(client, session);
     for (int i = 0; i < 10000; i++) {
       EchoProtocol.PutRequest putRequest = EchoProtocol.PutRequest
